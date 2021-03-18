@@ -4,19 +4,31 @@
 #define TEMPERATURE_DELIMITER '*'
 #define HUMIDITY_DELIMITER '$'
 
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+#define DC_MOTOR_PIN1 12
+#define DC_MOTOR_PIN2 11
+
+#define MOTOR_MAX_SPEED 255
+int motorSpeed;
+int cnt;
+
+const int rs = 7, en = 6, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal LCD(rs, en, d4, d5, d6, d7);
 
 float humidity, temperature;
 int wateringRate;
 bool readNewData;
 
+void setPWM();
 void setWateringRate();
 void readSerial();
 void showOnLCD();
 
 void setup()
 {
+  motorSpeed = 0;
+  cnt = 0;
+  pinMode (DC_MOTOR_PIN1, OUTPUT);
+  pinMode (DC_MOTOR_PIN2, OUTPUT);
   readNewData = false;
   wateringRate = 0;
   LCD.begin(20, 4);
@@ -25,6 +37,8 @@ void setup()
 
 void loop()
 {
+  setPWM();
+
   if (Serial.available() > 4) {
     readSerial();
   }
@@ -33,6 +47,28 @@ void loop()
     setWateringRate();
     showOnLCD();
     readNewData = !readNewData;
+  }
+}
+
+void setPWM()
+{
+  if (wateringRate == 20)
+    motorSpeed = 25/100 * MOTOR_MAX_SPEED;
+
+  if (wateringRate == 10)
+    motorSpeed = 10/100 * MOTOR_MAX_SPEED;
+
+  else
+    motorSpeed =  0;
+
+  cnt = (cnt + 1) % MOTOR_MAX_SPEED;
+
+  if (cnt < motorSpeed) {
+    digitalWrite(DC_MOTOR_PIN1, HIGH);
+    digitalWrite(DC_MOTOR_PIN2, LOW);
+  } else {
+    digitalWrite(DC_MOTOR_PIN1, LOW);
+    digitalWrite(DC_MOTOR_PIN2, LOW);
   }
 }
 
