@@ -18,7 +18,6 @@ float humidity, temperature;
 int wateringRate;
 bool readNewData;
 
-void setPWM();
 void setWateringRate();
 void readSerial();
 void showOnLCD();
@@ -40,11 +39,11 @@ void loop()
   cnt = (cnt + 1) % MOTOR_MAX_SPEED;
 
   if (cnt < motorSpeed) {
-    digitalWrite(DC_MOTOR_PIN1, HIGH);
-    digitalWrite(DC_MOTOR_PIN2, LOW);
+    analogWrite(DC_MOTOR_PIN1, HIGH);
+    analogWrite(DC_MOTOR_PIN2, LOW);
   } else {
-    digitalWrite(DC_MOTOR_PIN1, LOW);
-    digitalWrite(DC_MOTOR_PIN2, LOW);
+    analogWrite(DC_MOTOR_PIN1, LOW);
+    analogWrite(DC_MOTOR_PIN2, LOW);
   }
 
   if (Serial.available() > 4) {
@@ -54,35 +53,26 @@ void loop()
   if (readNewData) {
     setWateringRate();
     showOnLCD();
-    setPWM();
     readNewData = !readNewData;
   }
-}
-
-void setPWM()
-{
-  if (wateringRate == 20)
-    motorSpeed = MOTOR_MAX_SPEED / 4;
-
-  if (wateringRate == 10)
-    motorSpeed = MOTOR_MAX_SPEED / 10;
-
-  else
-    motorSpeed =  0;
 }
 
 void setWateringRate()
 {
   if (humidity > 50) {
     wateringRate = 0;
+    motorSpeed =  0;
   } else if (humidity < 20) {
     wateringRate = 20;
+    motorSpeed = MOTOR_MAX_SPEED / 4;
   } else {
     if (temperature < 25) {
       wateringRate = 0;
+      motorSpeed =  0;
     }
     if (temperature >= 25) {
       wateringRate = 10;
+      motorSpeed = MOTOR_MAX_SPEED / 10;
     }
   }
 }
