@@ -3,7 +3,7 @@
 
 #define TEMPERATURE_DELIMITER '*'
 #define HUMIDITY_DELIMITER '$'
-#define I2CAddress 0x40
+#define Addr 0x40
 
 float temperature, humidity;
 
@@ -13,26 +13,21 @@ void getHumidityFromSensor();
 void setup()
 {
 	Wire.begin();
-	Serial.begin(9600);
 }
 
 void loop()
 {
 	getTemperatureFromSensor();
 	getHumidityFromSensor();
-	Serial.print(TEMPERATURE_DELIMITER);
-	Serial.println(temperature);
-	Serial.print(HUMIDITY_DELIMITER);
-	Serial.println(humidity);
 }
 
 void getTemperatureFromSensor()
 {
-	Wire.beginTransmission(I2CAddress);
+	Wire.beginTransmission(Addr);
 	Wire.write(0xF3);
 	Wire.endTransmission();
 	delay(500);
-	Wire.requestFrom(I2CAddress, 2);
+	Wire.requestFrom(Addr, 2);
 	if (Wire.available() == 2) {
     unsigned int lsb = Wire.read();
 		unsigned int msb = Wire.read();
@@ -42,11 +37,11 @@ void getTemperatureFromSensor()
 
 void getHumidityFromSensor()
 {
-	Wire.beginTransmission(I2CAddress);
+	Wire.beginTransmission(Addr);
 	Wire.write(0xF5);
 	Wire.endTransmission();
 	delay(500);
-	Wire.requestFrom(I2CAddress, 2);
+	Wire.requestFrom(Addr, 2);
 	if (Wire.available() == 2) {
 		unsigned int lsb = Wire.read();
 		unsigned int msb = Wire.read();
