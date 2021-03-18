@@ -13,12 +13,17 @@ void getHumidityFromSensor();
 void setup()
 {
 	Wire.begin();
+	Serial.begin(9600);
 }
 
 void loop()
 {
 	getTemperatureFromSensor();
 	getHumidityFromSensor();
+	Serial.print(TEMPERATURE_DELIMITER);
+	Serial.println(temperature);
+	Serial.print(HUMIDITY_DELIMITER);
+	Serial.println(humidity);
 }
 
 void getTemperatureFromSensor()

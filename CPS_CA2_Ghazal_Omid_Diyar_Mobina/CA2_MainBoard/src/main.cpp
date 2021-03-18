@@ -39,7 +39,7 @@ void loop()
 {
   setPWM();
 
-  if (Serial.available() > 4) {
+  if (Serial.available()) {
     readSerial();
   }
 
