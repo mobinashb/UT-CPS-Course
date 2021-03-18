@@ -25,7 +25,7 @@ void setup()
 
 void loop()
 {
-  if (Serial.available()) {
+  if (Serial.available() > 4) {
     readSerial();
   }
 
@@ -38,15 +38,15 @@ void loop()
 
 void setWateringRate()
 {
-  if (humidity > 50){
+  if (humidity > 50) {
     wateringRate = 0;
-  } else if (humidity < 20){
+  } else if (humidity < 20) {
     wateringRate = 20;
   } else {
-    if (temperature < 25){
+    if (temperature < 25) {
       wateringRate = 0;
     }
-    if (temperature >= 25){
+    if (temperature >= 25) {
       wateringRate = 10;
     }
   }
