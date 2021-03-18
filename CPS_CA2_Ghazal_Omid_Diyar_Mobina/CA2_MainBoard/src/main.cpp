@@ -37,30 +37,6 @@ void setup()
 
 void loop()
 {
-  setPWM();
-
-  if (Serial.available()) {
-    readSerial();
-  }
-
-  if (readNewData) {
-    setWateringRate();
-    showOnLCD();
-    readNewData = !readNewData;
-  }
-}
-
-void setPWM()
-{
-  if (wateringRate == 20)
-    motorSpeed = 25/100 * MOTOR_MAX_SPEED;
-
-  if (wateringRate == 10)
-    motorSpeed = 10/100 * MOTOR_MAX_SPEED;
-
-  else
-    motorSpeed =  0;
-
   cnt = (cnt + 1) % MOTOR_MAX_SPEED;
 
   if (cnt < motorSpeed) {
@@ -70,6 +46,29 @@ void setPWM()
     digitalWrite(DC_MOTOR_PIN1, LOW);
     digitalWrite(DC_MOTOR_PIN2, LOW);
   }
+
+  if (Serial.available() > 4) {
+    readSerial();
+  }
+
+  if (readNewData) {
+    setWateringRate();
+    showOnLCD();
+    setPWM();
+    readNewData = !readNewData;
+  }
+}
+
+void setPWM()
+{
+  if (wateringRate == 20)
+    motorSpeed = MOTOR_MAX_SPEED / 4;
+
+  if (wateringRate == 10)
+    motorSpeed = MOTOR_MAX_SPEED / 10;
+
+  else
+    motorSpeed =  0;
 }
 
 void setWateringRate()
@@ -113,9 +112,10 @@ void showOnLCD()
   LCD.setCursor(0, 0);
   LCD.print("Temperature: ");
   LCD.println(String(temperature).c_str());
+  LCD.setCursor(0, 1);
   LCD.print("Humidity: ");
   LCD.println(String(humidity).c_str());
-  LCD.setCursor(0, 1);
+  LCD.setCursor(0, 2);
   if (wateringRate == 0) {
     LCD.println("No need to water.");
   } else {
