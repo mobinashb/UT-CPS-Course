@@ -1,0 +1,7 @@
+#Wed Mar 24 18:50:51 IRDT 2021
+base.0=G\:\\UT\\UT8\\CPS\\UT-CPS-Course\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
+path.1=classes.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=G\:\\UT\\UT8\\CPS\\UT-CPS-Course\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
