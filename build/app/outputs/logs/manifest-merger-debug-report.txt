@@ -75,13 +75,13 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\as
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:6:9-35
 	android:theme
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:11:9-40
-activity#com.mobina.legendofbounca.GameActivity
+activity#com.mobina.legendofbounca.activity.GameActivity
 ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:12:9-14:20
 	android:screenOrientation
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:13:13-50
 	android:name
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:12:19-47
-activity#com.mobina.legendofbounca.MainActivity
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:12:19-56
+activity#com.mobina.legendofbounca.util.MainActivity
 ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:15:9-26:20
 	android:screenOrientation
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:18:13-50
@@ -92,7 +92,7 @@ ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\
 	android:theme
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:20:13-51
 	android:name
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:16:13-41
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:16:13-46
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\app\src\main\AndroidManifest.xml:21:13-25:29
 action#android.intent.action.MAIN

@@ -1,16 +1,15 @@
-package com.mobina.legendofbounca;
-
-import android.annotation.SuppressLint;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
+package com.mobina.legendofbounca.util;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import com.mobina.legendofbounca.R;
+import com.mobina.legendofbounca.activity.GameActivity;
+import com.mobina.legendofbounca.activity.GameConfig;
 
 public class MainActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package com.mobina.legendofbounca;
+package com.mobina.legendofbounca.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import com.mobina.legendofbounca.R;
 
 public class GameActivity extends Activity {
 
