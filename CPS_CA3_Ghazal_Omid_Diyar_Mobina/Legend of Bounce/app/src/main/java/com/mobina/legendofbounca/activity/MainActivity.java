@@ -20,10 +20,10 @@ public class MainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Button buttonGyro = findViewById(R.id.button_gyroscope);
-        Button buttonGravity = findViewById(R.id.button_gravity);
+        Button gyroscopeButton = findViewById(R.id.button_gyroscope);
+        Button gravityButton = findViewById(R.id.button_gravity);
 
-        buttonGyro.setOnClickListener(new View.OnClickListener() {
+        gyroscopeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        buttonGravity.setOnClickListener(new View.OnClickListener() {
+        gravityButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
