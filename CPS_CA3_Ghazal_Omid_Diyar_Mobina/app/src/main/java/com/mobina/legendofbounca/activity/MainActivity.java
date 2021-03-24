@@ -1,4 +1,4 @@
-package com.mobina.legendofbounca.util;
+package com.mobina.legendofbounca.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.mobina.legendofbounca.R;
-import com.mobina.legendofbounca.activity.GameActivity;
-import com.mobina.legendofbounca.activity.GameConfig;
+import com.mobina.legendofbounca.util.GameConfig;
 
 public class MainActivity extends Activity {
 
