@@ -25,25 +25,25 @@ public class MainActivity extends Activity {
 
         buttonGyro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            try {
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                intent.putExtra("sensor", GameConfig.sensor.GYROSCOPE);
-                startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                try {
+                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                    intent.putExtra("sensor", GameConfig.sensor.GYROSCOPE);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         buttonGravity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            try {
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                intent.putExtra("sensor", GameConfig.sensor.GRAVITY);
-                startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                try {
+                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                    intent.putExtra("sensor", GameConfig.sensor.GRAVITY);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
