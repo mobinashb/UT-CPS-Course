@@ -811,6 +811,7 @@ id icon
 id icon_group
 id ifRoom
 id image
+id image_ball
 id info
 id invisible
 id italic

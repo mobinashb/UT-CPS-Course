@@ -1,7 +1,7 @@
 package com.mobina.legendofbounca.core.components;
 
 public class _3dVector {
-    double x, y, z;
+    public double x, y, z;
 
     public _3dVector(double x, double y, double z) {
         this.x = x;

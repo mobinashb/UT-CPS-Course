@@ -8,4 +8,6 @@ public class GameConfig {
 
     public static final double BALL_WEIGHT = 10;
     public static final double BALL_RADIUS = 20;
+
+    public static final int REFRESH_RATE = 10;
 }
