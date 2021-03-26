@@ -52,11 +52,12 @@ public class GameActivity extends Activity {
       gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
       sensorManager.registerListener(listener, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST);
       sensorManager.registerListener(listener, gyroscopeSensor, SensorManager.SENSOR_DELAY_FASTEST);
-      View playButton = findViewById(R.id.button_play);
+      final View playButton = findViewById(R.id.button_play);
       playButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           gameStarted = true;
+          playButton.setVisibility(View.GONE);
         }
       });
 

@@ -63,8 +63,8 @@ public class Ball {
     }
 
     public void handleGyroscopeSensorEvent(_3dVector vec, double deltaT) {
-        theta = new _3dVector(vec.x * deltaT + theta.x,
-            vec.y * deltaT + theta.y,
+        theta = new _3dVector(vec.y * deltaT + theta.x,
+            vec.x * deltaT + theta.y,
             vec.z * deltaT + theta.z);
         _3dVector gravityVec = new _3dVector(
             GamePhysicsConfig.earthGravity * Math.sin(theta.x),
@@ -88,8 +88,8 @@ public class Ball {
         frictionMny = (vec.y > 0) ?  - frictionM :  frictionM;
 
         double ax, ay;
-        ax = vec.x + (frictionMnx / GameConfig.BALL_WEIGHT / 1000);
-        ay = vec.y + (frictionMny / GameConfig.BALL_WEIGHT / 1000);
+        ax = vec.x + (frictionMnx / (GameConfig.BALL_WEIGHT / 1000));
+        ay = vec.y + (frictionMny / (GameConfig.BALL_WEIGHT / 1000));
 
         boolean canMoveX = false;
         if (velocity.x < 5 && velocity.x > -5) {
@@ -103,7 +103,7 @@ public class Ball {
         boolean canMoveY = false;
         if (velocity.y < 5 && velocity.y > -5)
         {
-            if(Math.abs(ny) > Math.abs(frictionS)) {
+            if (Math.abs(ny) > Math.abs(frictionS)) {
                 canMoveY = true;
             }
         } else {
