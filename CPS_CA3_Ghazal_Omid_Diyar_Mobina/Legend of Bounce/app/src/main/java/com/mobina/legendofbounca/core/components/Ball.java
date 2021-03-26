@@ -14,17 +14,19 @@ public class Ball {
     private _3dVector acceleration;
     private ImageView imgView;
     private _3dVector theta;
+    private Box box;
 
     public Ball(_3dVector x){
         this.position = x;
     }
 
-    public Ball(_3dVector x, _3dVector v, _3dVector a, ImageView imgView) {
+    public Ball(_3dVector x, _3dVector v, _3dVector a, ImageView imgView, Box box) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
         this.imgView = imgView;
         this.theta = new _3dVector(0, 0, 0);
+        this.box = box;
     }
 
     private void updatePosition(double deltaT) {
@@ -39,14 +41,17 @@ public class Ball {
         velocity.vectorAddition(amountToAdd);
     }
 
-    private void handleWallCollision(_3dVector newPos, Box box) {
-        boolean[] wallCollided = box.checkWallCollision(newPos);
+    private boolean handleWallCollision() {
+        boolean[] wallCollided = box.checkWallCollision(position);
         if (wallCollided[0]) {
             velocity.x = -velocity.x;
+            return true;
         }
         if (wallCollided[1]) {
             velocity.y = -velocity.y;
+            return true;
         }
+        return false;
     }
 
     public void updateImgView() {
@@ -63,6 +68,8 @@ public class Ball {
         handlePhysics();
         updateVelocity(deltaT);
         updatePosition(deltaT);
+        boolean collided = handleWallCollision();
+        if (collided) updatePosition(deltaT);
         updateImgView();
     }
 
@@ -78,10 +85,10 @@ public class Ball {
             double frictionMagnitude = N * GamePhysicsConfig.Uk;
             double frictionX = 0;
             double frictionY = 0;
-            double eucl = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
-            if (eucl > 0) {
-                frictionX = frictionMagnitude * velocity.x / eucl;
-                frictionY = frictionMagnitude * velocity.y / eucl;
+            double len = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+            if (len > 0) {
+                frictionX = frictionMagnitude * velocity.x / len;
+                frictionY = frictionMagnitude * velocity.y / len;
             }
             fX += -Math.signum(velocity.x) * Math.abs(frictionX);
             fY += -Math.signum(velocity.y) * Math.abs(frictionY);
@@ -106,6 +113,7 @@ public class Ball {
     }
 
     private void handleGravitySensorEvent(_3dVector vec, double deltaT) {
+        vec.x = -vec.x;
         theta = new _3dVector(Math.asin(vec.x / GamePhysicsConfig.earthGravity),
             Math.asin(vec.y / GamePhysicsConfig.earthGravity),
             Math.asin(vec.z / GamePhysicsConfig.earthGravity));

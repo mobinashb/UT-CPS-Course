@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.mobina.legendofbounca.R;
 import com.mobina.legendofbounca.core.components.Ball;
+import com.mobina.legendofbounca.core.components.Box;
 import com.mobina.legendofbounca.core.components._3dVector;
 import com.mobina.legendofbounca.core.config.GameConfig;
 
@@ -34,6 +35,7 @@ public class GameActivity extends Activity {
   private ImageView ballImageView;
   private GameConfig.sensor sensor;
   private double lastEventTimestamp;
+  private Box box;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,12 @@ public class GameActivity extends Activity {
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
       sensor = (GameConfig.sensor) getIntent().getExtras().get("sensor");
       ballImageView = findViewById(R.id.image_ball);
+      box = new Box();
       ball = new Ball(new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
-          ballImageView);
+          ballImageView,
+          box);
       sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
       gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
       gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
