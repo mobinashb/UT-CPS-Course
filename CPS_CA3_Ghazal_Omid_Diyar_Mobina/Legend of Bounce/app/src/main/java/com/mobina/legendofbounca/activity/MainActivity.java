@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.mobina.legendofbounca.R;
-import com.mobina.legendofbounca.util.GameConfig;
+import com.mobina.legendofbounca.core.config.GameConfig;
 
 public class MainActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package components;
+package com.mobina.legendofbounca.core.components;
 
 import java.lang.Math;
 
@@ -12,30 +12,30 @@ public class Ball {
         this.position = x;
     }
 
-    public Ball(_3dVector x, _3dVector v, _3dVector a){
+    public Ball(_3dVector x, _3dVector v, _3dVector a) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
     }
 
-    public void updatePosition(double deltaT){
+    public void updatePosition(double deltaT) {
         _3dVector amountToAdd1 = acceleration.multiplyVectorByNum(0.5*(Math.pow(deltaT, 2)));
         _3dVector amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
         amountToAdd1.vectorAddition(amountToAdd2);
         position.vectorAddition(amountToAdd1);
     }
 
-    public void updateVelocity(double deltaT){
+    public void updateVelocity(double deltaT) {
         _3dVector amountToAdd = acceleration.multiplyVectorByNum(deltaT);
         velocity.vectorAddition(amountToAdd);
     }
 
-    public void handleWallCollision(_3dVector newPos, Board board){
-        boolean[] wallCollided = board.checkWallCollision(newPos);
-        if(wallCollided[0]){
+    public void handleWallCollision(_3dVector newPos, Box box) {
+        boolean[] wallCollided = box.checkWallCollision(newPos);
+        if (wallCollided[0]) {
             velocity.x = -velocity.x;
         }
-        if(wallCollided[1]){
+        if (wallCollided[1]) {
             velocity.y = -velocity.y;
         }
     }
