@@ -61,13 +61,13 @@ public class GameActivity extends Activity {
         }
       });
 
-      Timer timer = new Timer();
-      timer.schedule(new TimerTask() {
-        @Override
-        public void run() {
-          ball.updateImgView();
-        }
-      }, 0, GameConfig.REFRESH_RATE);
+//      Timer timer = new Timer();
+//      timer.schedule(new TimerTask() {
+//        @Override
+//        public void run() {
+//          ball.updateImgView();
+//        }
+//      }, 0, GameConfig.REFRESH_RATE);
     }
 
   private SensorEventListener listener = new SensorEventListener() {
