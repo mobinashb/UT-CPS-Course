@@ -60,6 +60,7 @@ public class Ball {
     }
 
     public void handleSensorEvent(_3dVector vec, GameConfig.sensor sensor, double deltaT) {
+//        System.out.println("x: " + position.x + " y: " + position.y);
         if (sensor == GameConfig.sensor.GYROSCOPE) {
             handleGyroscopeSensorEvent(vec, deltaT);
         } else {

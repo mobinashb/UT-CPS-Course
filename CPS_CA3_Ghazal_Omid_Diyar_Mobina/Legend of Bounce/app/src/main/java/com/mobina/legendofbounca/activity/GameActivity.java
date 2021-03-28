@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -45,7 +48,7 @@ public class GameActivity extends Activity {
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
       sensor = (GameConfig.sensor) getIntent().getExtras().get("sensor");
       ballImageView = findViewById(R.id.image_ball);
-      box = new Box();
+      box = new Box(getDisplaySize());
       ball = new Ball(new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
@@ -78,7 +81,6 @@ public class GameActivity extends Activity {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
       if (gameStarted) {
-        System.out.println("sensor event");
         double deltaT = (sensorEvent.timestamp - lastEventTimestamp) / 1e9;
         if (lastEventTimestamp > 0) {
           ball.handleSensorEvent(new _3dVector(sensorEvent.values[0],
@@ -95,6 +97,15 @@ public class GameActivity extends Activity {
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
   };
+
+  private Pair getDisplaySize() {
+    Display display = getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    int width = size.x;
+    int height = size.y;
+    return new Pair(width, height);
+  }
 
 }
 
