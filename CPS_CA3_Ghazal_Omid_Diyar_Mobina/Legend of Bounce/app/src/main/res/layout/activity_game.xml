@@ -5,17 +5,18 @@
     android:layout_height="match_parent"
     android:background="@color/gameBackground"
     tools:context=".activity.GameActivity">
+    <ImageView
+        android:id="@+id/image_ball"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher_foreground"
+    />
     <View
         android:id="@+id/button_play"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="@drawable/ic_play"
         android:layout_gravity="center"
         android:contentDescription="Play" />
-    <ImageView
-        android:id="@+id/image_ball"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher_foreground"
-    />
 </FrameLayout>

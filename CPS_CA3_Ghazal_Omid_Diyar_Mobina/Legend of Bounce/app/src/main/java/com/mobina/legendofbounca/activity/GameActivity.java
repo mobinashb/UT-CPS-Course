@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,7 +14,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,7 +25,6 @@ import android.widget.ImageView;
 
 import com.mobina.legendofbounca.R;
 import com.mobina.legendofbounca.core.components.Ball;
-import com.mobina.legendofbounca.core.components.Box;
 import com.mobina.legendofbounca.core.components._3dVector;
 import com.mobina.legendofbounca.core.config.GameConfig;
 
@@ -38,7 +40,7 @@ public class GameActivity extends Activity {
   private ImageView ballImageView;
   private GameConfig.sensor sensor;
   private double lastEventTimestamp;
-  private Box box;
+  private _3dVector theta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,15 @@ public class GameActivity extends Activity {
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
       sensor = (GameConfig.sensor) getIntent().getExtras().get("sensor");
       ballImageView = findViewById(R.id.image_ball);
-      box = new Box(getDisplaySize());
-      ball = new Ball(new _3dVector(0, 0, 0),
+      Pair displaySize = getDisplaySize();
+      float ballRadius = dpTopx(GameConfig.BALL_RADIUS);
+      ball = new Ball(new _3dVector((int)displaySize.first / 2 - ballRadius,
+          (int)displaySize.second / 2 - ballRadius, 0),
           new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
           ballImageView,
-          box);
+          displaySize,
+          ballRadius);
       sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
       gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
       gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
@@ -68,13 +73,16 @@ public class GameActivity extends Activity {
         }
       });
 
-//      Timer timer = new Timer();
-//      timer.schedule(new TimerTask() {
-//        @Override
-//        public void run() {
-//          ball.updateImgView();
-//        }
-//      }, 0, GameConfig.REFRESH_RATE);
+      theta = new _3dVector(0, 0, 0);
+      Timer timer = new Timer();
+      timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          ball.handleSensorEvent(theta,
+              sensor,
+              ((double) GameConfig.REFRESH_RATE) / 1000);
+        }
+      }, 0, GameConfig.REFRESH_RATE);
     }
 
   private SensorEventListener listener = new SensorEventListener() {
@@ -82,12 +90,10 @@ public class GameActivity extends Activity {
     public void onSensorChanged(SensorEvent sensorEvent) {
       if (gameStarted) {
         double deltaT = (sensorEvent.timestamp - lastEventTimestamp) / 1e9;
-        if (lastEventTimestamp > 0) {
-          ball.handleSensorEvent(new _3dVector(sensorEvent.values[0],
-                  sensorEvent.values[1],
-                  sensorEvent.values[2]),
-              sensor,
-              deltaT);
+        if (deltaT > 0) {
+          theta = new _3dVector(sensorEvent.values[0],
+              sensorEvent.values[1],
+              sensorEvent.values[2]);
         }
         lastEventTimestamp = sensorEvent.timestamp;
       }
@@ -99,12 +105,20 @@ public class GameActivity extends Activity {
   };
 
   private Pair getDisplaySize() {
-    Display display = getWindowManager().getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    int width = size.x;
-    int height = size.y;
+    DisplayMetrics dimension = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(dimension);
+    int width = dimension.widthPixels;
+    int height = dimension.heightPixels;
     return new Pair(width, height);
+  }
+
+  private float dpTopx(float dp) {
+    Resources r = getResources();
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp,
+        r.getDisplayMetrics()
+    );
   }
 
 }

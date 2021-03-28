@@ -1,5 +1,6 @@
 package com.mobina.legendofbounca.core.components;
 
+import android.util.Pair;
 import android.widget.ImageView;
 
 import com.mobina.legendofbounca.core.config.GameConfig;
@@ -14,26 +15,33 @@ public class Ball {
     private _3dVector acceleration;
     private ImageView imgView;
     private _3dVector theta;
-    private Box box;
+    private int width;
+    private int height;
+    private float radius;
 
     public Ball(_3dVector x){
         this.position = x;
     }
 
-    public Ball(_3dVector x, _3dVector v, _3dVector a, ImageView imgView, Box box) {
+    public Ball(_3dVector x, _3dVector v, _3dVector a,
+                ImageView imgView, Pair displaySize, float radius) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
         this.imgView = imgView;
         this.theta = new _3dVector(0, 0, 0);
-        this.box = box;
+        this.width = (int)displaySize.first;
+        this.height = (int)displaySize.second;
+        this.radius = radius;
     }
 
-    private _3dVector getNextPosition(double deltaT){
+    private _3dVector getNextPosition(double deltaT) {
         _3dVector amountToAdd1 = acceleration.multiplyVectorByNum(0.5*(Math.pow(deltaT, 2)));
         _3dVector amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
         amountToAdd1.vectorAddition(amountToAdd2);
-        return new _3dVector(position.x+amountToAdd1.x, position.y+amountToAdd1.y, position.z+amountToAdd1.z)
+        return new _3dVector(position.x+amountToAdd1.x,
+            position.y+amountToAdd1.y,
+            position.z+amountToAdd1.z);
     }
 
     private void updatePosition(double deltaT) {
@@ -48,17 +56,25 @@ public class Ball {
         velocity.vectorAddition(amountToAdd);
     }
 
-    private boolean handleWallCollision(_3dVector newPos) {
-        boolean[] wallCollided = box.checkWallCollision(newPos);
-        if (wallCollided[0]) {
-            velocity.x = -velocity.x;
-            return true;
+    public boolean checkWallCollision(double x, double y) {
+        return x >= width || x <= 0 || y >= height || y <= 0;
+    }
+
+    private void handleWallCollision(_3dVector position) {
+        if (checkWallCollision(position.x + radius, position.y)) {
+            velocity.y = Math.abs(velocity.y);
         }
-        if (wallCollided[1]) {
-            velocity.y = -velocity.y;
-            return true;
+        if (checkWallCollision(position.x + radius,
+            position.y + radius * 2)) {
+            velocity.y = -Math.abs(velocity.y);
         }
-        return false;
+        if (checkWallCollision(position.x, position.y + radius)) {
+            velocity.x = Math.abs(velocity.x);
+        }
+        if (checkWallCollision(position.x + radius * 2,
+            position.y + radius)) {
+            velocity.x = -Math.abs(velocity.x);
+        }
     }
 
     public void updateImgView() {
@@ -67,7 +83,6 @@ public class Ball {
     }
 
     public void handleSensorEvent(_3dVector vec, GameConfig.sensor sensor, double deltaT) {
-//        System.out.println("x: " + position.x + " y: " + position.y);
         if (sensor == GameConfig.sensor.GYROSCOPE) {
             handleGyroscopeSensorEvent(vec, deltaT);
         } else {
@@ -75,15 +90,11 @@ public class Ball {
         }
         handlePhysics();
         updateVelocity(deltaT);
-        _3dVector tempNext = getNextPosition(deltaT);
-        boolean collided = handleWallCollision(tempNext);
-        if (collided) updatePosition(deltaT);
-        updateImgView();
+        _3dVector nextPosition = getNextPosition(deltaT);
+        handleWallCollision(nextPosition);
         handlePhysics();
         updateVelocity(deltaT);
         updatePosition(deltaT);
-//        boolean collided = handleWallCollision();
-        if (collided) updatePosition(deltaT);
         updateImgView();
     }
 
@@ -118,12 +129,6 @@ public class Ball {
         theta = new _3dVector(vec.x * deltaT + theta.x,
             vec.y * deltaT + theta.y,
             vec.z * deltaT + theta.z);
-//        _3dVector gravityVec = new _3dVector(
-//            GamePhysicsConfig.earthGravity * Math.sin(theta.x),
-//            GamePhysicsConfig.earthGravity * Math.sin(theta.y),
-//            GamePhysicsConfig.earthGravity * Math.sin(theta.z));
-//
-//        handleGravitySensorEvent(gravityVec, deltaT);
     }
 
     private void handleGravitySensorEvent(_3dVector vec, double deltaT) {
@@ -131,71 +136,6 @@ public class Ball {
         theta = new _3dVector(Math.asin(vec.x / GamePhysicsConfig.earthGravity),
             Math.asin(vec.y / GamePhysicsConfig.earthGravity),
             Math.asin(vec.z / GamePhysicsConfig.earthGravity));
-
-//        vec.x = -vec.x;
-//        double nx = vec.x * (GameConfig.BALL_WEIGHT / 1000);
-//        double ny = vec.y * (GameConfig.BALL_WEIGHT / 1000);
-//        double nF = vec.z * (GameConfig.BALL_WEIGHT / 1000);
-//
-//        double frictionS, frictionM, frictionMnx, frictionMny;
-//        frictionM = nF * GamePhysicsConfig.Uk;
-//        frictionS = nF * GamePhysicsConfig.Us;
-//
-//        frictionMnx = (vec.x > 0) ?  - frictionM  : frictionM ;
-//        frictionMny = (vec.y > 0) ?  - frictionM :  frictionM;
-//
-//        double ax, ay;
-//        ax = vec.x + (frictionMnx / (GameConfig.BALL_WEIGHT / 1000));
-//        ay = vec.y + (frictionMny / (GameConfig.BALL_WEIGHT / 1000));
-//
-//        boolean canMoveX = false;
-//        if (velocity.x < 5 && velocity.x > -5) {
-//            if (Math.abs(nx) > Math.abs(frictionS)) {
-//                canMoveX = true;
-//            }
-//        } else {
-//            canMoveX = true;
-//        }
-//
-//        boolean canMoveY = false;
-//        if (velocity.y < 5 && velocity.y > -5)
-//        {
-//            if (Math.abs(ny) > Math.abs(frictionS)) {
-//                canMoveY = true;
-//            }
-//        } else {
-//            canMoveY = true;
-//        }
-//
-//        if (canMoveX) {
-//            double xNew = ((0.5 * ax * deltaT * deltaT) + (velocity.x * deltaT)) + position.x;
-//            if (((xNew + GameConfig.BALL_RADIUS / 2) > GameConfig.BOX_WIDTH / 2) ||
-//                ((xNew - GameConfig.BALL_RADIUS / 2) < -GameConfig.BOX_WIDTH / 2)) {
-//                velocity.x = 0;
-//            }
-//            else {
-//                position.x = xNew ;
-//                velocity.x = ax * deltaT + velocity.x;
-//            }
-//        }
-//        else {
-//            velocity.x = 0;
-//        }
-//
-//        if (canMoveY) {
-//            double yNew = ((0.5 * ay * deltaT * deltaT) + (velocity.y * deltaT)) + position.y;
-//            if (((yNew + GameConfig.BALL_RADIUS / 2) > GameConfig.BOX_LENGTH / 2) ||
-//                ((yNew - GameConfig.BALL_RADIUS / 2) < -GameConfig.BOX_LENGTH / 2)) {
-//                velocity.y = 0;
-//            } else {
-//                position.y = yNew;
-//                velocity.y = ay * deltaT + velocity.y;
-//            }
-//
-//        }
-//        else {
-//            velocity.y = 0;
-//        }
     }
 
     private boolean canMove(double fX, double fY, double N) {
