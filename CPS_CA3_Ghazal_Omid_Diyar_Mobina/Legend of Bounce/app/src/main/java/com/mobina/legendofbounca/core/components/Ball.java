@@ -29,6 +29,13 @@ public class Ball {
         this.box = box;
     }
 
+    private _3dVector getNextPosition(double deltaT){
+        _3dVector amountToAdd1 = acceleration.multiplyVectorByNum(0.5*(Math.pow(deltaT, 2)));
+        _3dVector amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
+        amountToAdd1.vectorAddition(amountToAdd2);
+        return new _3dVector(position.x+amountToAdd1.x, position.y+amountToAdd1.y, position.z+amountToAdd1.z)
+    }
+
     private void updatePosition(double deltaT) {
         _3dVector amountToAdd1 = acceleration.multiplyVectorByNum(0.5*(Math.pow(deltaT, 2)));
         _3dVector amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
@@ -41,8 +48,8 @@ public class Ball {
         velocity.vectorAddition(amountToAdd);
     }
 
-    private boolean handleWallCollision() {
-        boolean[] wallCollided = box.checkWallCollision(position);
+    private boolean handleWallCollision(_3dVector newPos) {
+        boolean[] wallCollided = box.checkWallCollision(newPos);
         if (wallCollided[0]) {
             velocity.x = -velocity.x;
             return true;
@@ -68,8 +75,14 @@ public class Ball {
         }
         handlePhysics();
         updateVelocity(deltaT);
+        _3dVector tempNext = getNextPosition(deltaT);
+        boolean collided = handleWallCollision(tempNext);
+        if (collided) updatePosition(deltaT);
+        updateImgView();
+        handlePhysics();
+        updateVelocity(deltaT);
         updatePosition(deltaT);
-        boolean collided = handleWallCollision();
+//        boolean collided = handleWallCollision();
         if (collided) updatePosition(deltaT);
         updateImgView();
     }
