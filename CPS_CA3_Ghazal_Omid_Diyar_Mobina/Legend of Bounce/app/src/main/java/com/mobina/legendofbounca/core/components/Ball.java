@@ -140,8 +140,8 @@ public class Ball {
     }
 
     private void handleGravitySensorEvent(_3dVector vec, double deltaT) {
-        theta = new _3dVector(Math.asin(-vec.x / GamePhysicsConfig.earthGravity),
-            Math.asin(vec.y / GamePhysicsConfig.earthGravity),
+        theta = new _3dVector(Math.asin(vec.y / GamePhysicsConfig.earthGravity),
+            Math.asin(-vec.x / GamePhysicsConfig.earthGravity),
             Math.asin(vec.z / GamePhysicsConfig.earthGravity));
     }
 
