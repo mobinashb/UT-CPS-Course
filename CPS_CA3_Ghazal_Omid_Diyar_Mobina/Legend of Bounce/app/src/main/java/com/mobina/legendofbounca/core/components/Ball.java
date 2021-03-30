@@ -60,21 +60,27 @@ public class Ball {
         return x >= width || x <= 0 || y >= height || y <= 0;
     }
 
-    private void handleWallCollision(_3dVector position) {
+    private boolean handleWallCollision(_3dVector position) {
+        boolean collided = false;
         if (checkWallCollision(position.x + radius, position.y)) {
             velocity.y = Math.abs(velocity.y);
+            collided = true;
         }
         if (checkWallCollision(position.x + radius,
             position.y + radius * 2)) {
             velocity.y = -Math.abs(velocity.y);
+            collided = true;
         }
         if (checkWallCollision(position.x, position.y + radius)) {
             velocity.x = Math.abs(velocity.x);
+            collided = true;
         }
         if (checkWallCollision(position.x + radius * 2,
             position.y + radius)) {
             velocity.x = -Math.abs(velocity.x);
+            collided = true;
         }
+        return collided;
     }
 
     public void updateImgView() {
@@ -91,9 +97,11 @@ public class Ball {
         handlePhysics();
         updateVelocity(deltaT);
         _3dVector nextPosition = getNextPosition(deltaT);
-        handleWallCollision(nextPosition);
-        handlePhysics();
-        updateVelocity(deltaT);
+        boolean collided = handleWallCollision(nextPosition);
+        if (collided) {
+            handlePhysics();
+            updateVelocity(deltaT);
+        }
         updatePosition(deltaT);
         updateImgView();
     }
