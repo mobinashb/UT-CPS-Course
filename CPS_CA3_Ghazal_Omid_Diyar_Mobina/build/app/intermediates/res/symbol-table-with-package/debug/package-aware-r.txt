@@ -858,6 +858,7 @@ id search_plate
 id search_src_text
 id search_voice_btn
 id select_dialog_listview
+id sensors
 id shortcut
 id showCustom
 id showHome

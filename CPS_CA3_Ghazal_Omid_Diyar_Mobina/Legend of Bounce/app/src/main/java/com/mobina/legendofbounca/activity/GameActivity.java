@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mobina.legendofbounca.R;
 import com.mobina.legendofbounca.core.components.Ball;
@@ -41,6 +42,7 @@ public class GameActivity extends Activity {
   private GameConfig.sensor sensor;
   private double lastEventTimestamp;
   private _3dVector theta;
+  private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,6 @@ public class GameActivity extends Activity {
       setContentView(R.layout.activity_game);
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      sensor = (GameConfig.sensor) getIntent().getExtras().get("sensor");
       ballImageView = findViewById(R.id.image_ball);
       Pair displaySize = getDisplaySize();
       float ballRadius = dpTopx(GameConfig.BALL_RADIUS);
@@ -59,11 +60,7 @@ public class GameActivity extends Activity {
           ballImageView,
           displaySize,
           ballRadius);
-      sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-      gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-      gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-      sensorManager.registerListener(listener, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST);
-      sensorManager.registerListener(listener, gyroscopeSensor, SensorManager.SENSOR_DELAY_FASTEST);
+
       final View playButton = findViewById(R.id.button_play);
       playButton.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -83,7 +80,23 @@ public class GameActivity extends Activity {
               ((double) GameConfig.REFRESH_RATE) / 1000);
         }
       }, 0, GameConfig.REFRESH_RATE);
-    }
+
+      Timer timer2 = new Timer();
+      timer2.schedule(new MyTimerTask(), 0, 500);
+
+      initializeSensors();
+  }
+
+  private void initializeSensors() {
+    sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+    gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+    gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+    sensor = (GameConfig.sensor) getIntent().getExtras().get("sensor");
+    if (sensor == GameConfig.sensor.GYROSCOPE)
+      sensorManager.registerListener(listener, gyroscopeSensor, SensorManager.SENSOR_DELAY_FASTEST);
+    else
+      sensorManager.registerListener(listener, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST);
+  }
 
   private SensorEventListener listener = new SensorEventListener() {
     @Override
@@ -119,6 +132,22 @@ public class GameActivity extends Activity {
         dp,
         r.getDisplayMetrics()
     );
+  }
+
+  private class MyTimerTask extends TimerTask{
+    @Override
+    public void run() {
+      runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          textView = findViewById(R.id.sensors);
+          String sensorsText = "x: " + Double.toString(theta.x) +
+              "\ny: " + Double.toString(theta.y) +
+              "\nz: " + Double.toString(theta.z);
+          textView.setText(sensorsText);
+        }
+      });
+    }
   }
 
 }

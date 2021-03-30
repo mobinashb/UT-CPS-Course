@@ -114,21 +114,21 @@ public class Ball {
                 / (Math.cos(theta.x) + Math.cos(theta.y))))
             * GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT;;
 
-        if (!this.isStopped() || this.canMove(fX, fY, N)) {
-            double frictionMagnitude = N * GamePhysicsConfig.Uk;
-            double frictionX = 0;
-            double frictionY = 0;
-            double len = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
-            if (len > 0) {
-                frictionX = frictionMagnitude * velocity.x / len;
-                frictionY = frictionMagnitude * velocity.y / len;
-            }
-            fX += -Math.signum(velocity.x) * Math.abs(frictionX);
-            fY += -Math.signum(velocity.y) * Math.abs(frictionY);
-        } else {
-            fX = 0;
-            fY = 0;
-        }
+//        if (!this.isStopped() || this.canMove(fX, fY, N)) {
+//            double frictionMagnitude = N * GamePhysicsConfig.Uk;
+//            double frictionX = 0;
+//            double frictionY = 0;
+//            double len = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+//            if (len > 0) {
+//                frictionX = frictionMagnitude * velocity.x / len;
+//                frictionY = frictionMagnitude * velocity.y / len;
+//            }
+//            fX += -Math.signum(velocity.x) * Math.abs(frictionX);
+//            fY += -Math.signum(velocity.y) * Math.abs(frictionY);
+//        } else {
+//            fX = 0;
+//            fY = 0;
+//        }
         acceleration.x = (fX / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
         acceleration.y = (fY / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
     }
@@ -140,8 +140,7 @@ public class Ball {
     }
 
     private void handleGravitySensorEvent(_3dVector vec, double deltaT) {
-        vec.x = -vec.x;
-        theta = new _3dVector(Math.asin(vec.x / GamePhysicsConfig.earthGravity),
+        theta = new _3dVector(Math.asin(-vec.x / GamePhysicsConfig.earthGravity),
             Math.asin(vec.y / GamePhysicsConfig.earthGravity),
             Math.asin(vec.z / GamePhysicsConfig.earthGravity));
     }
