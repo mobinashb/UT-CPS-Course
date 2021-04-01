@@ -3,6 +3,7 @@ package com.mobina.legendofbounca.core.components;
 import android.util.Pair;
 import android.widget.ImageView;
 
+import com.mobina.legendofbounca.core.utils.RandomGenerator;
 import com.mobina.legendofbounca.core.config.GameConfig;
 import com.mobina.legendofbounca.core.config.GamePhysicsConfig;
 
@@ -58,6 +59,10 @@ public class Ball {
 
     public boolean checkWallCollision(double x, double y) {
         return x >= width || x <= 0 || y >= height || y <= 0;
+    }
+
+    public void generateRandomVelocity(){
+        velocity = RandomGenerator.random3dVector(GameConfig.RANDOM_VELOCITY_LOW, GameConfig.RANDOM_VELOCITY_HIGH, GameConfig.RANDOM_VELOCITY_LOW, GameConfig.RANDOM_VELOCITY_HIGH, 0, 0);
     }
 
     private boolean handleWallCollision(_3dVector position) {

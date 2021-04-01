@@ -10,5 +10,8 @@ public class GameConfig {
 
     public static final int ACCELERATION_FACTOR = 20;
 
+    public static final int RANDOM_VELOCITY_HIGH = 60;
+    public static final int RANDOM_VELOCITY_LOW = 30;
+
     public static final int BALL_STOP_SPEED = 5;
 }

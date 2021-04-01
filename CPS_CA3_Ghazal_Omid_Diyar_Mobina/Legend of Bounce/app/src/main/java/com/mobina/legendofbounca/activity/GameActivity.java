@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobina.legendofbounca.R;
+import com.mobina.legendofbounca.core.utils.RandomGenerator;
 import com.mobina.legendofbounca.core.components.Ball;
 import com.mobina.legendofbounca.core.components._3dVector;
 import com.mobina.legendofbounca.core.config.GameConfig;
@@ -53,8 +54,10 @@ public class GameActivity extends Activity {
       ballImageView = findViewById(R.id.image_ball);
       Pair displaySize = getDisplaySize();
       float ballRadius = dpTopx(GameConfig.BALL_RADIUS);
-      ball = new Ball(new _3dVector((int)displaySize.first / 2 - ballRadius,
-          (int)displaySize.second / 2 - ballRadius, 0),
+
+      _3dVector randomPosition = RandomGenerator.random3dVector(0, (int)displaySize.first-(2*ballRadius), 0, (int)displaySize.second-(2*ballRadius), 0, 0);
+
+      ball = new Ball(randomPosition,
           new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
           ballImageView,
