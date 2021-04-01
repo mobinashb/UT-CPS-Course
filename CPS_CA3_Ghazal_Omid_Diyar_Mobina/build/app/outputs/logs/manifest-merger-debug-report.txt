@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
 MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\bb35b4a9b541de5b12eb7c5939559f55\appcompat-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\0c5fc54bcf4d89bf480349d7c59b52ea\legacy-support-v4-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\01f227e76b3b73550a03e47397f90188\constraintlayout-1.1.3\AndroidManifest.xml:2:1-11:12
@@ -36,25 +36,25 @@ MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\asus\.gradle\caches\
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\e0644e8c40d86f6780f0e9b6ec8e68ef\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\bd463ae90bf43742cc694fc6d5eb5c99\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\98b3dbed5789998a7a6f237bfb073e69\core-runtime-2.0.0\AndroidManifest.xml:17:1-22:12
-INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
+INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
+INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
 	package
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:3:5-40
 		INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml
 		INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
 		INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-29:12
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:1-27:12
 		INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:5:5-27:19
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:5:5-25:19
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\01f227e76b3b73550a03e47397f90188\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\01f227e76b3b73550a03e47397f90188\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
 MERGED from [androidx.core:core:1.1.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\3aca06f31ecc71b64207adcef25bcf53\core-1.1.0\AndroidManifest.xml:24:5-89
@@ -76,29 +76,29 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\as
 	android:theme
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:11:9-40
 activity#com.mobina.legendofbounca.activity.GameActivity
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:9-14:20
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:9-13:20
 	android:name
 		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:19-56
 activity#com.mobina.legendofbounca.activity.MainActivity
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:15:9-26:20
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:14:9-24:20
 	android:label
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:19:13-45
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:17:13-45
 	android:configChanges
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:17:13-74
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:16:13-74
 	android:theme
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:20:13-51
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:18:13-51
 	android:name
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:16:13-50
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:15:13-50
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:21:13-25:29
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:19:13-23:29
 action#android.intent.action.MAIN
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:17-69
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:20:17-69
 	android:name
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:25-66
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:20:25-66
 category#android.intent.category.LAUNCHER
-ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:24:17-77
+ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:17-77
 	android:name
-		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:24:27-74
+		ADDED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:27-74
 uses-sdk
 INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml

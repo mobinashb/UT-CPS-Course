@@ -61,6 +61,8 @@ public class Ball {
     }
 
     private boolean handleWallCollision(_3dVector position) {
+        System.out.println("x: " + position.x + " y: " + position.y +
+            " vx: " + velocity.x + " vy: " + velocity.y);
         boolean collided = false;
         if (checkWallCollision(position.x + radius, position.y)) {
             velocity.y = Math.abs(velocity.y);
@@ -114,21 +116,21 @@ public class Ball {
                 / (Math.cos(theta.x) + Math.cos(theta.y))))
             * GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT;;
 
-//        if (!this.isStopped() || this.canMove(fX, fY, N)) {
-//            double frictionMagnitude = N * GamePhysicsConfig.Uk;
-//            double frictionX = 0;
-//            double frictionY = 0;
-//            double len = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
-//            if (len > 0) {
-//                frictionX = frictionMagnitude * velocity.x / len;
-//                frictionY = frictionMagnitude * velocity.y / len;
-//            }
-//            fX += -Math.signum(velocity.x) * Math.abs(frictionX);
-//            fY += -Math.signum(velocity.y) * Math.abs(frictionY);
-//        } else {
-//            fX = 0;
-//            fY = 0;
-//        }
+        if (!this.isStopped() || this.canMove(fX, fY, N)) {
+            double frictionMagnitude = N * GamePhysicsConfig.Uk;
+            double frictionX = 0;
+            double frictionY = 0;
+            double len = Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+            if (len > 0) {
+                frictionX = frictionMagnitude * velocity.x / len;
+                frictionY = frictionMagnitude * velocity.y / len;
+            }
+            fX += -Math.signum(velocity.x) * Math.abs(frictionX);
+            fY += -Math.signum(velocity.y) * Math.abs(frictionY);
+        } else {
+            fX = 0;
+            fY = 0;
+        }
         acceleration.x = (fX / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
         acceleration.y = (fY / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
     }
@@ -147,7 +149,7 @@ public class Ball {
 
     private boolean canMove(double fX, double fY, double N) {
         double fMagnitude = Math.sqrt(Math.pow(fX, 2) + Math.pow(fY, 2));
-        double frictionMagnitude = N * GamePhysicsConfig.Uk;
+        double frictionMagnitude = N * GamePhysicsConfig.Us;
         return fMagnitude > frictionMagnitude;
     }
 
