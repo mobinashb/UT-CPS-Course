@@ -10,8 +10,10 @@ public class GameConfig {
 
     public static final int ACCELERATION_FACTOR = 20;
 
-    public static final int RANDOM_VELOCITY_HIGH = 60;
-    public static final int RANDOM_VELOCITY_LOW = 30;
+    public static final int RANDOM_VELOCITY_HIGH = 240;
+    public static final int RANDOM_VELOCITY_LOW = 120;
 
     public static final int BALL_STOP_SPEED = 5;
+
+    public static final float JUMP_BTN_SIZE = 60;
 }

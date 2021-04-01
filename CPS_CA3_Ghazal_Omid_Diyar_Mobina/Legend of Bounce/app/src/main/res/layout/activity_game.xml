@@ -16,14 +16,24 @@
         android:id="@+id/button_play"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:rotation="90"
         android:background="@drawable/ic_play"
         android:layout_gravity="center"
         android:contentDescription="Play" />
-
-    <TextView
-        android:id="@+id/sensors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/button_jump"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:layout_gravity="start"
-        android:textSize="20sp"/>
+        android:gravity="center">
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:rotation="90"
+            android:background="@drawable/ic_jump"
+            android:layout_gravity="center"
+            android:contentDescription="Jump" />
+    </LinearLayout>
+
 </FrameLayout>

@@ -680,6 +680,7 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable ic_jump
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_play
@@ -771,6 +772,7 @@ id bottom
 id buttonPanel
 id button_gravity
 id button_gyroscope
+id button_jump
 id button_play
 id cancel_action
 id center
@@ -858,7 +860,6 @@ id search_plate
 id search_src_text
 id search_voice_btn
 id select_dialog_listview
-id sensors
 id shortcut
 id showCustom
 id showHome

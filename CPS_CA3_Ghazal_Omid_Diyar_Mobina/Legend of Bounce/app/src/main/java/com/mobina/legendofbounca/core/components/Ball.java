@@ -19,13 +19,10 @@ public class Ball {
     private int width;
     private int height;
     private float radius;
-
-    public Ball(_3dVector x){
-        this.position = x;
-    }
+    private float leftMarginSize;
 
     public Ball(_3dVector x, _3dVector v, _3dVector a,
-                ImageView imgView, Pair displaySize, float radius) {
+                ImageView imgView, Pair displaySize, float radius, float leftMarginSize) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
@@ -34,6 +31,7 @@ public class Ball {
         this.width = (int)displaySize.first;
         this.height = (int)displaySize.second;
         this.radius = radius;
+        this.leftMarginSize = leftMarginSize;
     }
 
     private _3dVector getNextPosition(double deltaT) {
@@ -58,16 +56,20 @@ public class Ball {
     }
 
     public boolean checkWallCollision(double x, double y) {
-        return x >= width || x <= 0 || y >= height || y <= 0;
+        return x >= width || x <= leftMarginSize || y >= height || y <= (-radius + 10);
     }
 
-    public void generateRandomVelocity(){
-        velocity = RandomGenerator.random3dVector(GameConfig.RANDOM_VELOCITY_LOW, GameConfig.RANDOM_VELOCITY_HIGH, GameConfig.RANDOM_VELOCITY_LOW, GameConfig.RANDOM_VELOCITY_HIGH, 0, 0);
+    public void generateRandomVelocity() {
+        double randomFloat = Math.random();
+        int randomSign = (randomFloat > 0.5) ? 1 : -1;
+        velocity = RandomGenerator.random3dVector(GameConfig.RANDOM_VELOCITY_LOW,
+            GameConfig.RANDOM_VELOCITY_HIGH,
+            GameConfig.RANDOM_VELOCITY_LOW,
+            GameConfig.RANDOM_VELOCITY_HIGH, 0, 0);
+        velocity.y *= randomSign;
     }
 
     private boolean handleWallCollision(_3dVector position) {
-        System.out.println("x: " + position.x + " y: " + position.y +
-            " vx: " + velocity.x + " vy: " + velocity.y);
         boolean collided = false;
         if (checkWallCollision(position.x + radius, position.y)) {
             velocity.y = Math.abs(velocity.y);

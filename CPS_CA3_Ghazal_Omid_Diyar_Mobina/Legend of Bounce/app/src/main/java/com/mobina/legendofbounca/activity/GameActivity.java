@@ -43,7 +43,6 @@ public class GameActivity extends Activity {
   private GameConfig.sensor sensor;
   private double lastEventTimestamp;
   private _3dVector theta;
-  private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +54,18 @@ public class GameActivity extends Activity {
       Pair displaySize = getDisplaySize();
       float ballRadius = dpTopx(GameConfig.BALL_RADIUS);
 
-      _3dVector randomPosition = RandomGenerator.random3dVector(0, (int)displaySize.first-(2*ballRadius), 0, (int)displaySize.second-(2*ballRadius), 0, 0);
+      _3dVector randomPosition = RandomGenerator.random3dVector(dpTopx(GameConfig.JUMP_BTN_SIZE),
+          (int)displaySize.first-(2*ballRadius),
+          0, (int)displaySize.second-(2*ballRadius),
+          0, 0);
 
       ball = new Ball(randomPosition,
           new _3dVector(0, 0, 0),
           new _3dVector(0, 0, 0),
           ballImageView,
           displaySize,
-          ballRadius);
+          ballRadius,
+          dpTopx(GameConfig.JUMP_BTN_SIZE));
 
       final View playButton = findViewById(R.id.button_play);
       playButton.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +73,14 @@ public class GameActivity extends Activity {
         public void onClick(View view) {
           gameStarted = true;
           playButton.setVisibility(View.GONE);
+        }
+      });
+
+      final View jumpButton = findViewById(R.id.button_jump);
+      jumpButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          ball.generateRandomVelocity();
         }
       });
 
@@ -83,9 +94,6 @@ public class GameActivity extends Activity {
               ((double) GameConfig.REFRESH_RATE) / 1000);
         }
       }, 0, GameConfig.REFRESH_RATE);
-
-      Timer timer2 = new Timer();
-      timer2.schedule(new MyTimerTask(), 0, 500);
 
       initializeSensors();
   }
@@ -123,34 +131,15 @@ public class GameActivity extends Activity {
   private Pair getDisplaySize() {
     DisplayMetrics dimension = new DisplayMetrics();
     getWindowManager().getDefaultDisplay().getMetrics(dimension);
-    int width = dimension.widthPixels;
-    int height = dimension.heightPixels;
+    int width = dimension.widthPixels - (int)GameConfig.BALL_RADIUS - 10;
+    int height = dimension.heightPixels - (int)GameConfig.BALL_RADIUS - 10;
     return new Pair(width, height);
   }
 
   private float dpTopx(float dp) {
-    Resources r = getResources();
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        dp,
-        r.getDisplayMetrics()
-    );
-  }
-
-  private class MyTimerTask extends TimerTask{
-    @Override
-    public void run() {
-      runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          textView = findViewById(R.id.sensors);
-          String sensorsText = "x: " + Double.toString(theta.x) +
-              "\ny: " + Double.toString(theta.y) +
-              "\nz: " + Double.toString(theta.z);
-          textView.setText(sensorsText);
-        }
-      });
-    }
+    final float scale = getResources().getDisplayMetrics().density;
+    System.out.println("scale: " + scale);
+    return (int) (dp * 1.5);
   }
 
 }
