@@ -18,4 +18,8 @@ public class _3dVector {
     public _3dVector multiplyVectorByNum(double number) {
         return new _3dVector(this.x*number, this.y*number, this.z*number);
     }
+
+    public double getSize() {
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+    }
 }

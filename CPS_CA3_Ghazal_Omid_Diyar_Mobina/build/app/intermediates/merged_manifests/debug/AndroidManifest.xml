@@ -18,15 +18,12 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.mobina.legendofbounca.activity.GameActivity"
-            android:screenOrientation="landscape" >
+        <activity android:name="com.mobina.legendofbounca.activity.GameActivity" >
         </activity>
         <activity
             android:name="com.mobina.legendofbounca.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

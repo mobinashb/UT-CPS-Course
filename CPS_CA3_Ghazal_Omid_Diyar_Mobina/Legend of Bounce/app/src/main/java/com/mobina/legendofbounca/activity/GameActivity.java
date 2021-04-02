@@ -137,9 +137,8 @@ public class GameActivity extends Activity {
   }
 
   private float dpTopx(float dp) {
-    final float scale = getResources().getDisplayMetrics().density;
-    System.out.println("scale: " + scale);
-    return (int) (dp * 1.5);
+//    final float scale = getResources().getDisplayMetrics().density;
+    return (int) (dp * 1.6);
   }
 
 }
