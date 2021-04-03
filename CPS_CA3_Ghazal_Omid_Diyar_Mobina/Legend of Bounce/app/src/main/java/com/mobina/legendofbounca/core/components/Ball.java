@@ -1,14 +1,10 @@
 package com.mobina.legendofbounca.core.components;
-
 import android.util.Pair;
 import android.widget.ImageView;
-
 import com.mobina.legendofbounca.core.utils.RandomGenerator;
 import com.mobina.legendofbounca.core.config.GameConfig;
 import com.mobina.legendofbounca.core.config.GamePhysicsConfig;
-
 import java.lang.Math;
-
 
 public class Ball {
     private _3dVector position;
@@ -91,8 +87,6 @@ public class Ball {
         }
         if (collided) {
             velocity = velocity.multiplyVectorByNum(GamePhysicsConfig.kineticEnergyReductionFactor);
-//            if (velocity.getSize() < GameConfig.BALL_STOP_SPEED)
-//                velocity = new _3dVector(0, 0, 0);
         }
         return collided;
     }
@@ -127,32 +121,33 @@ public class Ball {
     }
 
     private double getN() {
+        _3dVector sinTheta = new _3dVector(Math.sin(theta.x), Math.sin(theta.y), 0);
         double N = Math.cos(Math.atan(
-            Math.sqrt(Math.pow(Math.sin(theta.x), 2) + Math.pow(Math.sin(theta.y), 2))
-                / (Math.cos(theta.x) + Math.cos(theta.y))))
+            sinTheta.getSize() / (Math.cos(theta.x) + Math.cos(theta.y))))
             * GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT;
         return N;
     }
 
     private _3dVector handleFriction(_3dVector F, double N) {
         if (((position.x == 0) ||
-            (position.x == displayWidth) && velocity.y < GameConfig.BALL_STOP_SPEED) ||
-            ((position.y == 0) || (position.y == displayHeight) && velocity.x < GameConfig.BALL_STOP_SPEED)) {
+            (position.x == displayWidth) && Math.abs(velocity.y) < GameConfig.BALL_STOP_SPEED) ||
+            ((position.y == 0) || (position.y == displayHeight) &&
+                Math.abs(velocity.x) < GameConfig.BALL_STOP_SPEED)) {
             if (canMove(F, N)) {
-                double frictionMagnitude = N * GamePhysicsConfig.Uk;
+                double frictionSize = N * GamePhysicsConfig.Uk;
                 double velocitySize = velocity.getSize();
                 double frictionX = 0;
                 double frictionY = 0;
                 if (velocitySize > 0) {
-                    frictionX = frictionMagnitude * velocity.x / velocitySize;
-                    frictionY = frictionMagnitude * velocity.y / velocitySize;
+                    frictionX = frictionSize * velocity.x / velocitySize;
+                    frictionY = frictionSize * velocity.y / velocitySize;
                 }
                 if (velocity.x != 0)
-                    F.x += velocity.x>0 ? -Math.abs(frictionX): Math.abs(frictionX);
+                    F.x += velocity.x > 0 ? -Math.abs(frictionX): Math.abs(frictionX);
                 if (velocity.y != 0)
-                    F.y += velocity.y>0 ? -Math.abs(frictionY): Math.abs(frictionY);
+                    F.y += velocity.y > 0 ? -Math.abs(frictionY): Math.abs(frictionY);
             }
-            else{
+            else {
                 F = new _3dVector(0, 0, 0);
             }
         }
@@ -179,12 +174,7 @@ public class Ball {
     }
 
     private boolean canMove(_3dVector f, double N) {
-        double fMagnitude = f.getSize();
-        double frictionMagnitude = N * GamePhysicsConfig.Us;
-        return fMagnitude > frictionMagnitude;
-    }
-
-    private boolean isStopped() {
-        return velocity.getSize() < GameConfig.BALL_STOP_SPEED;
+        double frictionSize = N * GamePhysicsConfig.Us;
+        return f.getSize() > frictionSize;
     }
 }

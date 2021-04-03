@@ -11,13 +11,11 @@ import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
 import com.mobina.legendofbounca.R;
 import com.mobina.legendofbounca.core.utils.RandomGenerator;
 import com.mobina.legendofbounca.core.components.Ball;
 import com.mobina.legendofbounca.core.components._3dVector;
 import com.mobina.legendofbounca.core.config.GameConfig;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
