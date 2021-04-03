@@ -43,16 +43,14 @@ public class Ball {
             position.z + amountToAdd1.z);
     }
 
-    private void updatePosition(double deltaT) {
-        _3dVector amountToAdd1 = acceleration.multiplyVectorByNum(0.5*(Math.pow(deltaT, 2)));
-        _3dVector amountToAdd2 = velocity.multiplyVectorByNum(deltaT);
-        amountToAdd1.vectorAddition(amountToAdd2);
-        position.vectorAddition(amountToAdd1);
-    }
-
     private void updateVelocity(double deltaT) {
         _3dVector amountToAdd = acceleration.multiplyVectorByNum(deltaT);
         velocity.vectorAddition(amountToAdd);
+    }
+
+    private void updateAcceleration(_3dVector F) {
+        acceleration.x = (F.x / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
+        acceleration.y = (F.y / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
     }
 
     public void generateRandomVelocity() {
@@ -95,6 +93,8 @@ public class Ball {
         }
         if (collided) {
             velocity = velocity.multiplyVectorByNum(GamePhysicsConfig.kineticEnergyReductionFactor);
+            if (velocity.getSize() < GameConfig.BALL_STOP_SPEED)
+                velocity = new _3dVector(0, 0, 0);
         }
         return collided;
     }
@@ -118,7 +118,7 @@ public class Ball {
             handlePhysics();
             updateVelocity(deltaT);
         }
-        updatePosition(deltaT);
+        position = getNextPosition(deltaT);
         updateImgView();
     }
 
@@ -137,7 +137,9 @@ public class Ball {
     }
 
     private _3dVector handleFriction(_3dVector F, double N) {
-        if (((position.x == leftMarginSize) || (position.x == displayWidth) && velocity.y == 0) || ((position.y == -radius / 2) || (position.y == displayHeight) && velocity.x == 0)){
+        if (((position.x == leftMarginSize) ||
+            (position.x == displayWidth) && velocity.y == 0) ||
+            ((position.y == -radius / 2) || (position.y == displayHeight) && velocity.x == 0)) {
             if (canMove(F, N)){
                 double frictionMagnitude = N * GamePhysicsConfig.Uk;
                 double velocitySize = velocity.getSize();
@@ -157,30 +159,6 @@ public class Ball {
             }
         }
         return F;
-    }
-
-//    private _3dVector handleFriction(_3dVector F, double N) {
-//        if (!this.isStopped() || this.canMove(F, N)) {
-//            double frictionMagnitude = N * GamePhysicsConfig.Uk;
-//            double velocitySize = velocity.getSize();
-//            double frictionX = 0;
-//            double frictionY = 0;
-//            if (velocitySize > 0) {
-//                frictionX = frictionMagnitude * velocity.x / velocitySize;
-//                frictionY = frictionMagnitude * velocity.y / velocitySize;
-//            }
-//            F.x += -Math.signum(velocity.x) * Math.abs(frictionX);
-//            F.y += -Math.signum(velocity.y) * Math.abs(frictionY);
-//        } else {
-//            F.x = 0;
-//            F.y = 0;
-//        }
-//        return F;
-//    }
-
-    private void updateAcceleration(_3dVector F) {
-        acceleration.x = (F.x / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
-        acceleration.y = (F.y / GameConfig.BALL_WEIGHT) * GameConfig.ACCELERATION_FACTOR;
     }
 
     private void handlePhysics() {

@@ -1,28 +1,15 @@
 package com.mobina.legendofbounca.activity;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Pair;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mobina.legendofbounca.R;
 import com.mobina.legendofbounca.core.utils.RandomGenerator;
@@ -80,7 +67,8 @@ public class GameActivity extends Activity {
       jumpButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          ball.generateRandomVelocity();
+          if (gameStarted)
+            ball.generateRandomVelocity();
         }
       });
 
