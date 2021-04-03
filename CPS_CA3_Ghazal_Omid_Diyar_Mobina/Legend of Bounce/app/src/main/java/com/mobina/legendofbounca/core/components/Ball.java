@@ -94,8 +94,7 @@ public class Ball {
             collided = true;
         }
         if (collided) {
-            double kineticEnergyReductionFactor = 3/Math.sqrt(10);
-            velocity = velocity.multiplyVectorByNum(kineticEnergyReductionFactor);
+            velocity = velocity.multiplyVectorByNum(GamePhysicsConfig.kineticEnergyReductionFactor);
         }
         return collided;
     }
