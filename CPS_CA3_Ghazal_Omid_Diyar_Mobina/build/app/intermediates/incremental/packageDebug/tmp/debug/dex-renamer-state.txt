@@ -1,7 +1,7 @@
-#Sat Apr 03 16:33:14 IRDT 2021
-base.0=G\:\\UT\\UT8\\CPS\\UT-CPS-Course\\CPS_CA3_Ghazal_Omid_Diyar_Mobina\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
+#Sat Apr 03 17:31:56 IRDT 2021
+base.0=/Users/omid/Documents/Term 8/CPS/CAs/UT-CPS-Course/CPS_CA3_Ghazal_Omid_Diyar_Mobina/build/app/intermediates/dex/debug/mergeExtDexDebug/out/classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex
 path.0=classes.dex
 renamed.0=classes.dex
-base.1=G\:\\UT\\UT8\\CPS\\UT-CPS-Course\\CPS_CA3_Ghazal_Omid_Diyar_Mobina\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
+base.1=/Users/omid/Documents/Term 8/CPS/CAs/UT-CPS-Course/CPS_CA3_Ghazal_Omid_Diyar_Mobina/build/app/intermediates/dex/debug/mergeProjectDexDebug/out/classes.dex

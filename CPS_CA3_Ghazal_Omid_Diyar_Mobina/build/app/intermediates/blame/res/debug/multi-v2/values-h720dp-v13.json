@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "G:\\UT\\UT8\\CPS\\UT-CPS-Course\\CPS_CA3_Ghazal_Omid_Diyar_Mobina\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-h720dp-v13\\values-h720dp-v13.xml",
+            "outputFile": "/Users/omid/Documents/Term 8/CPS/CAs/UT-CPS-Course/CPS_CA3_Ghazal_Omid_Diyar_Mobina/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\asus\\.gradle\\caches\\transforms-2\\files-2.1\\bb35b4a9b541de5b12eb7c5939559f55\\appcompat-1.1.0\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "source": "/Users/omid/.gradle/caches/transforms-2/files-2.1/bb35b4a9b541de5b12eb7c5939559f55/appcompat-1.1.0/res/values-h720dp-v13/values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
