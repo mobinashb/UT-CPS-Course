@@ -114,17 +114,23 @@ public class Ball {
         updateImgView();
     }
 
+    private void handlePhysics() {
+        _3dVector F = getForces();
+        double N = getN();
+        F = handleFriction(F, N);
+        updateAcceleration(F);
+    }
+
     private _3dVector getForces() {
-        double fX = Math.sin(theta.y) * GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT;
-        double fY = Math.sin(theta.x) * GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT;
+        double fX = GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT * Math.sin(theta.y);
+        double fY = GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT * Math.sin(theta.x);
         return new _3dVector(fX, fY, 0);
     }
 
     private double getN() {
         _3dVector sinTheta = new _3dVector(Math.sin(theta.x), Math.sin(theta.y), 0);
-        double N = Math.cos(Math.atan(
-            sinTheta.getSize() / (Math.cos(theta.x) + Math.cos(theta.y))))
-            * GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT;
+        double N = GamePhysicsConfig.earthGravity * GameConfig.BALL_WEIGHT *
+        Math.cos(Math.atan(sinTheta.getSize() / (Math.cos(theta.x) + Math.cos(theta.y))));
         return N;
     }
 
@@ -152,13 +158,6 @@ public class Ball {
             }
         }
         return F;
-    }
-
-    private void handlePhysics() {
-        _3dVector F = getForces();
-        double N = getN();
-        F = handleFriction(F, N);
-        updateAcceleration(F);
     }
 
     private void handleGyroscopeSensorEvent(_3dVector vec, double deltaT) {

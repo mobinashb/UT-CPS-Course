@@ -1,5 +1,4 @@
 package com.mobina.legendofbounca.activity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.mobina.legendofbounca.R;
 import com.mobina.legendofbounca.core.config.GameConfig;
 

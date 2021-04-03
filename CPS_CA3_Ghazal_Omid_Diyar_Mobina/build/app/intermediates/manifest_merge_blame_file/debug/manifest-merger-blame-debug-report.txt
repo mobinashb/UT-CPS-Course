@@ -25,39 +25,38 @@
 17-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:9:9-54
 18        android:supportsRtl="true"
 18-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:10:9-35
-19        android:testOnly="true"
-20        android:theme="@style/AppTheme" >
-20-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:11:9-40
-21        <activity
-21-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:9-14:20
-22            android:name="com.mobina.legendofbounca.activity.GameActivity"
-22-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:19-56
-23            android:screenOrientation="portrait" >
-23-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:13:13-49
-24        </activity>
-25        <activity
-25-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:15:9-26:20
-26            android:name="com.mobina.legendofbounca.activity.MainActivity"
-26-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:16:13-50
-27            android:configChanges="orientation|keyboardHidden|screenSize"
-27-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:18:13-74
-28            android:label="@string/app_name"
-28-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:19:13-45
-29            android:screenOrientation="portrait"
-29-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:17:13-49
-30            android:theme="@style/FullscreenTheme" >
-30-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:20:13-51
-31            <intent-filter>
-31-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:21:13-25:29
-32                <action android:name="android.intent.action.MAIN" />
-32-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:17-69
-32-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:25-66
-33
-34                <category android:name="android.intent.category.LAUNCHER" />
-34-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:24:17-77
-34-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:24:27-74
-35            </intent-filter>
-36        </activity>
-37    </application>
-38
-39</manifest>
+19        android:theme="@style/AppTheme" >
+19-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:11:9-40
+20        <activity
+20-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:9-14:20
+21            android:name="com.mobina.legendofbounca.activity.GameActivity"
+21-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:12:19-56
+22            android:screenOrientation="portrait" >
+22-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:13:13-49
+23        </activity>
+24        <activity
+24-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:15:9-26:20
+25            android:name="com.mobina.legendofbounca.activity.MainActivity"
+25-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:16:13-50
+26            android:configChanges="orientation|keyboardHidden|screenSize"
+26-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:18:13-74
+27            android:label="@string/app_name"
+27-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:19:13-45
+28            android:screenOrientation="portrait"
+28-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:17:13-49
+29            android:theme="@style/FullscreenTheme" >
+29-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:20:13-51
+30            <intent-filter>
+30-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:21:13-25:29
+31                <action android:name="android.intent.action.MAIN" />
+31-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:17-69
+31-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:22:25-66
+32
+33                <category android:name="android.intent.category.LAUNCHER" />
+33-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:24:17-77
+33-->G:\UT\UT8\CPS\UT-CPS-Course\CPS_CA3_Ghazal_Omid_Diyar_Mobina\Legend of Bounce\app\src\main\AndroidManifest.xml:24:27-74
+34            </intent-filter>
+35        </activity>
+36    </application>
+37
+38</manifest>
