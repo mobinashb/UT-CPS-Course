@@ -22,14 +22,14 @@ public class Ball {
     private float leftMarginSize;
 
     public Ball(_3dVector x, _3dVector v, _3dVector a,
-                ImageView imgView, Pair displaySize, float radius, float leftMarginSize) {
+                ImageView imgView, Pair<Integer, Integer> displaySize, float radius, float leftMarginSize) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
         this.imgView = imgView;
         this.theta = new _3dVector(0, 0, 0);
-        this.displayWidth = (int)displaySize.first;
-        this.displayHeight = (int)displaySize.second;
+        this.displayWidth = displaySize.first;
+        this.displayHeight = displaySize.second;
         this.radius = radius;
         this.leftMarginSize = leftMarginSize;
     }

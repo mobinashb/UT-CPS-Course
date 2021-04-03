@@ -51,12 +51,12 @@ public class GameActivity extends Activity {
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
       ballImageView = findViewById(R.id.image_ball);
-      Pair displaySize = getDisplaySize();
+      Pair<Integer, Integer> displaySize = getDisplaySize();
       float ballRadius = dpTopx(GameConfig.BALL_RADIUS);
 
       _3dVector randomPosition = RandomGenerator.random3dVector(dpTopx(GameConfig.JUMP_BTN_SIZE),
-          (int)displaySize.first-(2*ballRadius),
-          0, (int)displaySize.second-(2*ballRadius),
+          displaySize.first-(2*ballRadius),
+          0, displaySize.second-(2*ballRadius),
           0, 0);
 
       ball = new Ball(randomPosition,
@@ -128,16 +128,15 @@ public class GameActivity extends Activity {
     }
   };
 
-  private Pair getDisplaySize() {
+  private Pair<Integer, Integer> getDisplaySize() {
     DisplayMetrics dimension = new DisplayMetrics();
     getWindowManager().getDefaultDisplay().getMetrics(dimension);
     int width = dimension.widthPixels - (int)GameConfig.BALL_RADIUS - 10;
     int height = dimension.heightPixels - (int)GameConfig.BALL_RADIUS - 10;
-    return new Pair(width, height);
+    return new Pair<>(width, height);
   }
 
   private float dpTopx(float dp) {
-//    final float scale = getResources().getDisplayMetrics().density;
     return (int) (dp * 1.6);
   }
 
