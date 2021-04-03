@@ -19,10 +19,9 @@ public class Ball {
     private int displayWidth;
     private int displayHeight;
     private float radius;
-    private float leftMarginSize;
 
     public Ball(_3dVector x, _3dVector v, _3dVector a,
-                ImageView imgView, Pair<Integer, Integer> displaySize, float radius, float leftMarginSize) {
+                ImageView imgView, Pair<Integer, Integer> displaySize, float radius) {
         this.position = x;
         this.velocity = v;
         this.acceleration = a;
@@ -31,7 +30,6 @@ public class Ball {
         this.displayWidth = displaySize.first;
         this.displayHeight = displaySize.second;
         this.radius = radius;
-        this.leftMarginSize = leftMarginSize;
     }
 
     private _3dVector getNextPosition(double deltaT) {
@@ -64,9 +62,9 @@ public class Ball {
     }
 
     public boolean checkWallCollision(_3dVector position) {
-        boolean xCollided = (position.x <= leftMarginSize) ||
+        boolean xCollided = (position.x <= 0) ||
             (position.x >= displayWidth);
-        boolean yCollided = (position.y <= -radius / 2) ||
+        boolean yCollided = (position.y <= 0) ||
             (position.y >= displayHeight);
         return xCollided || yCollided;
     }
@@ -93,8 +91,8 @@ public class Ball {
         }
         if (collided) {
             velocity = velocity.multiplyVectorByNum(GamePhysicsConfig.kineticEnergyReductionFactor);
-            if (velocity.getSize() < GameConfig.BALL_STOP_SPEED)
-                velocity = new _3dVector(0, 0, 0);
+//            if (velocity.getSize() < GameConfig.BALL_STOP_SPEED)
+//                velocity = new _3dVector(0, 0, 0);
         }
         return collided;
     }
@@ -137,10 +135,10 @@ public class Ball {
     }
 
     private _3dVector handleFriction(_3dVector F, double N) {
-        if (((position.x == leftMarginSize) ||
-            (position.x == displayWidth) && velocity.y == 0) ||
-            ((position.y == -radius / 2) || (position.y == displayHeight) && velocity.x == 0)) {
-            if (canMove(F, N)){
+        if (((position.x == 0) ||
+            (position.x == displayWidth) && velocity.y < GameConfig.BALL_STOP_SPEED) ||
+            ((position.y == 0) || (position.y == displayHeight) && velocity.x < GameConfig.BALL_STOP_SPEED)) {
+            if (canMove(F, N)) {
                 double frictionMagnitude = N * GamePhysicsConfig.Uk;
                 double velocitySize = velocity.getSize();
                 double frictionX = 0;

@@ -1,5 +1,6 @@
 package com.mobina.legendofbounca.activity;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -37,11 +38,12 @@ public class GameActivity extends Activity {
       setContentView(R.layout.activity_game);
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       ballImageView = findViewById(R.id.image_ball);
       Pair<Integer, Integer> displaySize = getDisplaySize();
       float ballRadius = dpTopx(GameConfig.BALL_RADIUS);
 
-      _3dVector randomPosition = RandomGenerator.random3dVector(dpTopx(GameConfig.JUMP_BTN_SIZE),
+      _3dVector randomPosition = RandomGenerator.random3dVector(0,
           displaySize.first-(2*ballRadius),
           0, displaySize.second-(2*ballRadius),
           0, 0);
@@ -51,19 +53,19 @@ public class GameActivity extends Activity {
           new _3dVector(0, 0, 0),
           ballImageView,
           displaySize,
-          ballRadius,
-          dpTopx(GameConfig.JUMP_BTN_SIZE));
+          ballRadius);
 
       final View playButton = findViewById(R.id.button_play);
+      final View jumpButton = findViewById(R.id.button_jump);
       playButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           gameStarted = true;
           playButton.setVisibility(View.GONE);
+          jumpButton.setVisibility(View.VISIBLE);
         }
       });
 
-      final View jumpButton = findViewById(R.id.button_jump);
       jumpButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -119,8 +121,8 @@ public class GameActivity extends Activity {
   private Pair<Integer, Integer> getDisplaySize() {
     DisplayMetrics dimension = new DisplayMetrics();
     getWindowManager().getDefaultDisplay().getMetrics(dimension);
-    int width = dimension.widthPixels - (int)GameConfig.BALL_RADIUS - 10;
-    int height = dimension.heightPixels - (int)GameConfig.BALL_RADIUS - 10;
+    int width = dimension.widthPixels;
+    int height = dimension.heightPixels;
     return new Pair<>(width, height);
   }
 

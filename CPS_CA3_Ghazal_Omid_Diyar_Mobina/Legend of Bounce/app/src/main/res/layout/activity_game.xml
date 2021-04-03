@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/gameBackground"
     tools:context=".activity.GameActivity">
+    <View
+        android:id="@+id/button_jump"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:rotation="90"
+        android:background="@drawable/ic_jump"
+        android:layout_gravity="center"
+        android:contentDescription="Jump"
+        android:visibility="gone"/>
     <ImageView
         android:id="@+id/image_ball"
         android:layout_width="80dp"
@@ -20,20 +29,5 @@
         android:background="@drawable/ic_play"
         android:layout_gravity="center"
         android:contentDescription="Play" />
-    <LinearLayout
-        android:id="@+id/button_jump"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:layout_gravity="start"
-        android:gravity="center">
-        <View
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:rotation="90"
-            android:background="@drawable/ic_jump"
-            android:layout_gravity="center"
-            android:contentDescription="Jump" />
-    </LinearLayout>
 
 </FrameLayout>
