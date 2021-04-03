@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="2"
+        android:weightSum="9"
         android:visibility="visible"
         android:gravity="center"
         android:orientation="vertical" >
@@ -28,13 +28,14 @@
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="3"
-            android:layout_weight="1"
+            android:layout_weight="4"
             />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:visibility="visible"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
@@ -81,5 +82,17 @@
                 android:background="@drawable/shadow_button"
                 />
         </LinearLayout>
+        <TextView
+            android:id="@+id/group_names"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:keepScreenOn="true"
+            android:text="@string/group_names"
+            android:textColor="@color/blackOverlay"
+            android:textSize="20sp"
+            android:fontFamily="@font/whatever_it_takes"
+            android:layout_weight="1"
+            />
     </LinearLayout>
 </FrameLayout>

@@ -806,6 +806,7 @@ id fill_vertical
 id forever
 id gone
 id group_divider
+id group_names
 id groups
 id home
 id homeAsUp
@@ -997,6 +998,7 @@ string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string app_name
 string gravity
+string group_names
 string gyroscope
 string search_menu_title
 string status_bar_notification_info_overflow
