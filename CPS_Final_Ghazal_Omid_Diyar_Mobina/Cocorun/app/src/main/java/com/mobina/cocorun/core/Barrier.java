@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 
 public class Barrier extends GameObject {
 
-  public static final float VELOCITY = GameConfig.VELOCITY;
+  public static final float VELOCITY = GameConfig.VELOCITY / 3;
 
   private long lastDrawNanoTime =-1;
 
