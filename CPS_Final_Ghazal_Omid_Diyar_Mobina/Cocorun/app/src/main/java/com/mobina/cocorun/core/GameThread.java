@@ -36,7 +36,7 @@ public class GameThread extends Thread {
       long now = System.nanoTime() ;
       long waitTime = (now - startTime)/1000000;
       if (waitTime < 10)  {
-        waitTime= 10;
+        waitTime = 10;
       }
       System.out.print(" Wait Time="+ waitTime);
 

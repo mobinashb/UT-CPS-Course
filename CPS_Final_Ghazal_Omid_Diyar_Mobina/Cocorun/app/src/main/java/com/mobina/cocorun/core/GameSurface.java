@@ -9,12 +9,15 @@ import android.view.SurfaceView;
 
 import com.mobina.cocorun.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   private GameThread gameThread;
   private Bitmap bgBitmap;
   private Coconut coco;
-  private Barrier barrier;
+  private ArrayList<Barrier> barriers;
 
   public GameSurface(Context context)  {
     super(context);
@@ -26,14 +29,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   public void update()  {
     this.coco.update();
-    this.barrier.update();
+    for (Barrier barrier : barriers)
+      barrier.update();
   }
 
   @Override
   public void draw(Canvas canvas)  {
     super.draw(canvas);
     canvas.drawBitmap(bgBitmap, 0, 0, null);
-    this.barrier.draw(canvas);
+    for (Barrier barrier : barriers)
+      barrier.draw(canvas);
     this.coco.draw(canvas);
   }
 
@@ -46,10 +51,23 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     bgBitmap = Bitmap.createScaledBitmap(bgBitmap, newWidth, newHeight, true);
 
     Bitmap cocoBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.coconut);
-    this.coco = new Coconut(this, cocoBitmap,100,300);
+    this.coco = new Coconut(this, cocoBitmap,100, getHeight() - 200);
 
-    Bitmap barrierBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.middle);
-    this.barrier = new Barrier(this, barrierBitmap,0,20);
+    Bitmap barrierLeftBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.barrier_left);
+    Bitmap barrierRightBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.barrier_right);
+    barriers = new ArrayList<>();
+    this.barriers.add(new Barrier(this, barrierLeftBitmap,
+        -barrierLeftBitmap.getWidth() / 2, getHeight() / 4,
+        GameConfig.BARRIER_TYPE.LEFT));
+    this.barriers.add(new Barrier(this,
+        barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3, getHeight() / 2,
+        GameConfig.BARRIER_TYPE.RIGHT));
+    this.barriers.add(new Barrier(this, barrierLeftBitmap,
+        -barrierLeftBitmap.getWidth() / 2, getHeight() * 3 / 4,
+        GameConfig.BARRIER_TYPE.LEFT));
+    this.barriers.add(new Barrier(this,
+        barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3, getHeight(),
+        GameConfig.BARRIER_TYPE.RIGHT));
 
     this.gameThread = new GameThread(this, holder);
     this.gameThread.setRunning(true);

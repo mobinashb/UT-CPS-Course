@@ -32,6 +32,14 @@ public abstract class GameObject {
     return this.y;
   }
 
+  public int setX()  {
+    return this.x;
+  }
+
+  public int setY()  {
+    return this.y;
+  }
+
 
   public int getHeight() {
     return height;
