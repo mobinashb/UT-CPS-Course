@@ -38,6 +38,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   public void update()  {
+    if (lives == 0) {
+      return;
+    }
     this.coco.update();
     for (Barrier barrier : barriers) {
       barrier.update();
@@ -49,11 +52,19 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
       }
     }
+    updateLives();
   }
 
   @Override
   public void draw(Canvas canvas)  {
     super.draw(canvas);
+    if (lives == 0) {
+      Paint paint = new TextPaint();
+      paint.setStyle(Paint.Style.FILL);
+      paint.setColor(Color.GRAY);
+      canvas.drawPaint(paint);
+      return;
+    }
     canvas.drawBitmap(bgBitmap, 0, 0, null);
     for (Barrier barrier : barriers)
       barrier.draw(canvas);
@@ -61,7 +72,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     canvas.drawBitmap(buttonBitmap, getWidth() / 2 - buttonBitmap.getWidth() / 2, 0, null);
     drawScore(canvas);
     for (int i = 0; i < livesBitmap.size(); i++)
-      canvas.drawBitmap(livesBitmap.get(i), 100 * i + 20, buttonBitmap.getHeight() / 2 - aliveHeart.getHeight() / 2, null);
+      canvas.drawBitmap(livesBitmap.get(i),
+          100 * i + 20, buttonBitmap.getHeight() / 2 - aliveHeart.getHeight() / 2, null);
   }
 
   private void drawScore(Canvas canvas) {
@@ -148,6 +160,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     livesBitmap.add(aliveHeart);
     livesBitmap.add(aliveHeart);
     livesBitmap.add(deadHeart);
+  }
+
+  private void updateLives() {
+    for (int i = 0; i < livesBitmap.size(); i++) {
+      if (i < lives) {
+        livesBitmap.set(i, aliveHeart);
+      } else {
+        livesBitmap.set(i, deadHeart);
+      }
+    }
   }
 
   @Override

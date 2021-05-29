@@ -46,7 +46,6 @@ public class Barrier extends GameObject {
     }
 
     rect.set(x, y, x + image.getWidth(), y + image.getHeight());
-//    System.out.println(rect.top);
   }
 
   public int getRandomX() {
@@ -73,11 +72,5 @@ public class Barrier extends GameObject {
   public boolean doesHit(int x, int y) {
 //    && image.getPixel(x, y) != Color.TRANSPARENT
     return rect.contains(x, y) ;
-  }
-
-  public void checkHit(int x, int y) {
-    if (doesHit(x, y)) {
-      hit = true;
-    }
   }
 }
