@@ -1,9 +1,10 @@
 package com.mobina.cocorun.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,17 +13,17 @@ import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mobina.cocorun.R;
-import com.mobina.cocorun.utils.GameConfig;
+import com.mobina.cocorun.core.BluetoothService;
+import com.mobina.cocorun.core.GameSurface;
 
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends Activity {
 
@@ -62,30 +63,7 @@ public class MainActivity extends Activity {
     // Set No Title
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    setContentView(R.layout.activity_main);
-
-    ImageView playButton = findViewById(R.id.button_play);
-
-//    Timer timer = new Timer();
-//    timer.schedule(new TimerTask() {
-//      @Override
-//      public void run() {
-//
-//      }
-//    }, 0, GameConfig.SCREEN_REFRESH_INTERVAL);
-
-    playButton.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) {
-        try {
-//          receiveMessage();
-//          System.out.println(readMessage);
-          Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-          startActivity(intent);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
+    this.setContentView(new GameSurface(this));
 
     mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     // If the adapter is null, then Bluetooth is not supported
@@ -95,6 +73,30 @@ public class MainActivity extends Activity {
       return;
     }
 
+  }
+
+  private void showDialog() {
+    AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
+    builderSingle.setTitle("Select a device: ");
+
+    builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+
+    builderSingle.setAdapter(adapterPairedDevices, new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Object[] objects = pairedDevices.toArray();
+        BluetoothDevice device = (BluetoothDevice) objects[which];
+        mService.connect(device);
+        Toast.makeText(getApplicationContext(),"device choosen "+device.getName(),Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
+      }
+    });
+    builderSingle.show();
   }
 
   public void initializeDevices()
@@ -110,11 +112,15 @@ public class MainActivity extends Activity {
         adapterPairedDevices.add(deviceName + "\n" + deviceHardwareAddress);
       }
     }
+    this.runOnUiThread(new Runnable() {
+      public void run() {
+        showDialog();
+      }
+    });
   }
 
   @Override
   public void onStart() {
-    System.out.println("HIIIIIIIIIIIIIIIIIIII");
     super.onStart();
     mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     // If BT is not on, request that it be enabled.
@@ -125,9 +131,7 @@ public class MainActivity extends Activity {
       // Otherwise, setup the chat session
     } else {
       if (mService == null) initialize();
-      lv_paired_devices = (ListView) findViewById(R.id.lv_paired_devices);
       adapterPairedDevices = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item);
-      lv_paired_devices.setAdapter(adapterPairedDevices);
       initializeDevices();
     }
   }
@@ -172,7 +176,7 @@ public class MainActivity extends Activity {
   private void sendMessage(String message) {
     // Check that we're actually connected before trying anything
     if (mService.getState() != BluetoothService.STATE_CONNECTED) {
-      Toast.makeText(this, "not_connected", Toast.LENGTH_SHORT).show();
+      Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
       return;
     }
     // Check that there's actually something to send
@@ -200,7 +204,7 @@ public class MainActivity extends Activity {
               break;
             case BluetoothService.STATE_LISTEN:
             case BluetoothService.STATE_NONE:
-              Toast.makeText(MainActivity.this, "not_connected", Toast.LENGTH_SHORT).show();
+              Toast.makeText(MainActivity.this, "not connected", Toast.LENGTH_SHORT).show();
               break;
           }
           break;
@@ -213,7 +217,8 @@ public class MainActivity extends Activity {
           byte[] readBuf = (byte[]) msg.obj;
           // construct a string from the valid bytes in the buffer
           String readMessage = new String(readBuf, 0, msg.arg1);
-          Toast.makeText(MainActivity.this, readMessage, Toast.LENGTH_SHORT).show();
+//          Toast.makeText(MainActivity.this, readMessage, Toast.LENGTH_SHORT).show();
+          MainActivity.getCommand(readMessage);
           break;
         case MESSAGE_DEVICE_NAME:
           // save the connected device's name
@@ -228,6 +233,10 @@ public class MainActivity extends Activity {
       }
     }
   };
+
+  public static void getCommand(String msg) {
+
+  }
 
 }
 
