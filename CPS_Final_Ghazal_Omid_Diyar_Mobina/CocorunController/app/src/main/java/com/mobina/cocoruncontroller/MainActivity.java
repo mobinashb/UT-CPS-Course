@@ -107,23 +107,14 @@ public class MainActivity extends Activity {
       gravityTheta = new _3dVector(0, 0, 0);
       gameRotationTheta = new _3dVector(0, 0, 0);
 
-//      Timer timer = new Timer();
-//      timer.schedule(new TimerTask() {
-//        @Override
-//        public void run() {
-//          TextView tv = findViewById(R.id.textView);
-//          double steerAngle = Math.asin(gameRotationTheta.y) * 360;
-//
-//          if (steerAngle > -5 && steerAngle < 5)
-//            tv.setText("Steady");
-//          else if (steerAngle >= 5 && steerAngle < 60)
-//            tv.setText(String.format("Steer to Right: %f degrees", steerAngle - 90));
-//          else if (steerAngle <= -5 && steerAngle > -60)
-//            tv.setText(String.format("Steer to Left: %f degrees", steerAngle - 90));
-//          else
-//            tv.setText(String.format("Injuri bazi nakon"));
-//        }
-//      }, 0, GameConfig.REFRESH_INTERVAL);
+      Timer timer = new Timer();
+      timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          double steerAngle = Math.asin(gameRotationTheta.y) * 360;
+          sendMessage();
+        }
+      }, 0, GameConfig.REFRESH_INTERVAL);
 
       mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
       // If the adapter is null, then Bluetooth is not supported
