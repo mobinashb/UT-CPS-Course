@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.view.SurfaceHolder;
@@ -59,10 +58,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   public void draw(Canvas canvas)  {
     super.draw(canvas);
     if (lives == 0) {
-      Paint paint = new TextPaint();
-      paint.setStyle(Paint.Style.FILL);
-      paint.setColor(Color.GRAY);
-      canvas.drawPaint(paint);
+      drawGameOverScreen(canvas);
       return;
     }
     canvas.drawBitmap(bgBitmap, 0, 0, null);
@@ -74,6 +70,32 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     for (int i = 0; i < livesBitmap.size(); i++)
       canvas.drawBitmap(livesBitmap.get(i),
           100 * i + 20, buttonBitmap.getHeight() / 2 - aliveHeart.getHeight() / 2, null);
+  }
+
+  private void drawGameOverScreen(Canvas canvas) {
+    Paint bgPaint = new TextPaint();
+    bgPaint.setStyle(Paint.Style.FILL);
+    bgPaint.setColor(Color.GRAY);
+    canvas.drawPaint(bgPaint);
+    Paint paint = new TextPaint();
+    paint.setStyle(Paint.Style.FILL);
+    paint.setColor(Color.BLACK);
+    paint.setTextSize(56);
+    paint.setTypeface(Typeface.DEFAULT_BOLD);
+
+    Paint stkPaint = new Paint();
+    stkPaint.setStyle(Paint.Style.STROKE);
+    stkPaint.setTextSize(56);
+    stkPaint.setStrokeWidth(4);
+    stkPaint.setTypeface(Typeface.DEFAULT_BOLD);
+    stkPaint.setColor(Color.WHITE);
+    stkPaint.setShadowLayer(2, 2, 2, Color.BLACK);
+    int xPos = (canvas.getWidth() / 2);
+    int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
+    paint.setTextAlign(Paint.Align.CENTER);
+    stkPaint.setTextAlign(Paint.Align.CENTER);
+    canvas.drawText("Game Over", xPos, yPos, stkPaint);
+    canvas.drawText("Game Over", xPos, yPos, paint);
   }
 
   private void drawScore(Canvas canvas) {
@@ -91,14 +113,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     stkPaint.setColor(Color.WHITE);
     stkPaint.setShadowLayer(2, 2, 2, Color.BLACK);
 
-    int xOffset = (int) ((buttonBitmap.getWidth() / 10) * getResources().getDisplayMetrics().density + 0.5f);
-    int yOffset = (int) (5f * getResources().getDisplayMetrics().density + 0.5f);
+    int xPos = (canvas.getWidth() / 2);
+    int yPos = (int) ((buttonBitmap.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
+    paint.setTextAlign(Paint.Align.CENTER);
+    stkPaint.setTextAlign(Paint.Align.CENTER);
     canvas.drawText("Score: " + lives,
-        getWidth() / 2 - buttonBitmap.getWidth() / 2 + xOffset,
-        buttonBitmap.getHeight() / 2 + yOffset, stkPaint);
+        xPos,
+        yPos, stkPaint);
     canvas.drawText("Score: " + lives,
-        getWidth() / 2 - buttonBitmap.getWidth() / 2 + xOffset,
-        buttonBitmap.getHeight() / 2 + yOffset, paint);
+        xPos,
+        yPos, paint);
   }
 
   @Override
@@ -153,9 +177,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   private void createLives() {
     livesBitmap = new ArrayList<>();
-    aliveHeart = BitmapFactory.decodeResource(this.getResources(), R.drawable.heart_alive);
+    aliveHeart = BitmapFactory.decodeResource(this.getResources(), R.drawable.coconut);
     aliveHeart = Bitmap.createScaledBitmap(aliveHeart, GameConfig.HEART_SIZE, GameConfig.HEART_SIZE, false);
-    deadHeart = BitmapFactory.decodeResource(this.getResources(), R.drawable.heart_dead);
+    deadHeart = BitmapFactory.decodeResource(this.getResources(), R.drawable.coconut_dead);
     deadHeart = Bitmap.createScaledBitmap(deadHeart, GameConfig.HEART_SIZE, GameConfig.HEART_SIZE, false);
     livesBitmap.add(aliveHeart);
     livesBitmap.add(aliveHeart);
