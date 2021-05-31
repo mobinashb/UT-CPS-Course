@@ -7,8 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.TextPaint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.mobina.cocorun.utils.GameConfig;
 import com.mobina.cocorun.utils.Helper;
@@ -28,6 +30,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   private ArrayList<Barrier> barriers;
   int lives = GameConfig.NUM_OF_LIVES;
   int lastHit = -1;
+  GameConfig.COMMAND command1 = GameConfig.COMMAND.R;
 
   public GameSurface(Context context)  {
     super(context);
@@ -41,7 +44,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     if (lives == 0) {
       return;
     }
-    this.coco.update(command, intensity);
+//    this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command) * intensity);
+    this.coco.update();
     for (Barrier barrier : barriers) {
       barrier.update();
       if (barrier.doesHit(coco.getRect())) {
@@ -181,4 +185,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
   }
 
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+      int x =  (int)event.getX();
+      int movingVectorX = x - this.coco.getX() ;
+      if (movingVectorX > 0)
+        command1 = GameConfig.COMMAND.R;
+      else
+        command1 = GameConfig.COMMAND.L;
+      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command1) * 60);
+      return true;
+    }
+    return false;
+  }
 }

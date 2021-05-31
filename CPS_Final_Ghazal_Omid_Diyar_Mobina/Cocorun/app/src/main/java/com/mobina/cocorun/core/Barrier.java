@@ -7,7 +7,7 @@ import com.mobina.cocorun.utils.GameConfig;
 
 public class Barrier extends GameObject {
 
-  public static final float VELOCITY = GameConfig.VELOCITY / 4;
+  public static final float VELOCITY = GameConfig.VELOCITY / 3;
 
   private GameSurface gameSurface;
   private GameConfig.BARRIER_TYPE type;

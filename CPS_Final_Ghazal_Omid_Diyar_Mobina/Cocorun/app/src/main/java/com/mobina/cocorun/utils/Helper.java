@@ -49,4 +49,8 @@ public class Helper {
     return resizedBitmap;
   }
 
+  public static int getDirctionFromCommand(GameConfig.COMMAND command) {
+    return command == GameConfig.COMMAND.R ? 1 : -1;
+  }
+
 }
