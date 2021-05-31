@@ -255,7 +255,7 @@ public class MainActivity extends Activity implements Runnable {
   };
 
   public static void getCommand(String msg) {
-    if (msg == "No")
+    if (msg.equals("N"))
       return;
     String dir = String.valueOf(msg.charAt(0));
     intensity = Integer.valueOf(String.valueOf(msg.charAt(1)));

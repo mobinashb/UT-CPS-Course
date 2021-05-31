@@ -184,8 +184,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   public void processCommand(GameConfig.COMMAND cmd, int intensity, long ts) {
-    if (ts != timestamp)
-      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(cmd) * intensity * 10);
+    if (ts != timestamp) {
+      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(cmd) * 5);
+      timestamp = ts;
+    }
   }
 
   @Override

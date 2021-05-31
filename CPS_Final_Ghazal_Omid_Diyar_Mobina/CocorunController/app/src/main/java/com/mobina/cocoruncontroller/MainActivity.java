@@ -119,8 +119,6 @@ public class MainActivity extends Activity {
 
       initializeSensors();
 
-      timer = new Timer();
-
     }
 
   private void showDialog() {
@@ -140,26 +138,7 @@ public class MainActivity extends Activity {
         Object[] objects = pairedDevices.toArray();
         BluetoothDevice device = (BluetoothDevice) objects[which];
         mService.connect(device);
-        Toast.makeText(getApplicationContext(),"device choosen "+device.getName(),Toast.LENGTH_SHORT).show();
-        while (mService.getState() != BluetoothService.STATE_CONNECTED);
-          timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-              double steerAngle = Math.asin(gameRotationTheta.y) * 360;
-              String command = "";
-              if (steerAngle > -5 && steerAngle < 5)
-                command = "No";
-              else if (steerAngle >= 5 && steerAngle < 65)
-              {
-                command = String.format("R%d", (int) ((steerAngle - 5)/12)+1);
-              }
-              else if (steerAngle <= -5 && steerAngle > -60)
-                command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
-              else
-                command = "NO";
-              sendMessage(command);
-            }
-          }, 0, GameConfig.REFRESH_INTERVAL);
+        Toast.makeText(getApplicationContext(),"device chosen "+device.getName(),Toast.LENGTH_SHORT).show();
         dialog.dismiss();
         }
     });
@@ -196,6 +175,25 @@ public class MainActivity extends Activity {
       adapterPairedDevices = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item);
       initializeDevices();
     }
+    timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        double steerAngle = Math.asin(gameRotationTheta.y) * 360;
+        String command = "";
+        if (steerAngle > -5 && steerAngle < 5)
+          command = "N";
+        else if (steerAngle >= 5 && steerAngle < 65)
+        {
+          command = String.format("R%d", (int) ((steerAngle - 5)/12)+1);
+        }
+        else if (steerAngle <= -5 && steerAngle > -60)
+          command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
+        else
+          command = "N";
+          sendMessage(command);
+      }
+    }, 1000, GameConfig.REFRESH_INTERVAL);
   }
   @Override
   public synchronized void onResume() {
@@ -238,7 +236,7 @@ public class MainActivity extends Activity {
   private void sendMessage(String message) {
     // Check that we're actually connected before trying anything
     if (mService.getState() != BluetoothService.STATE_CONNECTED) {
-      Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
+//      Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
       return;
     }
     // Check that there's actually something to send
