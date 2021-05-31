@@ -255,11 +255,11 @@ public class MainActivity extends Activity implements Runnable {
   };
 
   public static void getCommand(String msg) {
-    if (msg.equals("N"))
+    if (msg.contains("N"))
       return;
     String dir = String.valueOf(msg.charAt(0));
-    intensity = Integer.valueOf(String.valueOf(msg.charAt(1)));
-    command = dir == "L" ? GameConfig.COMMAND.L : GameConfig.COMMAND.R;
+    intensity = Integer.parseInt(String.valueOf(msg.charAt(1)));
+    command = dir.equals("L") ? GameConfig.COMMAND.L : GameConfig.COMMAND.R;
     timestamp = System.currentTimeMillis();
   }
 

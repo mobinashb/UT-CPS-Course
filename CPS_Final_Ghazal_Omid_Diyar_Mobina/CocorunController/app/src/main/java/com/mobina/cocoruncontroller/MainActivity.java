@@ -191,9 +191,9 @@ public class MainActivity extends Activity {
           command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
         else
           command = "N";
-          sendMessage(command);
+        sendMessage(command);
       }
-    }, 1000, GameConfig.REFRESH_INTERVAL);
+    }, 1000, 2 * GameConfig.REFRESH_INTERVAL);
   }
   @Override
   public synchronized void onResume() {
