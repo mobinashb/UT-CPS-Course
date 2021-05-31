@@ -1,28 +1,17 @@
-package com.mobina.cocorun.activity;
+package com.mobina.cocorun.core;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.mobina.cocorun.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Set;
 import java.util.UUID;
 
 public class BluetoothService {
@@ -30,7 +19,7 @@ public class BluetoothService {
     // Name for the SDP record when creating server socket
     private static final String NAME = "Cocorun";
     // Unique UUID for this application
-    private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     // Member fields
     private BluetoothAdapter mAdapter;
     private final Handler mHandler;
@@ -66,6 +55,7 @@ public class BluetoothService {
     public BluetoothService(Context context, Handler handler) {
       mState = STATE_NONE;
       mHandler = handler;
+      mAdapter = BluetoothAdapter.getDefaultAdapter();
     }
     /**
      * Set the current state of the chat connection
