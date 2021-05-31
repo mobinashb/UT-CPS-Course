@@ -35,6 +35,8 @@ public class BluetoothService extends Activity {
   public static final int CONNECTED = 3;
   public static final int NO_SOCKET_FOUND = 4;
 
+  static String readMessage = null;
+
   String bluetoothMessage = "00";
 
   public void initialize() {
@@ -55,9 +57,9 @@ public class BluetoothService extends Activity {
         case MESSAGE_READ:
 
           byte[] readbuf = (byte[])msgType.obj;
-          String stringRecieved = new String(readbuf);
+          String stringReceived = new String(readbuf);
 
-          //do some task based on recieved string
+          BluetoothService.handleReadMessage(stringReceived);
 
           break;
         case MESSAGE_WRITE:
@@ -88,6 +90,15 @@ public class BluetoothService extends Activity {
     bluetoothMessage = text;
     Message msg = mHandler.obtainMessage(MESSAGE_WRITE);
     mHandler.sendMessage(msg);
+  }
+
+  public void receiveMessage() {
+    Message msg = mHandler.obtainMessage(MESSAGE_READ);
+    mHandler.sendMessage(msg);
+  }
+
+  public static void handleReadMessage(String text) {
+    readMessage = text;
   }
 
   public void startAcceptingConnection()
@@ -145,7 +156,7 @@ public class BluetoothService extends Activity {
           String deviceName = device.getName();
           String deviceHardwareAddress = device.getAddress(); // MAC address
 
-          adapterPairedDevices.add(device.getName() + "\n" + device.getAddress());
+          adapterPairedDevices.add(deviceName + "\n" + deviceHardwareAddress);
         }
       }
     }
