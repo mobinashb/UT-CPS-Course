@@ -37,11 +37,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     this.getHolder().addCallback(this);
   }
 
-  public void update()  {
+  public void update(GameConfig.COMMAND command, int intensity)  {
     if (lives == 0) {
       return;
     }
-    this.coco.update();
+    this.coco.update(command, intensity);
     for (Barrier barrier : barriers) {
       barrier.update();
       if (barrier.doesHit(coco.getRect())) {

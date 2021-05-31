@@ -26,7 +26,7 @@ public class GameThread extends Thread {
         canvas = this.surfaceHolder.lockCanvas();
 
         synchronized (canvas)  {
-          this.gameSurface.update();
+          this.gameSurface.update(GameConfig.COMMAND.R, 30);
           this.gameSurface.draw(canvas);
         }
       } catch (Exception e)  {

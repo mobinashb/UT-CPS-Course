@@ -19,21 +19,20 @@ public class Coconut extends GameObject {
     this.gameSurface = gameSurface;
   }
 
-  public void update()  {
+  public void update(GameConfig.COMMAND command, int intensity)  {
     long now = System.nanoTime();
 
     if (lastDrawNanoTime == -1) {
       lastDrawNanoTime= now;
     }
-    int deltaTime = (int) ((now - lastDrawNanoTime)/ 1000000 );
-
-    float distance = VELOCITY * deltaTime;
+    int direction = command == GameConfig.COMMAND.R ? 1 : -1;
+    float distance = direction * VELOCITY * intensity;
 
     double movingVectorLength = Math.sqrt(movingVectorX* movingVectorX + movingVectorY*movingVectorY);
 
-    x = x +  (int)(distance* movingVectorX / movingVectorLength);
+    x = x + (int)(distance * movingVectorX / movingVectorLength);
 
-    if (x < 0 )  {
+    if (x < 0)  {
       x = 0;
       movingVectorX = - movingVectorX;
     } else if (x > gameSurface.getWidth() -width)  {
