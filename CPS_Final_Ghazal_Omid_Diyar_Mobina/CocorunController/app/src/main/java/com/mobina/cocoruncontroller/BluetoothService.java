@@ -267,7 +267,7 @@ public class BluetoothService extends Activity {
     }
 
     public void run() {
-      byte[] buffer = new byte[2];  // buffer store for the stream
+      byte[] buffer = new byte[1024];  // buffer store for the stream
       int bytes; // bytes returned from read()
 
       // Keep listening to the InputStream until an exception occurs
