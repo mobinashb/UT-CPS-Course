@@ -1,7 +1,6 @@
 package com.mobina.cocorun.core;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.mobina.cocorun.utils.GameConfig;
@@ -9,8 +8,6 @@ import com.mobina.cocorun.utils.GameConfig;
 public class Barrier extends GameObject {
 
   public static final float VELOCITY = GameConfig.VELOCITY / 3;
-
-  private long lastDrawNanoTime =-1;
 
   private GameSurface gameSurface;
   private GameConfig.BARRIER_TYPE type;
@@ -34,32 +31,26 @@ public class Barrier extends GameObject {
 
     float distance = VELOCITY * deltaTime;
 
-    this.y = (int) (y +  distance);
+   y = (int) (y +  distance);
 
-    if (this.y > this.gameSurface.getHeight() + height)  {
-      this.y = -height / 2;
-      this.x = getRandomX();
-      this.hit = false;
+    if (y >gameSurface.getHeight() + height)  {
+     y = -height / 2;
+     x = getRandomX();
+     hit = false;
     }
     updateRect();
   }
 
-  public int getRandomX() {
+  private int getRandomX() {
     int maxWidth;
     if (type == GameConfig.BARRIER_TYPE.LEFT) {
       maxWidth = 0;
     } else {
-      maxWidth = this.gameSurface.getWidth();
+      maxWidth = gameSurface.getWidth();
     }
     int maxBarLength = (int) (getWidth() * 0.6);
     int minBarLength = (int) (getWidth() * 0.4);
     return (int) (maxWidth - Math.floor(Math.random()*(maxBarLength-minBarLength+1)+minBarLength));
-  }
-
-  public void draw(Canvas canvas)  {
-    Bitmap bitmap = this.image;
-    canvas.drawBitmap(bitmap, x, y, null);
-    this.lastDrawNanoTime= System.nanoTime();
   }
 
   public boolean doesHit(Rect obj) {

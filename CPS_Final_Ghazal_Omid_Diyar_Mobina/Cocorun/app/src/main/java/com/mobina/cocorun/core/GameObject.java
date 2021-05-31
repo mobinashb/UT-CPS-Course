@@ -1,6 +1,7 @@
 package com.mobina.cocorun.core;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
 public abstract class GameObject {
@@ -11,6 +12,7 @@ public abstract class GameObject {
   protected int x;
   protected int y;
   protected Rect rect;
+  protected long lastDrawNanoTime = -1;
 
   public GameObject(Bitmap image, int x, int y)  {
 
@@ -55,4 +57,8 @@ public abstract class GameObject {
 
   public Rect getRect() { return rect; }
 
+  public void draw(Canvas canvas)  {
+    canvas.drawBitmap(image, x, y, null);
+    lastDrawNanoTime = System.nanoTime();
+  }
 }
