@@ -3,6 +3,8 @@ package com.mobina.cocorun.core;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.mobina.cocorun.utils.GameConfig;
+
 public class Coconut extends GameObject {
 
   public static final float VELOCITY = GameConfig.VELOCITY;

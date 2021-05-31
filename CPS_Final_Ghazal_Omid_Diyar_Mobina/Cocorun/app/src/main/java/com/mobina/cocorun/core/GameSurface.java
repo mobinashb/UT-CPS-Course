@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.mobina.cocorun.utils.GameConfig;
+import com.mobina.cocorun.utils.Helper;
 import com.mobina.cocorun.R;
 
 import java.util.ArrayList;
@@ -78,52 +78,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     bgPaint.setStyle(Paint.Style.FILL);
     bgPaint.setColor(Color.GRAY);
     canvas.drawPaint(bgPaint);
-    Paint paint = new TextPaint();
-    paint.setStyle(Paint.Style.FILL);
-    paint.setColor(Color.BLACK);
-    paint.setTextSize(72);
-    paint.setTypeface(Typeface.DEFAULT_BOLD);
-
-    Paint stkPaint = new Paint();
-    stkPaint.setStyle(Paint.Style.STROKE);
-    stkPaint.setTextSize(72);
-    stkPaint.setStrokeWidth(4);
-    stkPaint.setTypeface(Typeface.DEFAULT_BOLD);
-    stkPaint.setColor(Color.WHITE);
-    stkPaint.setShadowLayer(2, 2, 2, Color.BLACK);
     int xPos = (canvas.getWidth() / 2);
-    int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
-    paint.setTextAlign(Paint.Align.CENTER);
-    stkPaint.setTextAlign(Paint.Align.CENTER);
-    canvas.drawText("Game Over", xPos, yPos, stkPaint);
-    canvas.drawText("Game Over", xPos, yPos, paint);
+    int yPos = (canvas.getHeight() / 2);
+    Helper.drawStrokedText(canvas, "Game Over", xPos, yPos, 72);
   }
 
   private void drawScore(Canvas canvas) {
-    Paint paint = new TextPaint();
-    paint.setStyle(Paint.Style.FILL);
-    paint.setColor(Color.BLACK);
-    paint.setTextSize(44);
-    paint.setTypeface(Typeface.DEFAULT_BOLD);
-
-    Paint stkPaint = new Paint();
-    stkPaint.setStyle(Paint.Style.STROKE);
-    stkPaint.setTextSize(44);
-    stkPaint.setStrokeWidth(4);
-    stkPaint.setTypeface(Typeface.DEFAULT_BOLD);
-    stkPaint.setColor(Color.WHITE);
-    stkPaint.setShadowLayer(2, 2, 2, Color.BLACK);
-
     int xPos = (canvas.getWidth() / 2);
-    int yPos = (int) ((buttonBitmap.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
-    paint.setTextAlign(Paint.Align.CENTER);
-    stkPaint.setTextAlign(Paint.Align.CENTER);
-    canvas.drawText("Score: " + lives,
-        xPos,
-        yPos, stkPaint);
-    canvas.drawText("Score: " + lives,
-        xPos,
-        yPos, paint);
+    int yPos = (buttonBitmap.getHeight() / 2);
+    Helper.drawStrokedText(canvas, "Score: " + lives, xPos, yPos, 44);
   }
 
   @Override
@@ -174,20 +137,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   private void createScoreBoard() {
     buttonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.button);
-    buttonBitmap = createResizedBitmap(buttonBitmap, getWidth() / 3, 180);
-  }
-
-  public Bitmap createResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-    int width = bm.getWidth();
-    int height = bm.getHeight();
-    float scaleWidth = ((float) newWidth) / width;
-    float scaleHeight = ((float) newHeight) / height;
-    Matrix matrix = new Matrix();
-    matrix.postScale(scaleWidth, scaleHeight);
-    Bitmap resizedBitmap = Bitmap.createBitmap(
-        bm, 0, 0, width, height, matrix, false);
-    bm.recycle();
-    return resizedBitmap;
+    buttonBitmap = Helper.createResizedBitmap(buttonBitmap, getWidth() / 3, 180);
   }
 
   private void createLives() {

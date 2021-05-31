@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.mobina.cocorun.utils.GameConfig;
+
 public class Barrier extends GameObject {
 
   public static final float VELOCITY = GameConfig.VELOCITY / 3;

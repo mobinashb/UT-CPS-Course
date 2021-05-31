@@ -1,4 +1,4 @@
-package com.mobina.cocorun.core;
+package com.mobina.cocorun.utils;
 
 public class GameConfig {
   public static float VELOCITY = 0.4f;

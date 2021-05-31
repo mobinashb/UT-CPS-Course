@@ -3,6 +3,8 @@ package com.mobina.cocorun.core;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import com.mobina.cocorun.utils.GameConfig;
+
 public class GameThread extends Thread {
 
   private boolean running;
