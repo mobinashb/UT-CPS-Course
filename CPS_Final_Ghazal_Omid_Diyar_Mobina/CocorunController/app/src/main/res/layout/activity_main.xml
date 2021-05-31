@@ -4,15 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/grass"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="9"
+        android:visibility="visible"
+        android:gravity="center"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:visibility="visible"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/main_title"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/whatever_it_takes"
+                android:gravity="center_vertical|center_horizontal"
+                android:keepScreenOn="true"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                android:text="@string/game_name"
+                android:textColor="@color/textPrimary"
+                android:textSize="80sp"
+                android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/sub_title"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/whatever_it_takes"
+                android:gravity="center_vertical|center_horizontal"
+                android:keepScreenOn="true"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                android:text="@string/controller_name"
+                android:textColor="@color/textPrimary"
+                android:textSize="40sp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="Play" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

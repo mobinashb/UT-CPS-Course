@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CocorunController</string>
+    <string name="game_name">Cocorun</string>
+    <string name="controller_name">Controller</string>
 </resources>
