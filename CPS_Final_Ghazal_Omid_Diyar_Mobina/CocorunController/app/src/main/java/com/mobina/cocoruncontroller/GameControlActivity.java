@@ -1,5 +1,7 @@
 package com.mobina.cocoruncontroller;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-public class MainActivity extends Activity {
+public class GameControlActivity extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +23,24 @@ public class MainActivity extends Activity {
     // Set No Title
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_game_control);
 
-    ImageView playButton = findViewById(R.id.button_play);
+    ImageView rightButton = findViewById(R.id.button_right);
+    ImageView leftButton = findViewById(R.id.button_left);
 
-    playButton.setOnClickListener(new View.OnClickListener() {
+    rightButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
         try {
-          Intent intent = new Intent(getApplicationContext(), GameControlActivity.class);
-          startActivity(intent);
+          System.out.println("Right");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    leftButton.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        try {
+          System.out.println("Left");
         } catch (Exception e) {
           e.printStackTrace();
         }
