@@ -1,7 +1,7 @@
 package com.mobina.cocorun.utils;
 
 public class GameConfig {
-  public static float VELOCITY = 0.3f;
+  public static float VELOCITY = 0.1f;
   public enum BARRIER_TYPE {LEFT, RIGHT}
   public static int COCO_SIZE = 150;
   public static int HEART_SIZE = 100;

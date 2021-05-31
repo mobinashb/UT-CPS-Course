@@ -9,7 +9,7 @@ public class Coconut extends GameObject {
   public static final float VELOCITY = GameConfig.VELOCITY;
 
   private int movingVectorX = 10;
-  private int movingVectorY = 5;
+  private int movingVectorY = 0;
 
   private GameSurface gameSurface;
 
@@ -31,7 +31,7 @@ public class Coconut extends GameObject {
 
     double movingVectorLength = Math.sqrt(movingVectorX* movingVectorX + movingVectorY*movingVectorY);
 
-    x = x + (int)(distance * movingVectorX / movingVectorLength);
+    x = x + (int)(distance * movingVectorX);
 
     if (x < 0)  {
       x = 0;
