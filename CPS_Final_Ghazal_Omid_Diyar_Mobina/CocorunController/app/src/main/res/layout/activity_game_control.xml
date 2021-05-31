@@ -61,10 +61,17 @@
             android:id="@+id/textView"
             android:layout_width="314dp"
             android:layout_height="53dp"
-            android:gravity="center"
+            android:fontFamily="@font/whatever_it_takes"
+            android:gravity="center_vertical|center_horizontal"
+            android:keepScreenOn="true"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
             android:text=""
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@color/textPrimary"
+            android:textSize="30sp"
+            />
 
 
         <Button
