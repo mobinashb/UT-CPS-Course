@@ -52,32 +52,28 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/button_left"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/left"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="Left" />
-            <ImageView
-                android:id="@+id/button_right"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/right"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="Right" />
-        </LinearLayout>
+
+
+
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="314dp"
+            android:layout_height="53dp"
+            android:gravity="center"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="226dp"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:text="@string/test_vibration" />
+
         <ListView
             android:id="@+id/lv_paired_devices"
             android:layout_width="wrap_content"
