@@ -19,7 +19,7 @@ public class GameThread extends Thread {
     long startTime = System.nanoTime();
 
     while(running)  {
-      Canvas canvas= null;
+      Canvas canvas = null;
       try {
         canvas = this.surfaceHolder.lockCanvas();
 
@@ -29,20 +29,20 @@ public class GameThread extends Thread {
         }
       } catch (Exception e)  {
       } finally {
-        if (canvas!= null)  {
+        if (canvas != null)  {
           this.surfaceHolder.unlockCanvasAndPost(canvas);
         }
       }
       long now = System.nanoTime() ;
       long waitTime = (now - startTime)/1000000;
-      if (waitTime < 10)  {
-        waitTime = 10;
+      if (waitTime < GameConfig.SCREEN_REFRESH_INTERVAL)  {
+        waitTime = GameConfig.SCREEN_REFRESH_INTERVAL;
       }
       System.out.print(" Wait Time="+ waitTime);
 
       try {
         this.sleep(waitTime);
-      } catch(InterruptedException e)  {
+      } catch (InterruptedException e)  {
 
       }
       startTime = System.nanoTime();
