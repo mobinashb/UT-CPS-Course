@@ -68,6 +68,8 @@ public class MainActivity extends Activity {
     private double accLastEventTimestamp, magLastEventTimestamp, gyroscopeLastEventTimestamp, gravityLastEventTimestamp, gameRotationLastEventTimestamp;;
     private _3dVector accelerometerTheta, magnetometerTheta, gyroscopeTheta, gravityTheta, gameRotationTheta;
 
+    Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -107,26 +109,6 @@ public class MainActivity extends Activity {
       gravityTheta = new _3dVector(0, 0, 0);
       gameRotationTheta = new _3dVector(0, 0, 0);
 
-      Timer timer = new Timer();
-      timer.schedule(new TimerTask() {
-        @Override
-        public void run() {
-          double steerAngle = Math.asin(gameRotationTheta.y) * 360;
-          String command = "";
-          if (steerAngle > -5 && steerAngle < 5)
-            command = "No";
-          else if (steerAngle >= 5 && steerAngle < 65)
-          {
-              command = String.format("R%d", (int) ((steerAngle - 5)/12)+1);
-          }
-          else if (steerAngle <= -5 && steerAngle > -60)
-              command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
-          else
-              command = "NO";
-          sendMessage(command);
-        }
-      }, 0, GameConfig.REFRESH_INTERVAL);
-
       mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
       // If the adapter is null, then Bluetooth is not supported
       if (mBluetoothAdapter == null) {
@@ -136,6 +118,8 @@ public class MainActivity extends Activity {
       }
 
       initializeSensors();
+
+      timer = new Timer();
 
     }
 
@@ -157,8 +141,27 @@ public class MainActivity extends Activity {
         BluetoothDevice device = (BluetoothDevice) objects[which];
         mService.connect(device);
         Toast.makeText(getApplicationContext(),"device choosen "+device.getName(),Toast.LENGTH_SHORT).show();
+        while (mService.getState() != BluetoothService.STATE_CONNECTED);
+          timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              double steerAngle = Math.asin(gameRotationTheta.y) * 360;
+              String command = "";
+              if (steerAngle > -5 && steerAngle < 5)
+                command = "No";
+              else if (steerAngle >= 5 && steerAngle < 65)
+              {
+                command = String.format("R%d", (int) ((steerAngle - 5)/12)+1);
+              }
+              else if (steerAngle <= -5 && steerAngle > -60)
+                command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
+              else
+                command = "NO";
+              sendMessage(command);
+            }
+          }, 0, GameConfig.REFRESH_INTERVAL);
         dialog.dismiss();
-      }
+        }
     });
     builderSingle.show();
   }
