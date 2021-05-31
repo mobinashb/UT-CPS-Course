@@ -6,10 +6,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,10 +24,12 @@ import android.widget.Toast;
 import com.mobina.cocorun.R;
 import com.mobina.cocorun.core.BluetoothService;
 import com.mobina.cocorun.core.GameSurface;
+import com.mobina.cocorun.core.GameThread;
+import com.mobina.cocorun.utils.GameConfig;
 
 import java.util.Set;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Runnable {
 
   // Name of the connected device
   private String mConnectedDeviceName = null;
@@ -51,6 +55,17 @@ public class MainActivity extends Activity {
   ListView lv_paired_devices;
   Set<BluetoothDevice> pairedDevices;
   ArrayAdapter adapterPairedDevices;
+  static GameSurface gameSurface;
+
+  private static boolean running;
+  private SurfaceHolder surfaceHolder;
+
+  static GameConfig.COMMAND command = GameConfig.COMMAND.R;
+  static int intensity = 1;
+
+  static long timestamp = -1;
+
+  private Thread thread;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +77,12 @@ public class MainActivity extends Activity {
 
     // Set No Title
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-    this.setContentView(new GameSurface(this));
+    gameSurface = new GameSurface(this);
+    this.setContentView(gameSurface);
+    surfaceHolder = gameSurface.getHolder();
+    thread = new Thread(this);
+    thread.start();
+    MainActivity.setRunning(true);
 
     mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     // If the adapter is null, then Bluetooth is not supported
@@ -92,6 +111,7 @@ public class MainActivity extends Activity {
         Object[] objects = pairedDevices.toArray();
         BluetoothDevice device = (BluetoothDevice) objects[which];
         mService.connect(device);
+        MainActivity.setRunning(true);
         Toast.makeText(getApplicationContext(),"device choosen "+device.getName(),Toast.LENGTH_SHORT).show();
         dialog.dismiss();
       }
@@ -235,8 +255,51 @@ public class MainActivity extends Activity {
   };
 
   public static void getCommand(String msg) {
-
+    String dir = String.valueOf(msg.charAt(0));
+    intensity = Integer.valueOf(String.valueOf(msg.charAt(1)));
+    command = dir == "L" ? GameConfig.COMMAND.L : GameConfig.COMMAND.R;
+    timestamp = System.currentTimeMillis();
   }
 
+  @Override
+  public void run()  {
+    long startTime = System.nanoTime();
+
+    while(running)  {
+      Canvas canvas = null;
+      try {
+        canvas = this.surfaceHolder.lockCanvas();
+
+        synchronized (canvas)  {
+          this.gameSurface.processCommand(command, intensity, timestamp);
+          this.gameSurface.update();
+          this.gameSurface.draw(canvas);
+        }
+      } catch (Exception e)  {
+      } finally {
+        if (canvas != null)  {
+          this.surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+      }
+      long now = System.nanoTime() ;
+      long waitTime = (now - startTime)/1000000;
+      if (waitTime < GameConfig.SCREEN_REFRESH_INTERVAL)  {
+        waitTime = GameConfig.SCREEN_REFRESH_INTERVAL;
+      }
+      System.out.print(" Wait Time="+ waitTime);
+
+      try {
+        thread.sleep(waitTime);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      startTime = System.nanoTime();
+      System.out.print(".");
+    }
+  }
+
+  public static void setRunning(boolean running)  {
+    MainActivity.running = running;
+  }
 }
 

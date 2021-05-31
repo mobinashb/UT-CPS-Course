@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
-  private GameThread gameThread;
   private Bitmap bgBitmap;
   private Coconut coco;
   private Bitmap buttonBitmap;
@@ -30,7 +29,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   private ArrayList<Barrier> barriers;
   int lives = GameConfig.NUM_OF_LIVES;
   int lastHit = -1;
-  GameConfig.COMMAND command1 = GameConfig.COMMAND.R;
+  private GameConfig.COMMAND command = GameConfig.COMMAND.R;
+  private boolean gameStarted = false;
+  private long timestamp = -1;
 
   public GameSurface(Context context)  {
     super(context);
@@ -40,8 +41,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     this.getHolder().addCallback(this);
   }
 
-  public void update(GameConfig.COMMAND command, int intensity)  {
-    if (lives == 0) {
+  public void update()  {
+    if (lives == 0 || !gameStarted) {
       return;
     }
 //    this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command) * intensity);
@@ -101,9 +102,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     createScoreBoard();
     createLives();
 
-    this.gameThread = new GameThread(this, holder);
-    this.gameThread.setRunning(true);
-    this.gameThread.start();
   }
 
   private void createBackground() {
@@ -172,29 +170,28 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   @Override
   public void surfaceDestroyed(SurfaceHolder holder) {
-    boolean retry = true;
-    while (retry) {
-      try {
-        this.gameThread.setRunning(false);
+//    boolean retry = true;
+//    while (retry) {
+//      try {
+//        this.gameThread.setRunning(false);
+//
+//        this.gameThread.join();
+//      } catch (InterruptedException e)  {
+//        e.printStackTrace();
+//      }
+//      retry = true;
+//    }
+  }
 
-        this.gameThread.join();
-      } catch (InterruptedException e)  {
-        e.printStackTrace();
-      }
-      retry = true;
-    }
+  public void processCommand(GameConfig.COMMAND cmd, int intensity, long ts) {
+    if (ts != timestamp)
+      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(cmd) * intensity * 10);
   }
 
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-      int x =  (int)event.getX();
-      int movingVectorX = x - this.coco.getX() ;
-      if (movingVectorX > 0)
-        command1 = GameConfig.COMMAND.R;
-      else
-        command1 = GameConfig.COMMAND.L;
-      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command1) * 60);
+      gameStarted = true;
       return true;
     }
     return false;
