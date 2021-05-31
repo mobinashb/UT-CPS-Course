@@ -10,7 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-public class GameControlActivity extends Activity {
+public class GameControlActivity extends BluetoothService {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +41,15 @@ public class GameControlActivity extends Activity {
       public void onClick(View v) {
         try {
           System.out.println("Left");
+          sendMessage("L6");
         } catch (Exception e) {
           e.printStackTrace();
         }
       }
     });
+
+    initialize();
+
   }
+
 }
