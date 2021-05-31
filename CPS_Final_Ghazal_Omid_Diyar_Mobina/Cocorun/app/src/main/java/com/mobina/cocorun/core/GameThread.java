@@ -27,7 +27,7 @@ public class GameThread extends Thread {
           this.gameSurface.update();
           this.gameSurface.draw(canvas);
         }
-      } catch(Exception e)  {
+      } catch (Exception e)  {
       } finally {
         if (canvas!= null)  {
           this.surfaceHolder.unlockCanvasAndPost(canvas);

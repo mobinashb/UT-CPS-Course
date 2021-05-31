@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
@@ -43,7 +44,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     this.coco.update();
     for (Barrier barrier : barriers) {
       barrier.update();
-      if (barrier.doesHit(coco.getX(), coco.getY())) {
+      if (barrier.doesHit(coco.getRect())) {
         int idx = barriers.indexOf(barrier);
         if (idx != lastHit) {
           lives--;
@@ -80,12 +81,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     Paint paint = new TextPaint();
     paint.setStyle(Paint.Style.FILL);
     paint.setColor(Color.BLACK);
-    paint.setTextSize(56);
+    paint.setTextSize(72);
     paint.setTypeface(Typeface.DEFAULT_BOLD);
 
     Paint stkPaint = new Paint();
     stkPaint.setStyle(Paint.Style.STROKE);
-    stkPaint.setTextSize(56);
+    stkPaint.setTextSize(72);
     stkPaint.setStrokeWidth(4);
     stkPaint.setTypeface(Typeface.DEFAULT_BOLD);
     stkPaint.setColor(Color.WHITE);
@@ -157,13 +158,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     Bitmap barrierRightBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.barrier_right);
     barriers = new ArrayList<>();
     this.barriers.add(new Barrier(this, barrierLeftBitmap,
-        -barrierLeftBitmap.getWidth() / 2, getHeight() / 4,
+        -barrierLeftBitmap.getWidth() / 2, getHeight() / GameConfig.NUM_OF_BARRIERS,
         GameConfig.BARRIER_TYPE.LEFT));
     this.barriers.add(new Barrier(this,
-        barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3, getHeight() / 2,
+        barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3,
+        getHeight() * 2 / GameConfig.NUM_OF_BARRIERS,
         GameConfig.BARRIER_TYPE.RIGHT));
     this.barriers.add(new Barrier(this, barrierLeftBitmap,
-        -barrierLeftBitmap.getWidth() / 2, getHeight() * 3 / 4,
+        -barrierLeftBitmap.getWidth() / 2, getHeight() * 3 / GameConfig.NUM_OF_BARRIERS,
         GameConfig.BARRIER_TYPE.LEFT));
     this.barriers.add(new Barrier(this,
         barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3, getHeight(),
@@ -171,8 +173,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   private void createScoreBoard() {
-    buttonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.button1);
-    buttonBitmap = Bitmap.createScaledBitmap(buttonBitmap, getWidth() / 3, 200, false);
+    buttonBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.button);
+    buttonBitmap = createResizedBitmap(buttonBitmap, getWidth() / 3, 180);
+  }
+
+  public Bitmap createResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    int width = bm.getWidth();
+    int height = bm.getHeight();
+    float scaleWidth = ((float) newWidth) / width;
+    float scaleHeight = ((float) newHeight) / height;
+    Matrix matrix = new Matrix();
+    matrix.postScale(scaleWidth, scaleHeight);
+    Bitmap resizedBitmap = Bitmap.createBitmap(
+        bm, 0, 0, width, height, matrix, false);
+    bm.recycle();
+    return resizedBitmap;
   }
 
   private void createLives() {

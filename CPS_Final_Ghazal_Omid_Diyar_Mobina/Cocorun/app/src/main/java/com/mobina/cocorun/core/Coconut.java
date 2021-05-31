@@ -10,7 +10,7 @@ public class Coconut extends GameObject {
   private int movingVectorX = 10;
   private int movingVectorY = 5;
 
-  private long lastDrawNanoTime =-1;
+  private long lastDrawNanoTime = -1;
 
   private GameSurface gameSurface;
 
@@ -49,6 +49,7 @@ public class Coconut extends GameObject {
       this.y = this.gameSurface.getHeight()- height;
       this.movingVectorY = - this.movingVectorY ;
     }
+    updateRect();
   }
 
   public void draw(Canvas canvas)  {
