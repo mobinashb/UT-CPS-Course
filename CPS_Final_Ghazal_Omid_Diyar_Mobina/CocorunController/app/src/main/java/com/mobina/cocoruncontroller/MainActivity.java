@@ -1,411 +1,424 @@
 package com.mobina.cocoruncontroller;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Build;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobina.cocoruncontroller.core.BluetoothService;
-import com.mobina.cocoruncontroller.core._3dVector;
-import com.mobina.cocoruncontroller.utils.GameConfig;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import com.mobina.cocoruncontroller.core.Wifi.ClientSocket;
+import com.mobina.cocoruncontroller.core.Wifi.Constants;
+import com.mobina.cocoruncontroller.core.Wifi.MyPeerListener;
+import com.mobina.cocoruncontroller.core.Wifi.ServerSocketThread;
+import com.mobina.cocoruncontroller.core.Wifi.ServiceDiscovery;
+import com.mobina.cocoruncontroller.core.Wifi.WifiBroadcastReceiver;
 
-public class MainActivity extends Activity {
+import java.util.ArrayList;
 
-    // Name of the connected device
-    private String mConnectedDeviceName = null;
-    // String buffer for outgoing messages
-    private StringBuffer mOutStringBuffer;
-    // Local Bluetooth adapter
-    private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the chat services
-    private BluetoothService mService = null;
 
-    public static final int MESSAGE_STATE_CHANGE = 1;
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_NAME = 4;
-    public static final int MESSAGE_TOAST = 5;
-    // Key names received from the BluetoothService Handler
-    public static final String DEVICE_NAME = "device_name";
-    public static final String TOAST = "toast";
-    // Intent request codes
-    private static final int REQUEST_CONNECT_DEVICE = 1;
-    private static final int REQUEST_ENABLE_BT = 2;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,WifiP2pManager.ConnectionInfoListener {
+    public static final String TAG = "===MainActivity";
+    WifiP2pManager mManager;
+    WifiP2pManager.Channel mChannel;
+    WifiBroadcastReceiver mReceiver;
+    IntentFilter mIntentFilter;
+    WifiP2pDevice device;
 
-    Set<BluetoothDevice> pairedDevices;
-    ArrayAdapter adapterPairedDevices;
+    Button buttonDiscoveryStart;
+    Button buttonDiscoveryStop;
+    Button buttonConnect;
+    Button buttonServerStart;
+    Button buttonClientStart;
+    Button buttonClientStop;
+    Button buttonServerStop;
+    Button buttonConfigure;
+    EditText editTextTextInput;
 
-    private Button button;
-    private Vibrator vibrator;
-    private SensorManager sensorManager;
-    private Sensor accelerometerSensor, magnetometerSensor, gyroscopeSensor, gravitySensor, gameRotationSensor;
-    private double accLastEventTimestamp, magLastEventTimestamp, gyroscopeLastEventTimestamp, gravityLastEventTimestamp, gameRotationLastEventTimestamp;;
-    private _3dVector accelerometerTheta, magnetometerTheta, gyroscopeTheta, gravityTheta, gameRotationTheta;
+    ServiceDiscovery serviceDisvcoery;
 
-    Timer timer;
+    ListView listViewDevices;
+    TextView textViewDiscoveryStatus;
+    TextView textViewWifiP2PStatus;
+    TextView textViewConnectionStatus;
+    TextView textViewReceivedData;
+    TextView textViewReceivedDataStatus;
+    public static String IP = null;
+    public static boolean IS_OWNER = false;
+
+    static boolean  stateDiscovery = false;
+    static boolean stateWifi = false;
+    public static boolean stateConnection = false;
+
+    ServerSocketThread serverSocketThread;
+
+    ArrayAdapter mAdapter;
+    WifiP2pDevice[] deviceListItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        serviceDisvcoery = new ServiceDiscovery();
+        setUpUI();
+        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(this, getMainLooper(), null);
+        mReceiver = new WifiBroadcastReceiver(mManager, mChannel, this);
 
-      // Set fullscreen
-      this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-          WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-      // Set No Title
-      this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-      setContentView(R.layout.activity_main);
-
-      ImageView playButton = findViewById(R.id.button_play);
-
-      playButton.setOnClickListener(new View.OnClickListener() {
-        public void onClick(View v) {
-          showDialog();
-        }
-      });
-
-      button = findViewById(R.id.button);
-      vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-      button.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-          } else {
-            vibrator.vibrate(200);
-          }
-        }
-      });
-      accelerometerTheta = new _3dVector(0, 0, 0);
-      magnetometerTheta = new _3dVector(0, 0, 0);
-      gyroscopeTheta = new _3dVector(0, 0, 0);
-      gravityTheta = new _3dVector(0, 0, 0);
-      gameRotationTheta = new _3dVector(0, 0, 0);
-
-      mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-      // If the adapter is null, then Bluetooth is not supported
-      if (mBluetoothAdapter == null) {
-        Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-        finish();
-        return;
-      }
-
-      initializeSensors();
-
+        serverSocketThread = new ServerSocketThread();
     }
 
-  private void showDialog() {
-    AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
-    builderSingle.setTitle("Select a device: ");
 
-    builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-      }
-    });
-
-    builderSingle.setAdapter(adapterPairedDevices, new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        Object[] objects = pairedDevices.toArray();
-        BluetoothDevice device = (BluetoothDevice) objects[which];
-        mService.connect(device);
-        Toast.makeText(getApplicationContext(),"device chosen "+device.getName(),Toast.LENGTH_SHORT).show();
-        dialog.dismiss();
-        }
-    });
-    builderSingle.show();
-  }
-
-  public void initializeDevices()
-  {
-    pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-    if (pairedDevices.size() > 0) {
-
-      for (BluetoothDevice device : pairedDevices) {
-        String deviceName = device.getName();
-        String deviceHardwareAddress = device.getAddress(); // MAC address
-
-        adapterPairedDevices.add(deviceName + "\n" + deviceHardwareAddress);
-      }
-    }
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    // If BT is not on, request that it be enabled.
-    // initialize() will then be called during onActivityResult
-    if (!mBluetoothAdapter.isEnabled()) {
-      Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-      startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-      // Otherwise, setup the chat session
-    } else {
-      if (mService == null) initialize();
-      adapterPairedDevices = new ArrayAdapter(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item);
-      initializeDevices();
-    }
-    timer = new Timer();
-    timer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        double steerAngle = Math.asin(gameRotationTheta.y) * 360;
-        String command = "";
-        if (steerAngle > -5 && steerAngle < 5)
-          command = "N";
-        else if (steerAngle >= 5 && steerAngle < 65)
-        {
-          command = String.format("R%d", (int) ((steerAngle - 5)/12)+1);
-        }
-        else if (steerAngle <= -5 && steerAngle > -60)
-          command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
-        else
-          command = "N";
-        sendMessage(command);
-      }
-    }, 1000, 2 * GameConfig.REFRESH_INTERVAL);
-  }
-  @Override
-  public synchronized void onResume() {
-    super.onResume();
-    // Performing this check in onResume() covers the case in which BT was
-    // not enabled during onStart(), so we were paused to enable it...
-    // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-    if (mService != null) {
-      // Only if the state is STATE_NONE, do we know that we haven't started already
-      if (mService.getState() == BluetoothService.STATE_NONE) {
-        // Start the Bluetooth chat services
-        mService.start();
-      }
-    }
-  }
-  private void initialize() {
-    // Initialize the BluetoothService to perform bluetooth connections
-    mService = new BluetoothService(this, mHandler);
-    // Initialize the buffer for outgoing messages
-    mOutStringBuffer = new StringBuffer("");
-  }
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    // Stop the Bluetooth chat services
-    if (mService != null) mService.stop();
-  }
-  private void ensureDiscoverable() {
-    if (mBluetoothAdapter.getScanMode() !=
-        BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-      Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-      discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-      startActivity(discoverableIntent);
-    }
-  }
-  /**
-   * Sends a message.
-   * @param message  A string of text to send.
-   */
-  private void sendMessage(String message) {
-    // Check that we're actually connected before trying anything
-    if (mService.getState() != BluetoothService.STATE_CONNECTED) {
-//      Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
-      return;
-    }
-    // Check that there's actually something to send
-    if (message.length() > 0) {
-      // Get the message bytes and tell the BluetoothService to write
-      byte[] send = message.getBytes();
-      mService.write(send);
-      // Reset out string buffer to zero and clear the edit text field
-      mOutStringBuffer.setLength(0);
-    }
-  }
-  // The Handler that gets information back from the BluetoothService
-  @SuppressLint("HandlerLeak")
-  private final Handler mHandler = new Handler() {
     @Override
-    public void handleMessage(Message msg) {
-      switch (msg.what) {
-        case MESSAGE_STATE_CHANGE:
-          switch (msg.arg1) {
-            case BluetoothService.STATE_CONNECTED:
-              Toast.makeText(MainActivity.this, "connected to " + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-              break;
-            case BluetoothService.STATE_CONNECTING:
-              Toast.makeText(MainActivity.this, "connecting", Toast.LENGTH_SHORT).show();
-              break;
-            case BluetoothService.STATE_LISTEN:
-            case BluetoothService.STATE_NONE:
-              Toast.makeText(MainActivity.this, "not connected", Toast.LENGTH_SHORT).show();
-              break;
-          }
-          break;
-        case MESSAGE_WRITE:
-          byte[] writeBuf = (byte[]) msg.obj;
-          // construct a string from the buffer
-          String writeMessage = new String(writeBuf);
-          break;
-        case MESSAGE_READ:
-          byte[] readBuf = (byte[]) msg.obj;
-          // construct a string from the valid bytes in the buffer
-          String readMessage = new String(readBuf, 0, msg.arg1);
-          Toast.makeText(MainActivity.this, readMessage, Toast.LENGTH_SHORT).show();
-          break;
-        case MESSAGE_DEVICE_NAME:
-          // save the connected device's name
-          mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-          Toast.makeText(getApplicationContext(), "Connected to "
-              + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-          break;
-        case MESSAGE_TOAST:
-          Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
-              Toast.LENGTH_SHORT).show();
-          break;
-      }
-    }
-  };
-
-private void initializeSensors() {
-    sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-    accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    magnetometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-    gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-    gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-    gameRotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
-
-    sensorManager.registerListener(accelerometerListener, accelerometerSensor, SensorManager.SENSOR_DELAY_FASTEST);
-    sensorManager.registerListener(magnetometerListener, magnetometerSensor, SensorManager.SENSOR_DELAY_FASTEST);
-    sensorManager.registerListener(gyroscopeListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_FASTEST);
-    sensorManager.registerListener(gravityListener, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST);
-    sensorManager.registerListener(gameRotationListener, gameRotationSensor, SensorManager.SENSOR_DELAY_FASTEST);
-    }
-
-private SensorEventListener accelerometerListener = new SensorEventListener() {
-@Override
-public void onSensorChanged(SensorEvent sensorEvent) {
-    double deltaT = (sensorEvent.timestamp - accLastEventTimestamp) / 1e9;
-    if (deltaT > 0.1) {
-    accelerometerTheta = new _3dVector(sensorEvent.values[0],
-    sensorEvent.values[1],
-    sensorEvent.values[2]);
-    accLastEventTimestamp = sensorEvent.timestamp;
+    protected void onResume() {
+        super.onResume();
+        setUpIntentFilter();
+        registerReceiver(mReceiver, mIntentFilter);
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mReceiver);
     }
 
-@Override
-public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-    };
-
-private SensorEventListener magnetometerListener = new SensorEventListener() {
-@Override
-public void onSensorChanged(SensorEvent sensorEvent) {
-    double deltaT = (sensorEvent.timestamp - magLastEventTimestamp) / 1e9;
-
-    if (deltaT > 0.1) {
-    magnetometerTheta = new _3dVector(sensorEvent.values[0],
-    sensorEvent.values[1],
-    sensorEvent.values[2]);
-    magLastEventTimestamp = sensorEvent.timestamp;
-
-    }
+    private void setUpIntentFilter() {
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
     }
 
-@Override
-public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-    };
+    private void setUpUI() {
+        buttonDiscoveryStart = findViewById(R.id.main_activity_button_discover_start);
+        buttonDiscoveryStop = findViewById(R.id.main_activity_button_discover_stop);
+        buttonConnect = findViewById(R.id.main_activity_button_connect);
+        buttonServerStart = findViewById(R.id.main_activity_button_server_start);
+        buttonServerStop = findViewById(R.id.main_activity_button_server_stop);
+        buttonClientStart = findViewById(R.id.main_activity_button_client_start);
+        buttonClientStop = findViewById(R.id.main_activity_button_client_stop);
+        buttonConfigure = findViewById(R.id.main_activity_button_configure);
+        listViewDevices = findViewById(R.id.main_activity_list_view_devices);
+        textViewConnectionStatus = findViewById(R.id.main_activiy_textView_connection_status);
+        textViewDiscoveryStatus = findViewById(R.id.main_activiy_textView_dicovery_status);
+        textViewWifiP2PStatus = findViewById(R.id.main_activiy_textView_wifi_p2p_status);
+        textViewReceivedData = findViewById(R.id.main_acitivity_data);
+        textViewReceivedDataStatus = findViewById(R.id.main_acitivity_received_data);
+
+        editTextTextInput = findViewById(R.id.main_acitivity_input_text);
+
+        buttonServerStart.setOnClickListener(this);
+        buttonServerStop.setOnClickListener(this);
+        buttonClientStart.setOnClickListener(this);
+        buttonClientStop.setOnClickListener(this);
+        buttonConnect.setOnClickListener(this);
+        buttonDiscoveryStop.setOnClickListener(this);
+        buttonDiscoveryStart.setOnClickListener(this);
+        buttonConfigure.setOnClickListener(this);
+
+        buttonClientStop.setVisibility(View.INVISIBLE);
+        buttonClientStart.setVisibility(View.INVISIBLE);
+        buttonServerStop.setVisibility(View.INVISIBLE);
+        buttonServerStart.setVisibility(View.INVISIBLE);
+        editTextTextInput.setVisibility(View.INVISIBLE);
+        textViewReceivedDataStatus.setVisibility(View.INVISIBLE);
+        textViewReceivedData.setVisibility(View.INVISIBLE);
 
 
-private SensorEventListener gyroscopeListener = new SensorEventListener() {
-@Override
-public void onSensorChanged(SensorEvent sensorEvent) {
-    double deltaT = (sensorEvent.timestamp - gyroscopeLastEventTimestamp) / 1e9;
-
-    if (deltaT > 0.1) {
-    gyroscopeTheta = new _3dVector(sensorEvent.values[0],
-    sensorEvent.values[1],
-    sensorEvent.values[2]);
-    gyroscopeLastEventTimestamp = sensorEvent.timestamp;
-
-    }
-    }
-
-@Override
-public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-    };
+        listViewDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                device = deviceListItems[i];
+                Toast.makeText(MainActivity.this,"Selected device :"+ device.deviceName ,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
-private SensorEventListener gravityListener = new SensorEventListener() {
-@Override
-public void onSensorChanged(SensorEvent sensorEvent) {
-    double deltaT = (sensorEvent.timestamp - gravityLastEventTimestamp) / 1e9;
-
-    if (deltaT > 0.1) {
-    gravityTheta = new _3dVector(sensorEvent.values[0],
-    sensorEvent.values[1],
-    sensorEvent.values[2]);
-    gravityLastEventTimestamp = sensorEvent.timestamp;
-
-    }
-    }
-
-@Override
-public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-    };
-
-
-private SensorEventListener gameRotationListener = new SensorEventListener() {
-@Override
-public void onSensorChanged(SensorEvent sensorEvent) {
-    double deltaT = (sensorEvent.timestamp - gameRotationLastEventTimestamp) / 1e9;
-
-    if (deltaT > 0.1) {
-    gameRotationTheta = new _3dVector(sensorEvent.values[0],
-    sensorEvent.values[1],
-    sensorEvent.values[2],
-    sensorEvent.values[3]);
-    gameRotationLastEventTimestamp = sensorEvent.timestamp;
-
-    }
-    }
-
-@Override
-public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-    };
 
 
     }
+
+    private void discoverPeers()
+    {
+//        Log.d(MainActivity.TAG,"discoverPeers()");
+        setDeviceList(new ArrayList<WifiP2pDevice>());
+        System.out.println("HIHI");
+        mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("HIHI1");
+                stateDiscovery = true;
+//                Log.d(MainActivity.TAG,"peer discovery started");
+                makeToast("peer discovery started");
+                MyPeerListener myPeerListener = new MyPeerListener(MainActivity.this);
+                mManager.requestPeers(mChannel,myPeerListener);
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+                System.out.println("HIHI2");
+                stateDiscovery = false;
+                if (i == WifiP2pManager.P2P_UNSUPPORTED) {
+//                    Log.d(MainActivity.TAG," peer discovery failed :" + "P2P_UNSUPPORTED");
+                    makeToast(" peer discovery failed :" + "P2P_UNSUPPORTED");
+
+                } else if (i == WifiP2pManager.ERROR) {
+//                    Log.d(MainActivity.TAG," peer discovery failed :" + "ERROR");
+                    makeToast(" peer discovery failed :" + "ERROR");
+
+                } else if (i == WifiP2pManager.BUSY) {
+//                    Log.d(MainActivity.TAG," peer discovery failed :" + "BUSY");
+                    makeToast(" peer discovery failed :" + "BUSY");
+                }
+            }
+        });
+    }
+
+    private void stopPeerDiscover() {
+        mManager.stopPeerDiscovery(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                stateDiscovery = false;
+//                Log.d(MainActivity.TAG,"Peer Discovery stopped");
+                makeToast("Peer Discovery stopped" );
+                //buttonDiscoveryStop.setEnabled(false);
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+//                Log.d(MainActivity.TAG,"Stopping Peer Discovery failed");
+                makeToast("Stopping Peer Discovery failed" );
+                //buttonDiscoveryStop.setEnabled(true);
+
+            }
+        });
+
+    }
+
+    public void makeToast(String msg) {
+        Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    public void connect (final WifiP2pDevice device) {
+        // Picking the first device found on the network.
+
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+
+//        Log.d(MainActivity.TAG,"Trying to connect : " +device.deviceName);
+        mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
+
+            @Override
+            public void onSuccess() {
+//                Log.d(MainActivity.TAG, "Connected to :" + device.deviceName);
+                Toast.makeText(getApplication(),"Connection successful with " + device.deviceName,Toast.LENGTH_SHORT).show();
+                //setDeviceList(new ArrayList<WifiP2pDevice>());
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                if(reason == WifiP2pManager.P2P_UNSUPPORTED) {
+//                    Log.d(MainActivity.TAG, "P2P_UNSUPPORTED");
+                    makeToast("Failed establishing connection: " + "P2P_UNSUPPORTED");
+                }
+                else if( reason == WifiP2pManager.ERROR) {
+//                    Log.d(MainActivity.TAG, "Conneciton falied : ERROR");
+                    makeToast("Failed establishing connection: " + "ERROR");
+
+                }
+                else if( reason == WifiP2pManager.BUSY) {
+//                    Log.d(MainActivity.TAG, "Conneciton falied : BUSY");
+                    makeToast("Failed establishing connection: " + "BUSY");
+
+                }
+            }
+        });
+    }
+
+    public void setDeviceList(ArrayList<WifiP2pDevice> deviceDetails) {
+
+        deviceListItems = new WifiP2pDevice[deviceDetails.size()];
+        String[] deviceNames = new String[deviceDetails.size()];
+        for(int i=0 ;i< deviceDetails.size(); i++){
+            deviceNames[i] = deviceDetails.get(i).deviceName;
+            deviceListItems[i] = deviceDetails.get(i);
+//            System.out.println(deviceListItems[i]);
+        }
+        mAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,android.R.id.text1,deviceNames);
+        listViewDevices.setAdapter(mAdapter);
+    }
+
+    public void setStatusView(int status) {
+
+        switch (status)
+        {
+            case Constants.DISCOVERY_INITATITED:
+                stateDiscovery = true;
+                textViewDiscoveryStatus.setText("DISCOVERY_INITIATED");
+                break;
+            case Constants.DISCOVERY_STOPPED:
+                stateDiscovery = false;
+                textViewDiscoveryStatus.setText("DISCOVERY_STOPPED");
+                break;
+            case Constants.P2P_WIFI_DISABLED:
+                stateWifi = false;
+                textViewWifiP2PStatus.setText("P2P_WIFI_DISABLED");
+                buttonDiscoveryStart.setEnabled(false);
+                buttonDiscoveryStop.setEnabled(false);
+                break;
+            case Constants.P2P_WIFI_ENABLED:
+                stateWifi = true;
+                textViewWifiP2PStatus.setText("P2P_WIFI_ENABLED");
+                buttonDiscoveryStart.setEnabled(true);
+                buttonDiscoveryStop.setEnabled(true);
+                break;
+            case Constants.NETWORK_CONNECT:
+                stateConnection = true;
+                makeToast("It's a connect");
+
+                textViewConnectionStatus.setText("Connected");
+                break;
+            case Constants.NETWORK_DISCONNECT:
+                stateConnection = false;
+                textViewConnectionStatus.setText("Disconnected");
+                makeToast("State is disconnected");
+                break;
+            default:
+                Log.d(MainActivity.TAG,"Unknown status");
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id){
+            case R.id.main_activity_button_discover_start:
+                System.out.println("LKLKLKLKL");
+                if(!stateDiscovery) {
+                    System.out.println("bnbn");
+                    discoverPeers();
+                }
+                break;
+            case R.id.main_activity_button_discover_stop:
+                if(stateDiscovery){
+                    stopPeerDiscover();
+                }
+                break;
+            case R.id.main_activity_button_connect:
+
+                if(device == null) {
+                    Toast.makeText(MainActivity.this,"Please discover and select a device",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                connect(device);
+                break;
+            case R.id.main_activity_button_server_start:
+                serverSocketThread = new ServerSocketThread();
+                serverSocketThread. setUpdateListener(new ServerSocketThread.OnUpdateListener() {
+                    public void onUpdate(String obj) {
+                        setReceivedText(obj);
+                    }
+                });
+                serverSocketThread.execute();
+                break;
+            case R.id.main_activity_button_server_stop:
+                if(serverSocketThread != null) {
+                    serverSocketThread.setInterrupted(true);
+                } else {
+                    Log.d(MainActivity.TAG,"serverSocketThread is null");
+                }
+                //makeToast("Yet to do...");
+                break;
+            case R.id.main_activity_button_client_start:
+                //serviceDisvcoery.startRegistrationAndDiscovery(mManager,mChannel);
+                String dataToSend = editTextTextInput.getText().toString();
+//                System.out.println("I am Sending : " + dataToSend);
+                ClientSocket clientSocket = new ClientSocket(MainActivity.this,dataToSend);
+                clientSocket.execute();
+                break;
+            case R.id.main_activity_button_configure:
+                mManager.requestConnectionInfo(mChannel,this);
+                break;
+            case R.id.main_activity_button_client_stop:
+                makeToast("Yet to do");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
+        String hostAddress= wifiP2pInfo.groupOwnerAddress.getHostAddress();
+        if (hostAddress == null) hostAddress= "host is null";
+
+        //makeToast("Am I group owner : " + String.valueOf(wifiP2pInfo.isGroupOwner));
+        //makeToast(hostAddress);
+        Log.d(MainActivity.TAG,"wifiP2pInfo.groupOwnerAddress.getHostAddress() " + wifiP2pInfo.groupOwnerAddress.getHostAddress());
+        IP = wifiP2pInfo.groupOwnerAddress.getHostAddress();
+        IS_OWNER = wifiP2pInfo.isGroupOwner;
+        System.out.println(IS_OWNER);
+        System.out.println(wifiP2pInfo.groupOwnerAddress);
+
+        buttonClientStop.setVisibility(View.VISIBLE);
+        buttonClientStart.setVisibility(View.VISIBLE);
+        editTextTextInput.setVisibility(View.VISIBLE);
+
+        buttonServerStop.setVisibility(View.VISIBLE);
+        buttonServerStart.setVisibility(View.VISIBLE);
+
+        textViewReceivedData.setVisibility(View.VISIBLE);
+        textViewReceivedDataStatus.setVisibility(View.VISIBLE);
+
+//        if(IS_OWNER) {
+//            buttonClientStop.setVisibility(View.GONE);
+//            buttonClientStart.setVisibility(View.GONE);
+//            editTextTextInput.setVisibility(View.GONE);
+//
+//            buttonServerStop.setVisibility(View.VISIBLE);
+//            buttonServerStart.setVisibility(View.VISIBLE);
+//
+//            textViewReceivedData.setVisibility(View.VISIBLE);
+//            textViewReceivedDataStatus.setVisibility(View.VISIBLE);
+//        } else {
+            //buttonClientStop.setVisibility(View.VISIBLE);
+//            buttonClientStart.setVisibility(View.VISIBLE);
+//            editTextTextInput.setVisibility(View.VISIBLE);
+//            buttonServerStop.setVisibility(View.GONE);
+//            buttonServerStart.setVisibility(View.GONE);
+//            textViewReceivedData.setVisibility(View.GONE);
+//            textViewReceivedDataStatus.setVisibility(View.GONE);
+//        }
+
+        makeToast("Configuration Completed");
+    }
+
+    public void setReceivedText(final String data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textViewReceivedData.setText(data);
+            }
+        });
+    }
+}

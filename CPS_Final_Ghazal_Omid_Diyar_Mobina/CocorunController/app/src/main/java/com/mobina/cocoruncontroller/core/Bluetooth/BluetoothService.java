@@ -1,4 +1,4 @@
-package com.mobina.cocoruncontroller.core;
+package com.mobina.cocoruncontroller.core.Bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

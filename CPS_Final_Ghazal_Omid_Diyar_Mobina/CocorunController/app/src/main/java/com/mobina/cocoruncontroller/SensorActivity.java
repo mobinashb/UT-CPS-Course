@@ -1,26 +1,23 @@
 package com.mobina.cocoruncontroller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
-
-
 import android.os.Build;
+import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.mobina.cocoruncontroller.utils.GameConfig;
+
 import java.util.Timer;
 import java.util.TimerTask;
-import java.lang.Math;
-
-import com.mobina.cocoruncontroller.GameConfig;
 
 
 public class SensorActivity extends AppCompatActivity {
