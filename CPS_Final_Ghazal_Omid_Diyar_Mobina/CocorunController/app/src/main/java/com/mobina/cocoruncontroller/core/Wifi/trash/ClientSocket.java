@@ -1,4 +1,4 @@
-package com.mobina.cocoruncontroller.core.Wifi;
+package com.mobina.cocoruncontroller.core.Wifi.trash;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -23,7 +23,7 @@ public class ClientSocket extends AsyncTask{
     private Socket socket;
     //private Context context;
     //private MainActivity activity;
-    public ClientSocket(MainActivity activity, String data1) {
+    public ClientSocket(String data1) {
         //this.context = context;
         if(data1 != null)
         {data = data1;

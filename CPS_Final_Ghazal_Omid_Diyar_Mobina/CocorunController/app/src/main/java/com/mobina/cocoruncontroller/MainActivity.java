@@ -20,10 +20,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mobina.cocoruncontroller.core.Wifi.ClientSocket;
+import com.mobina.cocoruncontroller.core.Wifi.ChatClient;
+import com.mobina.cocoruncontroller.core.Wifi.ChatServer;
 import com.mobina.cocoruncontroller.core.Wifi.Constants;
 import com.mobina.cocoruncontroller.core.Wifi.MyPeerListener;
-import com.mobina.cocoruncontroller.core.Wifi.ServerSocketThread;
 import com.mobina.cocoruncontroller.core.Wifi.ServiceDiscovery;
 import com.mobina.cocoruncontroller.core.Wifi.WifiBroadcastReceiver;
 
@@ -63,7 +63,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static boolean stateWifi = false;
     public static boolean stateConnection = false;
 
-    ServerSocketThread serverSocketThread;
+    boolean isServer;
+    ChatServer chatServer;
+    ChatClient chatClient;
+//    private ChatConnection connection;
+
+//    ServerSocketThread serverSocketThread;
 
     ArrayAdapter mAdapter;
     WifiP2pDevice[] deviceListItems;
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mChannel = mManager.initialize(this, getMainLooper(), null);
         mReceiver = new WifiBroadcastReceiver(mManager, mChannel, this);
 
-        serverSocketThread = new ServerSocketThread();
+//        serverSocketThread = new ServerSocketThread();
     }
 
 
@@ -333,28 +338,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 connect(device);
                 break;
             case R.id.main_activity_button_server_start:
-                serverSocketThread = new ServerSocketThread();
-                serverSocketThread. setUpdateListener(new ServerSocketThread.OnUpdateListener() {
-                    public void onUpdate(String obj) {
-                        setReceivedText(obj);
-                    }
-                });
-                serverSocketThread.execute();
+                if(this.isServer){
+                    this.chatServer = new ChatServer(8888);
+                    this.chatServer.setUpdateListener(new ChatServer.OnUpdateListener() {
+                        public void onUpdate(String obj) {
+                            setReceivedText(obj);
+                        }
+                    });
+                    this.chatServer.execute();
+                }
+                else {
+                    this.chatClient = new ChatClient(MainActivity.this.IP, 8888);
+                    this.chatClient.setUpdateListener(new ChatClient.OnUpdateListener() {
+                        public void onUpdate(String obj) {
+                            setReceivedText(obj);
+                        }
+                    });
+                    this.chatClient.execute();
+                }
+//                if(this.isServer) {
+//                    System.out.println("I AM SERVER AND OWNER");
+//                    this.chatServer = new ChatServer();
+//                    this.chatServer.setUpdateListener(new ChatServer.OnUpdateListener() {
+//                        public void onUpdate(String obj) {
+//                            setReceivedText(obj);
+//                        }
+//                    });
+//                    this.chatServer.execute();
+//                }
+//                else{
+//                    System.out.println("I AM CLIENT");
+//                    this.chatClient = new ChatClient();
+//                    this.chatClient.setUpdateListener(new ChatClient.OnUpdateListener() {
+//                        public void onUpdate(String obj) {
+//                            setReceivedText(obj);
+//                        }
+//                    });
+//                    this.chatClient.execute();
+//                }
+//                serverSocketThread = new ServerSocketThread();
+//                serverSocketThread. setUpdateListener(new ServerSocketThread.OnUpdateListener() {
+//                    public void onUpdate(String obj) {
+//                        setReceivedText(obj);
+//                    }
+//                });
+//                serverSocketThread.execute();
                 break;
             case R.id.main_activity_button_server_stop:
-                if(serverSocketThread != null) {
-                    serverSocketThread.setInterrupted(true);
-                } else {
-                    Log.d(MainActivity.TAG,"serverSocketThread is null");
-                }
+//                if(serverSocketThread != null) {
+//                    serverSocketThread.setInterrupted(true);
+//                } else {
+//                    Log.d(MainActivity.TAG,"serverSocketThread is null");
+//                }
                 //makeToast("Yet to do...");
                 break;
             case R.id.main_activity_button_client_start:
                 //serviceDisvcoery.startRegistrationAndDiscovery(mManager,mChannel);
                 String dataToSend = editTextTextInput.getText().toString();
-//                System.out.println("I am Sending : " + dataToSend);
-                ClientSocket clientSocket = new ClientSocket(MainActivity.this,dataToSend);
-                clientSocket.execute();
+                System.out.println("I am Sending : " + dataToSend);
+                if(this.isServer) this.chatServer.sendNewMsg(dataToSend);
+                else this.chatClient.sendNewMsg(dataToSend);
+//                ClientSocket clientSocket = new ClientSocket(dataToSend);
+//                clientSocket.execute();
                 break;
             case R.id.main_activity_button_configure:
                 mManager.requestConnectionInfo(mChannel,this);
@@ -390,25 +435,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textViewReceivedData.setVisibility(View.VISIBLE);
         textViewReceivedDataStatus.setVisibility(View.VISIBLE);
 
-//        if(IS_OWNER) {
+        if(IS_OWNER) {
 //            buttonClientStop.setVisibility(View.GONE);
 //            buttonClientStart.setVisibility(View.GONE);
-//            editTextTextInput.setVisibility(View.GONE);
+//            editTextTextInput.setVisibility(View.VISIBLE);
 //
 //            buttonServerStop.setVisibility(View.VISIBLE);
 //            buttonServerStart.setVisibility(View.VISIBLE);
 //
 //            textViewReceivedData.setVisibility(View.VISIBLE);
 //            textViewReceivedDataStatus.setVisibility(View.VISIBLE);
-//        } else {
-            //buttonClientStop.setVisibility(View.VISIBLE);
+            this.isServer = true;
+        } else {
+//            buttonClientStop.setVisibility(View.VISIBLE);
 //            buttonClientStart.setVisibility(View.VISIBLE);
 //            editTextTextInput.setVisibility(View.VISIBLE);
 //            buttonServerStop.setVisibility(View.GONE);
 //            buttonServerStart.setVisibility(View.GONE);
 //            textViewReceivedData.setVisibility(View.GONE);
 //            textViewReceivedDataStatus.setVisibility(View.GONE);
-//        }
+            this.isServer = false;
+        }
 
         makeToast("Configuration Completed");
     }

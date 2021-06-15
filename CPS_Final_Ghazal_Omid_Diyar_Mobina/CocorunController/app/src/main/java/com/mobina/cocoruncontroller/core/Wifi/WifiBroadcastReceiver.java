@@ -65,7 +65,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
         }
         else if(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION.equals(action)) {
 
-            int state = intent.getIntExtra(WifiP2pManager.EXTRA_DISCOVERY_STATE, 100000);
+            int state = intent.getIntExtra(WifiP2pManager.EXTRA_DISCOVERY_STATE, 10000);
             if( state == WifiP2pManager.WIFI_P2P_DISCOVERY_STARTED ) {
                 mActivity.setStatusView(Constants.DISCOVERY_INITATITED);
             } else if(state == WifiP2pManager.WIFI_P2P_DISCOVERY_STOPPED) {

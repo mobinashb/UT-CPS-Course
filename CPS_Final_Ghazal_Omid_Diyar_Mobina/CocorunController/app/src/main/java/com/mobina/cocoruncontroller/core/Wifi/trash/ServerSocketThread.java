@@ -1,4 +1,4 @@
-package com.mobina.cocoruncontroller.core.Wifi;
+package com.mobina.cocoruncontroller.core.Wifi.trash;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -39,7 +39,7 @@ public class ServerSocketThread extends AsyncTask {
         try {
 
             Log.d(ServerSocketThread.TAG," started DoInBackground");
-            serverSocket = new ServerSocket(8888);
+            serverSocket = new ServerSocket(port);
 
             while (!interrupted) {
                 Socket client = serverSocket.accept();
