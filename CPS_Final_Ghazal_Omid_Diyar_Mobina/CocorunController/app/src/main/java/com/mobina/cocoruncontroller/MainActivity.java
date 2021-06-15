@@ -66,12 +66,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean isServer;
     ChatServer chatServer;
     ChatClient chatClient;
-//    private ChatConnection connection;
-
-//    ServerSocketThread serverSocketThread;
 
     ArrayAdapter mAdapter;
     WifiP2pDevice[] deviceListItems;
+
+    public interface OnUpdateListener {
+        public void onUpdate(String data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -340,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_activity_button_server_start:
                 if(this.isServer){
                     this.chatServer = new ChatServer(8888);
-                    this.chatServer.setUpdateListener(new ChatServer.OnUpdateListener() {
+                    this.chatServer.setUpdateListener(new OnUpdateListener() {
                         public void onUpdate(String obj) {
                             setReceivedText(obj);
                         }
@@ -349,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else {
                     this.chatClient = new ChatClient(MainActivity.this.IP, 8888);
-                    this.chatClient.setUpdateListener(new ChatClient.OnUpdateListener() {
+                    this.chatClient.setUpdateListener(new OnUpdateListener() {
                         public void onUpdate(String obj) {
                             setReceivedText(obj);
                         }
@@ -376,36 +377,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    });
 //                    this.chatClient.execute();
 //                }
-//                serverSocketThread = new ServerSocketThread();
-//                serverSocketThread. setUpdateListener(new ServerSocketThread.OnUpdateListener() {
-//                    public void onUpdate(String obj) {
-//                        setReceivedText(obj);
-//                    }
-//                });
-//                serverSocketThread.execute();
                 break;
             case R.id.main_activity_button_server_stop:
-//                if(serverSocketThread != null) {
-//                    serverSocketThread.setInterrupted(true);
-//                } else {
-//                    Log.d(MainActivity.TAG,"serverSocketThread is null");
-//                }
-                //makeToast("Yet to do...");
                 break;
             case R.id.main_activity_button_client_start:
-                //serviceDisvcoery.startRegistrationAndDiscovery(mManager,mChannel);
                 String dataToSend = editTextTextInput.getText().toString();
                 System.out.println("I am Sending : " + dataToSend);
                 if(this.isServer) this.chatServer.sendNewMsg(dataToSend);
                 else this.chatClient.sendNewMsg(dataToSend);
-//                ClientSocket clientSocket = new ClientSocket(dataToSend);
-//                clientSocket.execute();
                 break;
             case R.id.main_activity_button_configure:
                 mManager.requestConnectionInfo(mChannel,this);
                 break;
             case R.id.main_activity_button_client_stop:
-                makeToast("Yet to do");
                 break;
             default:
                 break;
@@ -417,13 +401,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String hostAddress= wifiP2pInfo.groupOwnerAddress.getHostAddress();
         if (hostAddress == null) hostAddress= "host is null";
 
-        //makeToast("Am I group owner : " + String.valueOf(wifiP2pInfo.isGroupOwner));
-        //makeToast(hostAddress);
+        makeToast("Am I group owner : " + String.valueOf(wifiP2pInfo.isGroupOwner));
+        makeToast(hostAddress);
         Log.d(MainActivity.TAG,"wifiP2pInfo.groupOwnerAddress.getHostAddress() " + wifiP2pInfo.groupOwnerAddress.getHostAddress());
         IP = wifiP2pInfo.groupOwnerAddress.getHostAddress();
         IS_OWNER = wifiP2pInfo.isGroupOwner;
-        System.out.println(IS_OWNER);
-        System.out.println(wifiP2pInfo.groupOwnerAddress);
+
+//        System.out.println(wifiP2pInfo.groupOwnerAddress);
 
         buttonClientStop.setVisibility(View.VISIBLE);
         buttonClientStart.setVisibility(View.VISIBLE);
