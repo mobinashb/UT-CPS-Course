@@ -1,6 +1,6 @@
 package com.mobina.cocoruncontroller.core.Wifi.Connection;
 
-import com.mobina.cocoruncontroller.MainActivity;
+import com.mobina.cocoruncontroller.WifiActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import java.net.Socket;
 public class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
-    public MainActivity.OnUpdateListener listener;
+    public WifiActivity.OnUpdateListener listener;
 
-    public ReadThread(Socket socket, MainActivity.OnUpdateListener listener) {
+    public ReadThread(Socket socket, WifiActivity.OnUpdateListener listener) {
         this.socket = socket;
         this.listener = listener;
 
@@ -33,9 +33,7 @@ public class ReadThread extends Thread {
                 if (listener != null) {
                     listener.onUpdate(response);
                 }
-                System.out.println("\n" + response);
             } catch (IOException ex) {
-                System.out.println("Error reading from server: " + ex.getMessage());
                 ex.printStackTrace();
                 break;
             }

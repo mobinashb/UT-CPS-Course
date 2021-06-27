@@ -1,10 +1,8 @@
-package com.mobina.cocoruncontroller.core.Wifi;
+package com.mobina.cocoruncontroller.core.Wifi.Connection;
 
 import android.os.AsyncTask;
 
-import com.mobina.cocoruncontroller.MainActivity;
-import com.mobina.cocoruncontroller.core.Wifi.Connection.ReadThread;
-import com.mobina.cocoruncontroller.core.Wifi.Connection.WriteThread;
+import com.mobina.cocoruncontroller.WifiActivity;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,14 +14,14 @@ public class ChatClient extends AsyncTask {
     private String hostname;
     private int port;
     public WriteThread writeThread;
-    public MainActivity.OnUpdateListener listener;
+    public WifiActivity.OnUpdateListener listener;
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
 
-    public void setUpdateListener(MainActivity.OnUpdateListener listener) {
+    public void setUpdateListener(WifiActivity.OnUpdateListener listener) {
         this.listener = listener;
     }
 
@@ -33,9 +31,6 @@ public class ChatClient extends AsyncTask {
             Socket socket = new Socket();
             socket.bind(null);
             socket.connect((new InetSocketAddress(hostname, port)), 500);
-
-            System.out.println("Connected to the chat server");
-
             new ReadThread(socket, this.listener).start();
             this.writeThread = new WriteThread(socket);
             this.writeThread.start();

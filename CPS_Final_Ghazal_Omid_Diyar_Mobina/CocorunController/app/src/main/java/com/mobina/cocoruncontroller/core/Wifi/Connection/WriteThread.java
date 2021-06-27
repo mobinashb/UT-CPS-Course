@@ -20,7 +20,6 @@ public class WriteThread extends Thread {
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
         } catch (IOException ex) {
-            System.out.println("Error getting output stream: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

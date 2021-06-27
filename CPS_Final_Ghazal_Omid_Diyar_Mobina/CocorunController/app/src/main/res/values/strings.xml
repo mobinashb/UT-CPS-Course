@@ -3,4 +3,5 @@
     <string name="game_name">Cocorun</string>
     <string name="controller_name">Controller</string>
     <string name="vibrate">Vibrate</string>
+    <string name="activity_wifi">activity_wifi</string>
 </resources>

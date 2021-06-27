@@ -8,9 +8,6 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by ash on 16/2/18.
- */
 
 public class ServiceDiscovery {
     private static final String TAG = "===ServiceDiscovery";
@@ -22,42 +19,22 @@ public class ServiceDiscovery {
     public static final String SERVICE_REG_TYPE = "_presence._tcp";
     public void discoverService(WifiP2pManager manager, WifiP2pManager.Channel channel) {
 
-        /*
-         * Register listeners for DNS-SD services. These are callbacks invoked
-         * by the system when a service is actually discovered.
-         */
 
         manager.setDnsSdResponseListeners(channel,
                 new WifiP2pManager.DnsSdServiceResponseListener() {
 
                     @Override
-                    public void onDnsSdServiceAvailable(String instanceName,
-                                                        String registrationType, WifiP2pDevice srcDevice) {
-
-                        // A service has been discovered. Is this our app?
-                        // update the UI and add the item the discovered
-                        // device.
+                    public void onDnsSdServiceAvailable(String instanceName, String registrationType, WifiP2pDevice srcDevice) {
                         Log.d(ServiceDiscovery.TAG,"=========================yessssssssss");
-
                     }
                 }, new WifiP2pManager.DnsSdTxtRecordListener() {
 
-                    /**
-                     * A new TXT record is available. Pick up the advertised
-                     * buddy name.
-                     */
                     @Override
-                    public void onDnsSdTxtRecordAvailable(
-                            String fullDomainName, Map<String, String> record,
-                            WifiP2pDevice device) {
-                        Log.d(TAG,
-                                device.deviceName + " is "
-                                        + record.get(TXTRECORD_PROP_AVAILABLE));
+                    public void onDnsSdTxtRecordAvailable(String fullDomainName, Map<String, String> record, WifiP2pDevice device) {
+                        Log.d(TAG,device.deviceName + " is " + record.get(TXTRECORD_PROP_AVAILABLE));
                     }
                 });
-
-        // After attaching listeners, create a service request and initiate
-        // discovery.
+        
         serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
         manager.addServiceRequest(channel, serviceRequest,
                 new WifiP2pManager.ActionListener() {
