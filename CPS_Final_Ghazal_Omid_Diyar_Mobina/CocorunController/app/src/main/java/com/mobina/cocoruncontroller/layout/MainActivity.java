@@ -98,12 +98,12 @@ public class MainActivity extends FragmentActivity {
   private void setFragment() {
       getSupportFragmentManager().beginTransaction()
               .setReorderingAllowed(true)
-              .add(R.id.fragment_wifi, WifiActivity.class, null)
+              .add(R.id.fragment_wifi, WifiFragment.class, null)
               .commit();
   }
   private void setActivity(){
       System.out.println("HKHKHK");
-      Intent intent = new Intent(MainActivity.this, WifiActivity.class);
+      Intent intent = new Intent(MainActivity.this, WifiFragment.class);
       startActivity(intent);
   }
 

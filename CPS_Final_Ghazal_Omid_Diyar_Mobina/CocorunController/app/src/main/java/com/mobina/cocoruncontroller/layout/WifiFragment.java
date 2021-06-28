@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WifiActivity extends Fragment implements View.OnClickListener, WifiP2pManager.ConnectionInfoListener {
+public class WifiFragment extends Fragment implements View.OnClickListener, WifiP2pManager.ConnectionInfoListener {
     public static final String TAG = "===WifiFragment";
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
@@ -121,7 +121,7 @@ public class WifiActivity extends Fragment implements View.OnClickListener, Wifi
         setUpUI();
         mManager = (WifiP2pManager) activity.getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(activity, activity.getMainLooper(), null);
-        mReceiver = new WifiBroadcastReceiver(mManager, mChannel, WifiActivity.this);
+        mReceiver = new WifiBroadcastReceiver(mManager, mChannel, WifiFragment.this);
         setUpIntentFilter();
         activity.registerReceiver(mReceiver, mIntentFilter);
 
@@ -176,7 +176,7 @@ public class WifiActivity extends Fragment implements View.OnClickListener, Wifi
             public void onSuccess() {
                 stateDiscovery = true;
                 makeToast("peer discovery started");
-                MyPeerListener myPeerListener = new MyPeerListener(WifiActivity.this);
+                MyPeerListener myPeerListener = new MyPeerListener(WifiFragment.this);
                 mManager.requestPeers(mChannel,myPeerListener);
             }
 
@@ -223,7 +223,7 @@ public class WifiActivity extends Fragment implements View.OnClickListener, Wifi
 
             @Override
             public void onSuccess() {
-                Toast.makeText(WifiActivity.this. activity.getApplication(),"Connection successful with " + device.deviceName,Toast.LENGTH_SHORT).show();
+                Toast.makeText(WifiFragment.this. activity.getApplication(),"Connection successful with " + device.deviceName,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -291,7 +291,7 @@ public class WifiActivity extends Fragment implements View.OnClickListener, Wifi
                 makeToast("State is disconnected");
                 break;
             default:
-                Log.d(WifiActivity.TAG,"Unknown status");
+                Log.d(WifiFragment.TAG,"Unknown status");
                 break;
         }
     }
@@ -358,8 +358,8 @@ public class WifiActivity extends Fragment implements View.OnClickListener, Wifi
                             command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
                         else
                             command = "N";
-                        if(WifiActivity.this.isServer) WifiActivity.this.chatServer.sendNewMsg(command);
-                        else WifiActivity.this.chatClient.sendNewMsg(command);
+                        if(WifiFragment.this.isServer) WifiFragment.this.chatServer.sendNewMsg(command);
+                        else WifiFragment.this.chatClient.sendNewMsg(command);
                     }
                 }, 1000, 2 * GameConfig.REFRESH_INTERVAL);
                 break;

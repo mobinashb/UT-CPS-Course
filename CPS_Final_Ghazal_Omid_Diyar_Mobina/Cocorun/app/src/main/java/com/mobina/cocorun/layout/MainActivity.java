@@ -1,34 +1,19 @@
 package com.mobina.cocorun.activity;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mobina.cocorun.R;
-import com.mobina.cocorun.core.Bluetooth.BluetoothService;
-import com.mobina.cocorun.core.BluetoothFragment;
 import com.mobina.cocorun.core.GameSurface;
 import com.mobina.cocorun.utils.GameConfig;
-
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements Runnable {
 
@@ -97,13 +82,13 @@ public class MainActivity extends AppCompatActivity implements Runnable {
   private void setFragment() {
     getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
-            .add(R.id.fragment_wifi, WifiActivity.class, null)
+            .add(R.id.fragment_wifi, WifiFragment.class, null)
             .commit();
   }
 
   private void setActivity(){
     System.out.println("HKHKHK");
-    Intent intent = new Intent(MainActivity.this, WifiActivity.class);
+    Intent intent = new Intent(MainActivity.this, WifiFragment.class);
     startActivity(intent);
   }
 

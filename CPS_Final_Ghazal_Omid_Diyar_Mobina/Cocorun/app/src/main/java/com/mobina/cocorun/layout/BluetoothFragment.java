@@ -10,21 +10,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.mobina.cocorun.R;
-import com.mobina.cocorun.activity.MainActivity;
+import com.mobina.cocorun.layout.MainActivity;
 import com.mobina.cocorun.core.Bluetooth.BluetoothService;
 import com.mobina.cocorun.utils.BluetoothConfig;
-import com.mobina.cocorun.utils.GameConfig;
 
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class BluetoothFragment extends Fragment {
 
