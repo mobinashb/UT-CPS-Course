@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 
-public class ChatClient extends AsyncTask {
+public class ChatClient extends Thread {
     private String hostname;
     private int port;
     public WriteThread writeThread;
@@ -25,12 +25,12 @@ public class ChatClient extends AsyncTask {
         this.listener = listener;
     }
 
-    @Override
-    protected Void doInBackground(Object[] objects) {
+
+    public void run() {
         try {
             Socket socket = new Socket();
             socket.bind(null);
-            socket.connect((new InetSocketAddress(hostname, port)), 500);
+            socket.connect((new InetSocketAddress(hostname, port)), 5000);
             new ReadThread(socket, this.listener).start();
             this.writeThread = new WriteThread(socket);
             this.writeThread.start();
@@ -39,8 +39,6 @@ public class ChatClient extends AsyncTask {
         } catch (IOException ex) {
             System.out.println("I/O Error: " + ex.getMessage());
         }
-        return null;
-
     }
 
     public void sendNewMsg(String msg) {

@@ -15,9 +15,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private Button button;
     private Vibrator vibrator;
@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView playButton = findViewById(R.id.button_play);
     playButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-//            setFragment();
-            setActivity();
+            setFragment();
+//            setActivity();
         }
       });
   }
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
   private void setFragment() {
       getSupportFragmentManager().beginTransaction()
               .setReorderingAllowed(true)
-              .add(R.id.fragment_bluetooth, BluetoothFragment.class, null)
+              .add(R.id.fragment_wifi, WifiActivity.class, null)
               .commit();
   }
   private void setActivity(){

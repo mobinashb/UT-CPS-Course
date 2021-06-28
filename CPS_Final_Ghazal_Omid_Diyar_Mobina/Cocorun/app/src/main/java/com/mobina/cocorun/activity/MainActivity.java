@@ -89,15 +89,15 @@ public class MainActivity extends AppCompatActivity implements Runnable {
     ImageView playButton = findViewById(R.id.button_play);
     playButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
-//            setFragment();
-        setActivity();
+            setFragment();
+//        setActivity();
       }
     });
   }
   private void setFragment() {
     getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
-            .add(R.id.fragment_bluetooth, BluetoothFragment.class, null)
+            .add(R.id.fragment_wifi, WifiActivity.class, null)
             .commit();
   }
 

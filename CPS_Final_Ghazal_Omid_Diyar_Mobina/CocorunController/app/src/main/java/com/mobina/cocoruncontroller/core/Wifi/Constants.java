@@ -12,8 +12,6 @@ public final class Constants {
     public static final int NETWORK_DISCONNECT = 5;
 
     // Address
-    public static final int WIFI_SOCKET_PORT = 8888;
-
-
+    public static final int WIFI_SOCKET_PORT = 9111;
 }
 

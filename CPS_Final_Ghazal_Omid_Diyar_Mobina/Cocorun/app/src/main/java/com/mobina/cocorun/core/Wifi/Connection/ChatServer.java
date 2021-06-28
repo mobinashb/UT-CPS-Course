@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class ChatServer extends AsyncTask {
+public class ChatServer extends Thread {
     private int port;
     public WriteThread writeThread;
     public WifiActivity.OnUpdateListener listener;
@@ -23,8 +23,7 @@ public class ChatServer extends AsyncTask {
         this.listener = listener;
     }
 
-    @Override
-    protected Void doInBackground(Object[] objects) {
+    public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             Socket socket = serverSocket.accept();
@@ -35,7 +34,6 @@ public class ChatServer extends AsyncTask {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return null;
     }
 
     public void sendNewMsg(String msg){

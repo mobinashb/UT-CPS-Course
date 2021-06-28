@@ -11,7 +11,9 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,8 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.mobina.cocorun.R;
 import com.mobina.cocorun.core.Wifi.Connection.ChatClient;
@@ -37,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WifiActivity extends AppCompatActivity implements View.OnClickListener, WifiP2pManager.ConnectionInfoListener {
+public class WifiActivity extends Fragment implements View.OnClickListener, WifiP2pManager.ConnectionInfoListener {
     public static final String TAG = "===WifiFragment";
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
@@ -76,6 +81,12 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
     ArrayAdapter mAdapter;
     WifiP2pDevice[] deviceListItems;
 
+    MainActivity activity;
+
+    public MainActivity getParentActivity(){
+        return activity;
+    }
+
     public interface OnUpdateListener {
         public void onUpdate(String data);
     }
@@ -83,27 +94,48 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wifi);
+        activity = (MainActivity)getActivity();
         serviceDiscovery = new ServiceDiscovery();
-        setUpUI();
-        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(this, getMainLooper(), null);
-        mReceiver = new WifiBroadcastReceiver(mManager, mChannel, WifiActivity.this);
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_wifi, container, false);
+
+        buttonDiscoveryStart = view.findViewById(R.id.main_activity_button_discover_start);
+        buttonDiscoveryStop = view.findViewById(R.id.main_activity_button_discover_stop);
+        buttonConnect = view.findViewById(R.id.main_activity_button_connect);
+        buttonServerStart = view.findViewById(R.id.main_activity_button_server_start);
+        buttonServerStop = view.findViewById(R.id.main_activity_button_server_stop);
+        buttonClientStart = view.findViewById(R.id.main_activity_button_client_start);
+        buttonConfigure = view.findViewById(R.id.main_activity_button_configure);
+        listViewDevices = view.findViewById(R.id.main_activity_list_view_devices);
+        textViewConnectionStatus = view.findViewById(R.id.main_activiy_textView_connection_status);
+        textViewDiscoveryStatus = view.findViewById(R.id.main_activiy_textView_dicovery_status);
+        textViewWifiP2PStatus = view.findViewById(R.id.main_activiy_textView_wifi_p2p_status);
+        textViewReceivedData = view.findViewById(R.id.main_acitivity_data);
+        textViewReceivedDataStatus = view.findViewById(R.id.main_acitivity_received_data);
+
+        editTextTextInput = view.findViewById(R.id.main_acitivity_input_text);
+        return view;
+    }
 
     @Override
     public void onResume() {
         super.onResume();
+        setUpUI();
+        mManager = (WifiP2pManager) activity.getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(activity, activity.getMainLooper(), null);
+        mReceiver = new WifiBroadcastReceiver(mManager, mChannel, WifiActivity.this);
         setUpIntentFilter();
-        registerReceiver(mReceiver, mIntentFilter);
-
+        activity.registerReceiver(mReceiver, mIntentFilter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(mReceiver);
+        activity.unregisterReceiver(mReceiver);
     }
 
     private void setUpIntentFilter() {
@@ -116,22 +148,6 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setUpUI() {
-        buttonDiscoveryStart = findViewById(R.id.main_activity_button_discover_start);
-        buttonDiscoveryStop = findViewById(R.id.main_activity_button_discover_stop);
-        buttonConnect = findViewById(R.id.main_activity_button_connect);
-        buttonServerStart = findViewById(R.id.main_activity_button_server_start);
-        buttonServerStop = findViewById(R.id.main_activity_button_server_stop);
-        buttonClientStart = findViewById(R.id.main_activity_button_client_start);
-        buttonConfigure = findViewById(R.id.main_activity_button_configure);
-        listViewDevices = findViewById(R.id.main_activity_list_view_devices);
-        textViewConnectionStatus = findViewById(R.id.main_activiy_textView_connection_status);
-        textViewDiscoveryStatus = findViewById(R.id.main_activiy_textView_dicovery_status);
-        textViewWifiP2PStatus = findViewById(R.id.main_activiy_textView_wifi_p2p_status);
-        textViewReceivedData = findViewById(R.id.main_acitivity_data);
-        textViewReceivedDataStatus = findViewById(R.id.main_acitivity_received_data);
-
-        editTextTextInput = findViewById(R.id.main_acitivity_input_text);
-
         buttonServerStart.setOnClickListener(this);
         buttonServerStop.setOnClickListener(this);
         buttonClientStart.setOnClickListener(this);
@@ -152,7 +168,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 device = deviceListItems[i];
-                Toast.makeText(WifiActivity.this, "Selected device :" + device.deviceName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Selected device :" + device.deviceName, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -198,7 +214,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void makeToast(String msg) {
-        Toast.makeText(WifiActivity.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
     }
 
     public void connect (final WifiP2pDevice device) {
@@ -211,7 +227,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onSuccess() {
-                Toast.makeText(WifiActivity.this. getApplication(),"Connection successful with " + device.deviceName,Toast.LENGTH_SHORT).show();
+                Toast.makeText(WifiActivity.this. activity.getApplication(),"Connection successful with " + device.deviceName,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -238,7 +254,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
             deviceNames[i] = deviceDetails.get(i).deviceName;
             deviceListItems[i] = deviceDetails.get(i);
         }
-        mAdapter = new ArrayAdapter(WifiActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1,deviceNames);
+        mAdapter = new ArrayAdapter(activity, android.R.layout.simple_list_item_1, android.R.id.text1,deviceNames);
         listViewDevices.setAdapter(mAdapter);
     }
 
@@ -300,7 +316,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_activity_button_connect:
 
                 if(device == null) {
-                    Toast.makeText(this,"Please discover and select a device",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,"Please discover and select a device",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 connect(device);
@@ -313,7 +329,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
                             setReceivedText(obj);
                         }
                     });
-                    this.chatServer.execute();
+                    this.chatServer.start();
                 }
                 else {
                     this.chatClient = new ChatClient(this.IP, Constants.WIFI_SOCKET_PORT);
@@ -322,7 +338,7 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
                             setReceivedText(obj);
                         }
                     });
-                    this.chatClient.execute();
+                    this.chatClient.start();
                 }
                 break;
             case R.id.main_activity_button_server_stop:
@@ -345,6 +361,9 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
         String hostAddress = wifiP2pInfo.groupOwnerAddress.getHostAddress();
         if (hostAddress == null) hostAddress= "host is null";
 
+        if(IS_OWNER) System.out.println("I am Server");
+        else System.out.println("I am Client");
+
         Log.d(this.TAG,"wifiP2pInfo.groupOwnerAddress.getHostAddress() " + wifiP2pInfo.groupOwnerAddress.getHostAddress());
         IP = wifiP2pInfo.groupOwnerAddress.getHostAddress();
         IS_OWNER = wifiP2pInfo.isGroupOwner;
@@ -363,10 +382,9 @@ public class WifiActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setReceivedText(final String data) {
-        runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                textViewReceivedData.setText(data);
                 MainActivity.getInstance().getCommand(data);
             }
         });

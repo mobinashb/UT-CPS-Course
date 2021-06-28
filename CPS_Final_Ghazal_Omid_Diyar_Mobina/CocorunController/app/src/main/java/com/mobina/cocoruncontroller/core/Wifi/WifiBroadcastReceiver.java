@@ -31,14 +31,14 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                Toast.makeText(wifiFragment, "WIFI P2P ENABLED : " + Constants.P2P_WIFI_ENABLED, Toast.LENGTH_SHORT).show();
+                Toast.makeText(wifiFragment.getParentActivity(), "WIFI P2P ENABLED : " + Constants.P2P_WIFI_ENABLED, Toast.LENGTH_SHORT).show();
                 wifiFragment.setStatusView(Constants.P2P_WIFI_ENABLED);
             } else {
-                Toast.makeText(wifiFragment, "WIFI P2P NOT ENABLED : " + Constants.P2P_WIFI_DISABLED, Toast.LENGTH_SHORT).show();
+                Toast.makeText(wifiFragment.getParentActivity(), "WIFI P2P NOT ENABLED : " + Constants.P2P_WIFI_DISABLED, Toast.LENGTH_SHORT).show();
                 wifiFragment.setStatusView(Constants.P2P_WIFI_DISABLED);
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-            Toast.makeText(wifiFragment, "WIFI_P2P_PEERS_CHANGED_ACTION", Toast.LENGTH_SHORT).show();
+            Toast.makeText(wifiFragment.getParentActivity(), "WIFI_P2P_PEERS_CHANGED_ACTION", Toast.LENGTH_SHORT).show();
             if (mManager != null) {
                 MyPeerListener myPeerListener = new MyPeerListener(wifiFragment);
                 mManager.requestPeers(mChannel, myPeerListener);
@@ -52,14 +52,14 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
                     .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
             if (networkInfo.isConnected()) {
-                Toast.makeText(wifiFragment, "WIFI_P2P_CONNECTION_CHANGED_ACTION : " + Constants.NETWORK_CONNECT, Toast.LENGTH_SHORT).show();
+                Toast.makeText(wifiFragment.getParentActivity(), "WIFI_P2P_CONNECTION_CHANGED_ACTION : " + Constants.NETWORK_CONNECT, Toast.LENGTH_SHORT).show();
                 wifiFragment.setStatusView(Constants.NETWORK_CONNECT);
             } else {
-                Toast.makeText(wifiFragment, "WIFI_P2P_CONNECTION_CHANGED_ACTION : " + Constants.NETWORK_DISCONNECT, Toast.LENGTH_SHORT).show();
+                Toast.makeText(wifiFragment.getParentActivity(), "WIFI_P2P_CONNECTION_CHANGED_ACTION : " + Constants.NETWORK_DISCONNECT, Toast.LENGTH_SHORT).show();
                 wifiFragment.setStatusView(Constants.NETWORK_DISCONNECT);
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
-            Toast.makeText(wifiFragment, "WIFI_P2P_THIS_DEVICE_CHANGED_ACTION : " + Constants.NETWORK_DISCONNECT, Toast.LENGTH_SHORT).show();
+            Toast.makeText(wifiFragment.getParentActivity(), "WIFI_P2P_THIS_DEVICE_CHANGED_ACTION : " + Constants.NETWORK_DISCONNECT, Toast.LENGTH_SHORT).show();
         }
         else if(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION.equals(action)) {
 

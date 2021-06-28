@@ -37,13 +37,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WifiActivity"
-            android:label="@string/activity_wifi"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mobina.cocoruncontroller.MainActivity" />
-        </activity>
+<!--        <activity android:name=".WifiActivity"-->
+<!--            android:label="@string/activity_wifi"-->
+<!--            android:parentActivityName=".MainActivity">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value="com.mobina.cocoruncontroller.MainActivity" />-->
+<!--        </activity>-->
     </application>
 
 </manifest>
