@@ -50,14 +50,4 @@
             android:layout_weight="4"
             ></ListView>
     </LinearLayout>
-    <androidx.fragment.app.FragmentContainerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_bluetooth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <androidx.fragment.app.FragmentContainerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_wifi"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
