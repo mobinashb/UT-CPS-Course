@@ -49,14 +49,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 //    this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command) * intensity);
     this.coco.update();
-    for (Barrier barrier : barriers) {
-      if (barrier.update())
+    for (int i = 0; i < barriers.size(); i++) {
+      if (barriers.get(i).update() && lastHit != i)
         score++;
-      if (barrier.doesHit(coco.getRect())) {
-        int idx = barriers.indexOf(barrier);
-        if (idx != lastHit) {
+      if (barriers.get(i).doesHit(coco.getRect())) {
+        if (i != lastHit) {
           lives--;
-          lastHit = idx;
+          lastHit = i;
         }
       }
     }
@@ -68,7 +67,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     super.draw(canvas);
     if (lives == 0) {
       saveScore();
-      score = 0;
       drawGameOverScreen(canvas);
       return;
     }
@@ -87,14 +85,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     canvas.drawBitmap(bgBitmap, 0, 0, null);
     int xPos = (canvas.getWidth() / 2);
     int yPos = (canvas.getHeight() / 2);
-    Helper.drawStrokedText(canvas, "Game Over", xPos, yPos, 72);
-    Helper.drawStrokedText(canvas, "Highscore: " + getSavedScore(), xPos, yPos + 100, 64);
+    Helper.drawStrokedText(canvas, "Game Over", xPos, yPos, 72, this.getContext());
+    Helper.drawStrokedText(canvas, "Highscore: " + getSavedScore(), xPos, yPos + 100, 64, this.getContext());
   }
 
   private void drawScore(Canvas canvas) {
     int xPos = (canvas.getWidth() / 2);
     int yPos = (buttonBitmap.getHeight() / 2);
-    Helper.drawStrokedText(canvas, "Score: " + score, xPos, yPos, 44);
+    Helper.drawStrokedText(canvas, "Score: " + score, xPos, yPos, 44, this.getContext());
   }
 
   @Override
