@@ -1,11 +1,13 @@
 package com.mobina.cocorun.core.Game;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.preference.PreferenceManager;
 import android.text.TextPaint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -31,6 +33,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   private GameConfig.COMMAND command = GameConfig.COMMAND.R;
   private boolean gameStarted = false;
   private long timestamp = -1;
+  private int score = 0;
 
   public GameSurface(Context context)  {
     super(context);
@@ -63,6 +66,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   public void draw(Canvas canvas)  {
     super.draw(canvas);
     if (lives == 0) {
+      saveScore();
       drawGameOverScreen(canvas);
       return;
     }
@@ -85,6 +89,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     int xPos = (canvas.getWidth() / 2);
     int yPos = (canvas.getHeight() / 2);
     Helper.drawStrokedText(canvas, "Game Over", xPos, yPos, 72);
+    Helper.drawStrokedText(canvas, "Highscore: " + getSavedScore(), xPos, yPos + 100, 64);
   }
 
   private void drawScore(Canvas canvas) {
@@ -196,5 +201,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
       return true;
     }
     return false;
+  }
+
+  public int getSavedScore() {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+    return prefs.getInt("highscore", 0);
+  }
+
+  public void saveScore() {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+    SharedPreferences.Editor editor = prefs.edit();
+    editor.putInt("highscore", score);
+    editor.commit();
   }
 }
