@@ -50,7 +50,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //    this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command) * intensity);
     this.coco.update();
     for (Barrier barrier : barriers) {
-      barrier.update();
+      if (barrier.update())
+        score++;
       if (barrier.doesHit(coco.getRect())) {
         int idx = barriers.indexOf(barrier);
         if (idx != lastHit) {
@@ -67,6 +68,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     super.draw(canvas);
     if (lives == 0) {
       saveScore();
+      score = 0;
       drawGameOverScreen(canvas);
       return;
     }
@@ -95,7 +97,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   private void drawScore(Canvas canvas) {
     int xPos = (canvas.getWidth() / 2);
     int yPos = (buttonBitmap.getHeight() / 2);
-    Helper.drawStrokedText(canvas, "Score: " + lives, xPos, yPos, 44);
+    Helper.drawStrokedText(canvas, "Score: " + score, xPos, yPos, 44);
   }
 
   @Override
@@ -189,7 +191,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   public void processCommand(GameConfig.COMMAND cmd, int intensity, long ts) {
     if (ts != timestamp) {
-      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(cmd) * 5);
+      this.coco.setMovingVectorX(Helper.getDirctionFromCommand(cmd) * intensity);
       timestamp = ts;
     }
   }
