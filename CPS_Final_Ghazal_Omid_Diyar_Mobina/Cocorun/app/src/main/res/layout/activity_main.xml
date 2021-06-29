@@ -8,59 +8,69 @@
     android:background="@drawable/grass"
     >
     <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="9"
-        android:visibility="visible"
         android:gravity="center"
         android:orientation="vertical" >
-
         <TextView
             android:id="@+id/main_title"
+            android:layout_weight="5"
             android:layout_width="match_parent"
             android:fontFamily="@font/whatever_it_takes"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center"
             android:keepScreenOn="true"
             android:shadowColor="@color/textShadow"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
-            android:layout_weight="4"
             android:text="@string/app_name"
             android:textColor="@color/textPrimary"
             android:textSize="80sp"
             android:layout_height="wrap_content" />
 
-        <ImageView
-            android:id="@+id/button_play"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/play"
-            android:layout_weight="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/play" />
-        <Button
-            android:id="@+id/Wifi"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wifi" />
-
-        <Button
-            android:id="@+id/Bluetooth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bluetooth" />
-
-        <ListView
-            android:id="@+id/lv_paired_devices"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
             android:layout_weight="4"
-            ></ListView>
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button_wifi"
+                android:background="@drawable/button"
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:text="@string/wifi"
+                android:contentDescription="@string/wifi"
+                android:fontFamily="@font/whatever_it_takes"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="2"
+                android:textColor="@color/textPrimary"
+                android:textSize="30sp"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/button_bluetooth"
+                android:background="@drawable/button"
+                android:layout_width="160dp"
+                android:layout_height="100dp"
+                android:text="@string/bluetooth"
+                android:contentDescription="@string/bluetooth"
+                android:fontFamily="@font/whatever_it_takes"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="2"
+                android:textColor="@color/textPrimary"
+                android:textSize="30sp"
+                android:textAllCaps="false" />
+        </LinearLayout>
     </LinearLayout>
+
     <androidx.fragment.app.FragmentContainerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_bluetooth"

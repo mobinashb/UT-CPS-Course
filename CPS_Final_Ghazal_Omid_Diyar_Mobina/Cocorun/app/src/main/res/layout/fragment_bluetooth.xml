@@ -4,17 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".layout.MainActivity"
     android:background="@drawable/grass"
-    >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="9"
-        android:visibility="visible"
-        android:gravity="center"
-        android:orientation="vertical" >
+    tools:context=".layout.MainActivity">
 
+    <LinearLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/tilt"
+            />
         <TextView
             android:id="@+id/main_title"
             android:layout_width="match_parent"
@@ -25,29 +34,12 @@
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
-            android:layout_weight="4"
-            android:text="@string/app_name"
+            android:text="@string/tilt_to_play"
             android:textColor="@color/textPrimary"
-            android:textSize="80sp"
+            android:textSize="60sp"
             android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/button_play"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/play"
-            android:layout_weight="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/play" />
-
-        <ListView
-            android:id="@+id/lv_paired_devices"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_weight="4"
-            ></ListView>
     </LinearLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

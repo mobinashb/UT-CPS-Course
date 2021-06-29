@@ -11,12 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.mobina.cocorun.R;
 import com.mobina.cocorun.core.Game.GameSurface;
 import com.mobina.cocorun.utils.GameConfig;
 
-public class MainActivity extends AppCompatActivity implements Runnable {
+public class MainActivity extends FragmentActivity implements Runnable {
 
   static GameSurface gameSurface;
 
@@ -72,14 +73,14 @@ public class MainActivity extends AppCompatActivity implements Runnable {
   @Override
   public synchronized void onResume() {
     super.onResume();
-    Button wifiButton = findViewById(R.id.Wifi);
+    Button wifiButton = findViewById(R.id.button_wifi);
     wifiButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
         runWifiFragment();
       }
     });
 
-    Button bluetoothButton = findViewById(R.id.Bluetooth);
+    Button bluetoothButton = findViewById(R.id.button_bluetooth);
     bluetoothButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
         runBluetoothFragment();
@@ -97,19 +98,16 @@ public class MainActivity extends AppCompatActivity implements Runnable {
 //    }
 //  });
 //}
-  private void setFragment() {
-    getSupportFragmentManager().beginTransaction()
-            .setReorderingAllowed(true)
-            .add(R.id.fragment_wifi, WifiFragment.class, null)
-            .commit();
-  }
+
   private void runWifiFragment() {
+    findViewById(R.id.main).setVisibility(View.GONE);
     getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
             .add(R.id.fragment_wifi, WifiFragment.class, null)
             .commit();
   }
   private void runBluetoothFragment() {
+    findViewById(R.id.main).setVisibility(View.GONE);
     getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
             .add(R.id.fragment_bluetooth, BluetoothFragment.class, null)

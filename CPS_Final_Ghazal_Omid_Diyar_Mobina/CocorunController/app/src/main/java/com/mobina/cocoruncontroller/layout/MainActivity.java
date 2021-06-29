@@ -112,13 +112,6 @@ public class MainActivity extends FragmentActivity {
 //    });
 //}
 
-    private void setFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.fragment_wifi, WifiFragment.class, null)
-                .commit();
-    }
-
   @Override
   public void onDestroy() {
     super.onDestroy();
