@@ -8,6 +8,6 @@ public class GameConfig {
   public static int NUM_OF_LIVES = 3;
   public static int NUM_OF_BARRIERS = 4;
   public static int SCREEN_REFRESH_INTERVAL = 10;
-  public static int CONST_DELTA_TIME = 80;
+  public static int CONST_DELTA_TIME = 90;
   public enum COMMAND {L, R}
 }

@@ -84,10 +84,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   private void drawGameOverScreen(Canvas canvas) {
-    Paint bgPaint = new TextPaint();
-    bgPaint.setStyle(Paint.Style.FILL);
-    bgPaint.setColor(Color.GRAY);
-    canvas.drawPaint(bgPaint);
+    canvas.drawBitmap(bgBitmap, 0, 0, null);
     int xPos = (canvas.getWidth() / 2);
     int yPos = (canvas.getHeight() / 2);
     Helper.drawStrokedText(canvas, "Game Over", xPos, yPos, 72);
