@@ -1,4 +1,4 @@
-package com.mobina.cocorun.activity;
+package com.mobina.cocorun.layout;
 
 import android.content.Context;
 import android.content.IntentFilter;

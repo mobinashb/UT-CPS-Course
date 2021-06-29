@@ -1,6 +1,5 @@
-package com.mobina.cocoruncontroller;
+package com.mobina.cocoruncontroller.layout;
 
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,9 +12,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.fragment.app.FragmentActivity;
+
+import com.mobina.cocoruncontroller.R;
+import com.mobina.cocoruncontroller._3dVector;
 
 public class MainActivity extends FragmentActivity {
 
@@ -81,31 +82,57 @@ public class MainActivity extends FragmentActivity {
   @Override
   public synchronized void onResume() {
     super.onResume();
-    ImageView playButton = findViewById(R.id.button_play);
-    playButton.setOnClickListener(new View.OnClickListener() {
-        public void onClick(View v) {
-            setFragment();
-//            setActivity();
-        }
+      Button wifiButton = findViewById(R.id.Wifi);
+      wifiButton.setOnClickListener(new View.OnClickListener() {
+          public void onClick(View v) {
+              runWifiFragment();
+          }
+      });
+
+      Button bluetoothButton = findViewById(R.id.Bluetooth);
+      bluetoothButton.setOnClickListener(new View.OnClickListener() {
+          public void onClick(View v) {
+              runBluetoothFragment();
+          }
       });
   }
+//@Override
+//public synchronized void onResume() {
+//    super.onResume();
+//    ImageView playButton = findViewById(R.id.button_play);
+//    playButton.setOnClickListener(new View.OnClickListener() {
+//        public void onClick(View v) {
+//            setFragment();
+////            setActivity();
+//        }
+//    });
+//}
+
+    private void setFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.fragment_wifi, WifiFragment.class, null)
+                .commit();
+    }
+
   @Override
   public void onDestroy() {
     super.onDestroy();
     instance = null;
   }
 
-  private void setFragment() {
+  private void runWifiFragment() {
       getSupportFragmentManager().beginTransaction()
               .setReorderingAllowed(true)
               .add(R.id.fragment_wifi, WifiFragment.class, null)
               .commit();
   }
-  private void setActivity(){
-      System.out.println("HKHKHK");
-      Intent intent = new Intent(MainActivity.this, WifiFragment.class);
-      startActivity(intent);
-  }
+private void runBluetoothFragment() {
+    getSupportFragmentManager().beginTransaction()
+            .setReorderingAllowed(true)
+            .add(R.id.fragment_bluetooth, BluetoothFragment.class, null)
+            .commit();
+}
 
 private void initializeSensors() {
     sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);

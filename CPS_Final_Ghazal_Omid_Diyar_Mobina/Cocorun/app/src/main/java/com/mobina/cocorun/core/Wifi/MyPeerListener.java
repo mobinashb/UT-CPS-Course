@@ -6,7 +6,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
 
-import com.mobina.cocorun.activity.WifiActivity;
+import com.mobina.cocorun.layout.WifiFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
 public class MyPeerListener implements WifiP2pManager.PeerListListener {
     public static final String TAG = "===MyPeerListener";
     private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
-    public WifiActivity fragment;
+    public WifiFragment fragment;
 
-    public MyPeerListener(WifiActivity fragment) {
+    public MyPeerListener(WifiFragment fragment) {
         this.fragment = fragment;
         Log.d(MyPeerListener.TAG,"MyPeerListener object created");
 

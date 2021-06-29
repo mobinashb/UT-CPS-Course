@@ -1,9 +1,7 @@
 package com.mobina.cocorun.core.Wifi.Connection;
 
-import android.os.AsyncTask;
 
-
-import com.mobina.cocorun.activity.WifiActivity;
+import com.mobina.cocorun.layout.WifiFragment;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,13 +11,13 @@ import java.net.Socket;
 public class ChatServer extends Thread {
     private int port;
     public WriteThread writeThread;
-    public WifiActivity.OnUpdateListener listener;
+    public WifiFragment.OnUpdateListener listener;
 
     public ChatServer(int port) {
         this.port = port;
     }
 
-    public void setUpdateListener(WifiActivity.OnUpdateListener listener) {
+    public void setUpdateListener(WifiFragment.OnUpdateListener listener) {
         this.listener = listener;
     }
 

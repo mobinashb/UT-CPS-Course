@@ -1,4 +1,4 @@
-package com.mobina.cocoruncontroller;
+package com.mobina.cocoruncontroller.layout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.mobina.cocoruncontroller.R;
 import com.mobina.cocoruncontroller.core.Bluetooth.BluetoothService;
 import com.mobina.cocoruncontroller.utils.BluetoothConfig;
 import com.mobina.cocoruncontroller.utils.GameConfig;

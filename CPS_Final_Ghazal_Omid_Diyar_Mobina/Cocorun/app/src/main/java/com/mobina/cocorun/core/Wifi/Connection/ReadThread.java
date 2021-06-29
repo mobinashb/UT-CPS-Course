@@ -1,7 +1,7 @@
 package com.mobina.cocorun.core.Wifi.Connection;
 
 
-import com.mobina.cocorun.activity.WifiActivity;
+import com.mobina.cocorun.layout.WifiFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +12,9 @@ import java.net.Socket;
 public class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
-    public WifiActivity.OnUpdateListener listener;
+    public WifiFragment.OnUpdateListener listener;
 
-    public ReadThread(Socket socket, WifiActivity.OnUpdateListener listener) {
+    public ReadThread(Socket socket, WifiFragment.OnUpdateListener listener) {
         this.socket = socket;
         this.listener = listener;
 

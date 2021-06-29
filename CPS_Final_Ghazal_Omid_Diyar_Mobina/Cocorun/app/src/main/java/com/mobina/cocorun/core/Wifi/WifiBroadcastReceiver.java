@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.widget.Toast;
 
-import com.mobina.cocorun.activity.WifiActivity;
+import com.mobina.cocorun.layout.WifiFragment;
 
 
 public class WifiBroadcastReceiver extends BroadcastReceiver {
@@ -15,10 +15,10 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
 
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
-    private WifiActivity wifiFragment;
+    private WifiFragment wifiFragment;
 
     public WifiBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel,
-                                 WifiActivity fragment) {
+                                 WifiFragment fragment) {
         super();
         this.mManager = manager;
         this.mChannel = channel;

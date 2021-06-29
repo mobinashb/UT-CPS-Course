@@ -85,6 +85,18 @@
             android:layout_height="55dp"
             android:layout_margin="5dp"
             android:text="@string/vibrate" />
+
+        <Button
+            android:id="@+id/Wifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wifi" />
+
+        <Button
+            android:id="@+id/Bluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth" />
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView

@@ -1,6 +1,6 @@
 package com.mobina.cocoruncontroller.core.Wifi.Connection;
 
-import com.mobina.cocoruncontroller.WifiActivity;
+import com.mobina.cocoruncontroller.layout.WifiFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import java.net.Socket;
 public class ReadThread extends Thread {
     private BufferedReader reader;
     private Socket socket;
-    public WifiActivity.OnUpdateListener listener;
+    public WifiFragment.OnUpdateListener listener;
 
-    public ReadThread(Socket socket, WifiActivity.OnUpdateListener listener) {
+    public ReadThread(Socket socket, WifiFragment.OnUpdateListener listener) {
         this.socket = socket;
         this.listener = listener;
 

@@ -1,4 +1,4 @@
-package com.mobina.cocorun.core;
+package com.mobina.cocorun.core.Game;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,6 @@ import android.text.TextPaint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.mobina.cocorun.utils.GameConfig;
 import com.mobina.cocorun.utils.Helper;

@@ -1,4 +1,4 @@
-package com.mobina.cocorun.activity;
+package com.mobina.cocorun.layout;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -7,12 +7,13 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mobina.cocorun.R;
-import com.mobina.cocorun.core.GameSurface;
+import com.mobina.cocorun.core.Game.GameSurface;
 import com.mobina.cocorun.utils.GameConfig;
 
 public class MainActivity extends AppCompatActivity implements Runnable {
@@ -71,25 +72,48 @@ public class MainActivity extends AppCompatActivity implements Runnable {
   @Override
   public synchronized void onResume() {
     super.onResume();
-    ImageView playButton = findViewById(R.id.button_play);
-    playButton.setOnClickListener(new View.OnClickListener() {
+    Button wifiButton = findViewById(R.id.Wifi);
+    wifiButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
-            setFragment();
-//        setActivity();
+        runWifiFragment();
+      }
+    });
+
+    Button bluetoothButton = findViewById(R.id.Bluetooth);
+    bluetoothButton.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        runBluetoothFragment();
       }
     });
   }
+//@Override
+//public synchronized void onResume() {
+//  super.onResume();
+//  ImageView playButton = findViewById(R.id.button_play);
+//  playButton.setOnClickListener(new View.OnClickListener() {
+//    public void onClick(View v) {
+//      setFragment();
+////            setActivity();
+//    }
+//  });
+//}
   private void setFragment() {
     getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
             .add(R.id.fragment_wifi, WifiFragment.class, null)
             .commit();
   }
-
-  private void setActivity(){
-    System.out.println("HKHKHK");
-    Intent intent = new Intent(MainActivity.this, WifiFragment.class);
-    startActivity(intent);
+  private void runWifiFragment() {
+    getSupportFragmentManager().beginTransaction()
+            .setReorderingAllowed(true)
+            .add(R.id.fragment_wifi, WifiFragment.class, null)
+            .commit();
+  }
+  private void runBluetoothFragment() {
+    getSupportFragmentManager().beginTransaction()
+            .setReorderingAllowed(true)
+            .add(R.id.fragment_bluetooth, BluetoothFragment.class, null)
+            .commit();
   }
 
   @Override
@@ -98,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements Runnable {
   }
 
   public static void getCommand(String msg) {
+    if(msg == null)
+      return;
     if (msg.contains("N"))
       return;
     String dir = String.valueOf(msg.charAt(0));

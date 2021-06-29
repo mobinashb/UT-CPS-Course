@@ -1,4 +1,4 @@
-package com.mobina.cocoruncontroller;
+package com.mobina.cocoruncontroller.layout;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -24,11 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.mobina.cocoruncontroller.R;
 import com.mobina.cocoruncontroller.core.Wifi.Connection.ChatClient;
 import com.mobina.cocoruncontroller.core.Wifi.Connection.ChatServer;
 import com.mobina.cocoruncontroller.core.Wifi.Constants;
 import com.mobina.cocoruncontroller.core.Wifi.MyPeerListener;
-import com.mobina.cocoruncontroller.core.Wifi.ServiceDiscovery;
 import com.mobina.cocoruncontroller.core.Wifi.WifiBroadcastReceiver;
 import com.mobina.cocoruncontroller.utils.GameConfig;
 
@@ -52,8 +52,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     Button buttonServerStop;
     Button buttonConfigure;
     EditText editTextTextInput;
-
-    ServiceDiscovery serviceDiscovery;
 
     ListView listViewDevices;
     TextView textViewDiscoveryStatus;
@@ -89,7 +87,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity)getActivity();
-        serviceDiscovery = new ServiceDiscovery();
     }
 
     @Override

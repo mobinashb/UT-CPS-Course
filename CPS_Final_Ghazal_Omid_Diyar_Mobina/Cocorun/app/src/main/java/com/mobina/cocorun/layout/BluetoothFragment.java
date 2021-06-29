@@ -1,4 +1,4 @@
-package com.mobina.cocorun.core;
+package com.mobina.cocorun.layout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

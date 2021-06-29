@@ -29,19 +29,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".layout.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.WifiActivity"
+        <activity android:name=".layout.WifiFragment"
             android:label="@string/activity_wifi"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".layout.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".layout.MainActivity" />
         </activity>
     </application>
 

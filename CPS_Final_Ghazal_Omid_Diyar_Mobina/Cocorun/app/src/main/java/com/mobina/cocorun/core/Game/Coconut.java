@@ -1,4 +1,4 @@
-package com.mobina.cocorun.core;
+package com.mobina.cocorun.core.Game;
 
 import android.graphics.Bitmap;
 

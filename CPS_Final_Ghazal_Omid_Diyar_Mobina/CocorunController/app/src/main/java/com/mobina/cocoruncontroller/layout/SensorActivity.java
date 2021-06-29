@@ -1,4 +1,4 @@
-package com.mobina.cocoruncontroller;
+package com.mobina.cocoruncontroller.layout;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mobina.cocoruncontroller.R;
+import com.mobina.cocoruncontroller._3dVector;
 import com.mobina.cocoruncontroller.utils.GameConfig;
 
 import java.util.Timer;

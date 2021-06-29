@@ -1,6 +1,6 @@
 package com.mobina.cocoruncontroller.core.Wifi.Connection;
 
-import com.mobina.cocoruncontroller.WifiActivity;
+import com.mobina.cocoruncontroller.layout.WifiFragment;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,14 +12,14 @@ public class ChatClient extends Thread {
     private String hostname;
     private int port;
     public WriteThread writeThread;
-    public WifiActivity.OnUpdateListener listener;
+    public WifiFragment.OnUpdateListener listener;
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
 
-    public void setUpdateListener(WifiActivity.OnUpdateListener listener) {
+    public void setUpdateListener(WifiFragment.OnUpdateListener listener) {
         this.listener = listener;
     }
 
@@ -29,6 +29,7 @@ public class ChatClient extends Thread {
             Socket socket = new Socket();
             socket.bind(null);
             socket.connect((new InetSocketAddress(hostname, port)), 5000);
+            System.out.println("It accepted me");
             new ReadThread(socket, this.listener).start();
             this.writeThread = new WriteThread(socket);
             this.writeThread.start();
