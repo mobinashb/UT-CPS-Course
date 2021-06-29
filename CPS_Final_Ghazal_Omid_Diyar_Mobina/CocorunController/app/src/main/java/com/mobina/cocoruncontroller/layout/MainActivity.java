@@ -4,16 +4,20 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.mobina.cocoruncontroller.R;
 import com.mobina.cocoruncontroller._3dVector;
@@ -53,18 +57,18 @@ public class MainActivity extends FragmentActivity {
 
       setContentView(R.layout.activity_main);
 
-      button = findViewById(R.id.button);
-      vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-      button.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-          } else {
-            vibrator.vibrate(200);
-          }
-        }
-      });
+//      button = findViewById(R.id.button_vibrate);
+//      vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+//      button.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//          if (Build.VERSION.SDK_INT >= 26) {
+//            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+//          } else {
+//            vibrator.vibrate(200);
+//          }
+//        }
+//      });
       accelerometerTheta = new _3dVector(0, 0, 0);
       magnetometerTheta = new _3dVector(0, 0, 0);
       gyroscopeTheta = new _3dVector(0, 0, 0);
@@ -82,14 +86,14 @@ public class MainActivity extends FragmentActivity {
   @Override
   public synchronized void onResume() {
     super.onResume();
-      Button wifiButton = findViewById(R.id.Wifi);
+      Button wifiButton = findViewById(R.id.button_wifi);
       wifiButton.setOnClickListener(new View.OnClickListener() {
           public void onClick(View v) {
               runWifiFragment();
           }
       });
 
-      Button bluetoothButton = findViewById(R.id.Bluetooth);
+      Button bluetoothButton = findViewById(R.id.button_bluetooth);
       bluetoothButton.setOnClickListener(new View.OnClickListener() {
           public void onClick(View v) {
               runBluetoothFragment();
@@ -122,12 +126,14 @@ public class MainActivity extends FragmentActivity {
   }
 
   private void runWifiFragment() {
+      findViewById(R.id.main).setVisibility(View.GONE);
       getSupportFragmentManager().beginTransaction()
               .setReorderingAllowed(true)
               .add(R.id.fragment_wifi, WifiFragment.class, null)
               .commit();
   }
 private void runBluetoothFragment() {
+    findViewById(R.id.main).setVisibility(View.GONE);
     getSupportFragmentManager().beginTransaction()
             .setReorderingAllowed(true)
             .add(R.id.fragment_bluetooth, BluetoothFragment.class, null)

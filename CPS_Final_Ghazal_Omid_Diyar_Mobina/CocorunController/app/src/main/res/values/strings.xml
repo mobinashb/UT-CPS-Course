@@ -4,4 +4,8 @@
     <string name="controller_name">Controller</string>
     <string name="vibrate">Vibrate</string>
     <string name="activity_wifi">activity_wifi</string>
+    <string name="wifi">Wifi</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="play">Play</string>
+    <string name="tilt_to_play">Tilt to play</string>
 </resources>
