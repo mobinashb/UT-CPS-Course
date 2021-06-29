@@ -49,14 +49,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     Button buttonClientStart;
     Button buttonServerStop;
     Button buttonConfigure;
-    EditText editTextTextInput;
 
     ListView listViewDevices;
     TextView textViewDiscoveryStatus;
     TextView textViewWifiP2PStatus;
     TextView textViewConnectionStatus;
-    TextView textViewReceivedData;
-    TextView textViewReceivedDataStatus;
+
     public static String IP = null;
     public static boolean IS_OWNER = false;
 
@@ -103,10 +101,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         textViewConnectionStatus = view.findViewById(R.id.main_activiy_textView_connection_status);
         textViewDiscoveryStatus = view.findViewById(R.id.main_activiy_textView_dicovery_status);
         textViewWifiP2PStatus = view.findViewById(R.id.main_activiy_textView_wifi_p2p_status);
-        textViewReceivedData = view.findViewById(R.id.main_acitivity_data);
-        textViewReceivedDataStatus = view.findViewById(R.id.main_acitivity_received_data);
-
-        editTextTextInput = view.findViewById(R.id.main_acitivity_input_text);
         return view;
     }
 
@@ -148,10 +142,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         buttonClientStart.setVisibility(View.INVISIBLE);
         buttonServerStop.setVisibility(View.INVISIBLE);
         buttonServerStart.setVisibility(View.INVISIBLE);
-        editTextTextInput.setVisibility(View.INVISIBLE);
-        textViewReceivedDataStatus.setVisibility(View.INVISIBLE);
-        textViewReceivedData.setVisibility(View.INVISIBLE);
-
 
         listViewDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -358,13 +348,9 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         IS_OWNER = wifiP2pInfo.isGroupOwner;
 
         buttonClientStart.setVisibility(View.VISIBLE);
-        editTextTextInput.setVisibility(View.VISIBLE);
-
         buttonServerStop.setVisibility(View.VISIBLE);
         buttonServerStart.setVisibility(View.VISIBLE);
 
-        textViewReceivedData.setVisibility(View.VISIBLE);
-        textViewReceivedDataStatus.setVisibility(View.VISIBLE);
 
         if(IS_OWNER) this.isServer = true;
         else this.isServer = false;

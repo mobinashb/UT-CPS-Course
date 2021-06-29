@@ -122,6 +122,8 @@ public class MainActivity extends FragmentActivity implements Runnable {
   public static void getCommand(String msg) {
     if(msg == null)
       return;
+    if(msg.length() < 2)
+      return;
     if (msg.contains("N"))
       return;
     String dir = String.valueOf(msg.charAt(0));
