@@ -1,5 +1,7 @@
 package com.mobina.cocoruncontroller.layout;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -57,6 +60,8 @@ public class MainActivity extends FragmentActivity {
 
       setContentView(R.layout.activity_main);
 
+      overrideFonts(getApplicationContext(), findViewById(R.id.main));
+
 
       accelerometerTheta = new _3dVector(0, 0, 0);
       magnetometerTheta = new _3dVector(0, 0, 0);
@@ -67,6 +72,23 @@ public class MainActivity extends FragmentActivity {
       initializeSensors();
 
     }
+
+  private void overrideFonts(final Context context, final View v) {
+    try {
+      if (v instanceof ViewGroup) {
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+          View child = vg.getChildAt(i);
+          overrideFonts(context, child);
+        }
+      } else if (v instanceof TextView) {
+        ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/whatever_it_takes.ttf"));
+      } if (v instanceof Button) {
+        ((Button) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/whatever_it_takes.ttf"));
+      }
+    } catch (Exception e) {
+    }
+  }
 
   @Override
   public void onStart() {

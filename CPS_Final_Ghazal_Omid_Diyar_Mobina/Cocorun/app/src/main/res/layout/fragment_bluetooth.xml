@@ -17,27 +17,6 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:gravity="center">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/tilt"
-            />
-        <TextView
-            android:id="@+id/main_title"
-            android:layout_width="match_parent"
-            android:fontFamily="@font/whatever_it_takes"
-            android:gravity="center_vertical|center_horizontal"
-            android:keepScreenOn="true"
-            android:shadowColor="@color/textShadow"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:text="@string/tilt_to_play"
-            android:textColor="@color/textPrimary"
-            android:textSize="60sp"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
 

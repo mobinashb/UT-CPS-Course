@@ -30,6 +30,7 @@ import com.mobina.cocorun.core.Wifi.Connection.ChatServer;
 import com.mobina.cocorun.core.Wifi.Constants;
 import com.mobina.cocorun.core.Wifi.MyPeerListener;
 import com.mobina.cocorun.core.Wifi.WifiBroadcastReceiver;
+import com.mobina.cocorun.utils.Helper;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_wifi, container, false);
+
+        Helper.overrideFonts(getContext(), view);
 
         buttonDiscoveryStart = view.findViewById(R.id.main_activity_button_discover_start);
         buttonDiscoveryStop = view.findViewById(R.id.main_activity_button_discover_stop);
@@ -331,7 +334,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 // TODO: STOP SERVER
                 break;
             case R.id.main_activity_button_client_start:
-                System.out.println("LKLLLKKL");
                 MainActivity.getInstance().setupGame();
                 break;
             case R.id.main_activity_button_configure:
@@ -345,10 +347,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
         String hostAddress = wifiP2pInfo.groupOwnerAddress.getHostAddress();
-        if (hostAddress == null) hostAddress= "host is null";
-
-        if(IS_OWNER) System.out.println("I am Server");
-        else System.out.println("I am Client");
+        if (hostAddress == null) hostAddress = "host is null";
 
         Log.d(this.TAG,"wifiP2pInfo.groupOwnerAddress.getHostAddress() " + wifiP2pInfo.groupOwnerAddress.getHostAddress());
         IP = wifiP2pInfo.groupOwnerAddress.getHostAddress();
@@ -359,7 +358,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         buttonServerStart.setVisibility(View.VISIBLE);
 
 
-        if(IS_OWNER) this.isServer = true;
+        if (IS_OWNER) this.isServer = true;
         else this.isServer = false;
     }
 

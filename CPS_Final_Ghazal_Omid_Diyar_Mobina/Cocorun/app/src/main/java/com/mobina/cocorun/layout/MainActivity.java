@@ -1,17 +1,23 @@
 package com.mobina.cocorun.layout;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.mobina.cocorun.R;
 import com.mobina.cocorun.core.Game.GameSurface;
 import com.mobina.cocorun.utils.GameConfig;
+import com.mobina.cocorun.utils.Helper;
 
 public class MainActivity extends FragmentActivity implements Runnable {
 
@@ -49,6 +55,8 @@ public class MainActivity extends FragmentActivity implements Runnable {
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
     setContentView(R.layout.activity_main);
+
+    Helper.overrideFonts(getApplicationContext(), findViewById(R.id.main));
 
   }
 

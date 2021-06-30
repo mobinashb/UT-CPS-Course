@@ -41,7 +41,6 @@ public class BluetoothFragment extends Fragment {
 
     public BluetoothFragment(){
         super(R.layout.fragment_bluetooth);
-        System.out.println("SALAM BluetoothFragment");
     }
 
     @Override

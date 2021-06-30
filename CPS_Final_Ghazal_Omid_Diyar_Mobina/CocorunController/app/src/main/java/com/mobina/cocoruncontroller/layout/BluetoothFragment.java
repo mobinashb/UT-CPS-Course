@@ -36,14 +36,11 @@ public class BluetoothFragment extends Fragment {
 
     public BluetoothFragment(){
         super(R.layout.fragment_bluetooth);
-        System.out.println("SALAM BluetoothFragment");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        System.out.println("SALAM onCreate");
 
         this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         FragmentActivity activity = getActivity();
@@ -51,13 +48,11 @@ public class BluetoothFragment extends Fragment {
             Toast.makeText(activity, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             activity.finish();
         }
-        System.out.println("Bye onCreate");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("SALAM onStart");
         if (this.mBluetoothAdapter == null) {
             return;
         }
@@ -92,27 +87,22 @@ public class BluetoothFragment extends Fragment {
                 sendMessage(command);
             }
         }, 1000, 2 * GameConfig.REFRESH_INTERVAL);
-        System.out.println("Bye onStart");
     }
 
     @Override
     public synchronized void onResume() {
         super.onResume();
-        System.out.println("SALAM onResume");
         if (mService != null) {
             if (mService.getState() == BluetoothService.STATE_NONE) {
                 mService.start();
             }
         }
-        System.out.println("Bye onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("SALAM onDestroy");
         if (mService != null) mService.stop();
-        System.out.println("Bye onDestroy");
     }
 
     // The Handler that gets information back from the BluetoothService
@@ -120,7 +110,6 @@ public class BluetoothFragment extends Fragment {
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            System.out.println(msg);
             switch (msg.what) {
                 case BluetoothConfig.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -160,15 +149,12 @@ public class BluetoothFragment extends Fragment {
     };
 
     private void initialize() {
-        System.out.println("SALAM initialize");
         this.mService = new BluetoothService(getActivity(), mHandler);
         this.mOutStringBuffer = new StringBuffer("");
-        System.out.println("Bye initialize");
     }
 
     public void initializeDevices()
     {
-        System.out.println("SALAM initializeDevices");
         this.pairedDevices = this.mBluetoothAdapter.getBondedDevices();
         if (this.pairedDevices.size() > 0) {
 
@@ -176,14 +162,11 @@ public class BluetoothFragment extends Fragment {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
                 this.adapterPairedDevices.add(deviceName + "\n" + deviceHardwareAddress);
-                System.out.println(deviceName + "\t" + deviceHardwareAddress);
             }
         }
-        System.out.println("Bye initializeDevices");
     }
 
     private void showDialog() {
-        System.out.println("SALAM showDialog");
         AlertDialog.Builder builderSingle = new AlertDialog.Builder((MainActivity) getActivity());
         builderSingle.setTitle("Select a device: ");
 
@@ -205,7 +188,6 @@ public class BluetoothFragment extends Fragment {
             }
         });
         builderSingle.show();
-        System.out.println("Bye showDialog");
     }
 
     private void sendMessage(String message) {

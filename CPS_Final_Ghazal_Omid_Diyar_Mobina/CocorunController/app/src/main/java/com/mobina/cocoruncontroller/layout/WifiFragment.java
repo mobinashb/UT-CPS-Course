@@ -31,6 +31,7 @@ import com.mobina.cocoruncontroller.core.Wifi.Constants;
 import com.mobina.cocoruncontroller.core.Wifi.MyPeerListener;
 import com.mobina.cocoruncontroller.core.Wifi.WifiBroadcastReceiver;
 import com.mobina.cocoruncontroller.utils.GameConfig;
+import com.mobina.cocoruncontroller.utils.Helper;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -90,6 +91,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_wifi, container, false);
+
+        Helper.overrideFonts(getContext(), view);
 
         buttonDiscoveryStart = view.findViewById(R.id.main_activity_button_discover_start);
         buttonDiscoveryStop = view.findViewById(R.id.main_activity_button_discover_stop);
@@ -378,7 +381,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         else this.isServer = false;
     }
     public void setReceivedText(final String data) {
-        System.out.println("I received vibration command");
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
