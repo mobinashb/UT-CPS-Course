@@ -50,7 +50,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
     this.coco.update();
     for (int i = 0; i < barriers.size(); i++) {
-      barriers.get(i).update();
       if (barriers.get(i).doesHit(coco.getRect())) {
         if (i != lastHit) {
           lives--;
@@ -58,15 +57,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
           MainActivity.getInstance().hitWallNotif();
         }
       }
-      else if (hasPassedBarrier(barriers.get(i)) && lastHit != i) {
+      if (barriers.get(i).update()) {
         score++;
+        if (i == 0) lastHit = -1;
       }
     }
     updateLives();
-  }
-
-  private boolean hasPassedBarrier(Barrier barrier) {
-    return barrier.y > getHeight() + 2 * barrier.getHeight();
   }
 
   @Override
@@ -107,6 +103,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     for (int i = 0; i < livesBitmap.size(); i++) {
       livesBitmap.set(i, aliveHeart);
     }
+    createBarriers();
   }
 
   private void drawScore(Canvas canvas) {
@@ -143,17 +140,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     Bitmap barrierRightBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.barrier_right);
     barriers = new ArrayList<>();
     this.barriers.add(new Barrier(this, barrierLeftBitmap,
-        -barrierLeftBitmap.getWidth() / 2, getHeight() / GameConfig.NUM_OF_BARRIERS,
+        -barrierLeftBitmap.getWidth() / 2, getHeight() / GameConfig.NUM_OF_BARRIERS - 100,
         GameConfig.BARRIER_TYPE.LEFT));
     this.barriers.add(new Barrier(this,
         barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3,
-        getHeight() * 2 / GameConfig.NUM_OF_BARRIERS,
+        getHeight() * 2 / GameConfig.NUM_OF_BARRIERS - 100,
         GameConfig.BARRIER_TYPE.RIGHT));
     this.barriers.add(new Barrier(this, barrierLeftBitmap,
-        -barrierLeftBitmap.getWidth() / 2, getHeight() * 3 / GameConfig.NUM_OF_BARRIERS,
+        -barrierLeftBitmap.getWidth() / 2, getHeight() * 3 / GameConfig.NUM_OF_BARRIERS - 100,
         GameConfig.BARRIER_TYPE.LEFT));
     this.barriers.add(new Barrier(this,
-        barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3, getHeight(),
+        barrierRightBitmap, getWidth() - barrierRightBitmap.getWidth() / 3, getHeight() - 100,
         GameConfig.BARRIER_TYPE.RIGHT));
   }
 
@@ -201,7 +198,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   @Override
   public boolean onTouchEvent(MotionEvent event) {
-    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    if (event.getAction() == MotionEvent.ACTION_DOWN && !gameStarted) {
       resetGame();
       return true;
     }

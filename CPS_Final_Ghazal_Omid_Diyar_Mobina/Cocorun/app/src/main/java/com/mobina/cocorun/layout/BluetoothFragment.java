@@ -191,8 +191,7 @@ public class BluetoothFragment extends Fragment {
         }
     }
 
-    public void sendVibration(){
-        System.out.println("I am sending vibration guyesss");
+    public void sendVibration() {
         sendMessage("V");
     }
 

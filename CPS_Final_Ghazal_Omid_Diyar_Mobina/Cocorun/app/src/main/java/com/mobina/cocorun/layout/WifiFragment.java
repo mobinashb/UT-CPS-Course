@@ -371,9 +371,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             }
         });
     }
-    public void sendVibration(){
-        System.out.println("I am sending vibration guyesss");
-        if(this.isServer) this.chatServer.sendNewMsg("V");
+    public void sendVibration() {
+        if (this.isServer) this.chatServer.sendNewMsg("V");
         else this.chatClient.sendNewMsg("V");
     }
 }

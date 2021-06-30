@@ -19,7 +19,7 @@ public class Barrier extends GameObject {
     this.type = type;
   }
 
-  public void update()  {
+  public boolean update()  {
     long now = System.nanoTime();
 
     if (lastDrawNanoTime == -1) {
@@ -31,11 +31,14 @@ public class Barrier extends GameObject {
 
     y = (int) (y +  distance);
 
-    if (y > gameSurface.getHeight() + 2 * height)  {
+    if (y > gameSurface.getHeight())  {
      y = -height / 2;
      x = getRandomX();
+     updateRect();
+     return true;
     }
     updateRect();
+    return false;
   }
 
   private int getRandomX() {
