@@ -48,16 +48,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     if (lives == 0 || !gameStarted) {
       return;
     }
-//    this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command) * intensity);
     this.coco.update();
     for (int i = 0; i < barriers.size(); i++) {
       barriers.get(i).update();
       if (barriers.get(i).doesHit(coco.getRect())) {
         if (i != lastHit) {
           lives--;
-          MainActivity.getInstance().hitWallNotif();
-          score--;
           lastHit = i;
+          MainActivity.getInstance().hitWallNotif();
         }
       }
       else if (hasPassedBarrier(barriers.get(i)) && lastHit != i) {
@@ -192,17 +190,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
   @Override
   public void surfaceDestroyed(SurfaceHolder holder) {
-//    boolean retry = true;
-//    while (retry) {
-//      try {
-//        this.gameThread.setRunning(false);
-//
-//        this.gameThread.join();
-//      } catch (InterruptedException e)  {
-//        e.printStackTrace();
-//      }
-//      retry = true;
-//    }
   }
 
   public void processCommand(GameConfig.COMMAND cmd, int intensity, long ts) {
