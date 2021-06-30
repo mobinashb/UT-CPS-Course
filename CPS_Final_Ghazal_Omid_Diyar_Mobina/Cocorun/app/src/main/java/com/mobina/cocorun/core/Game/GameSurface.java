@@ -211,6 +211,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   public void saveScore() {
+    if (getSavedScore() >= score) return;
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
     SharedPreferences.Editor editor = prefs.edit();
     editor.putInt("highscore", score);
