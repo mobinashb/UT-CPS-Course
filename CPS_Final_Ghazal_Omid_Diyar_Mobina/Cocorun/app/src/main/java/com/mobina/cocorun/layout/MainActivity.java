@@ -153,7 +153,6 @@ public class MainActivity extends FragmentActivity implements Runnable {
       if (waitTime < GameConfig.SCREEN_REFRESH_INTERVAL)  {
         waitTime = GameConfig.SCREEN_REFRESH_INTERVAL;
       }
-      System.out.print(" Wait Time="+ waitTime);
 
       try {
         thread.sleep(waitTime);
@@ -161,7 +160,6 @@ public class MainActivity extends FragmentActivity implements Runnable {
         e.printStackTrace();
       }
       startTime = System.nanoTime();
-      System.out.print(".");
     }
   }
 

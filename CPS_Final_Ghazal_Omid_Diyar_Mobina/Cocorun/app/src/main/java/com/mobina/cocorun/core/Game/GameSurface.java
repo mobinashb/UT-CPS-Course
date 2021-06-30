@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.text.TextPaint;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,9 +29,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   private Bitmap deadHeart;
   private ArrayList<Bitmap> livesBitmap;
   private ArrayList<Barrier> barriers;
-  int lives = GameConfig.NUM_OF_LIVES;
-  int lastHit = -1;
-  private GameConfig.COMMAND command = GameConfig.COMMAND.R;
+  private int lives = GameConfig.NUM_OF_LIVES;
+  private int lastHit = -1;
   private boolean gameStarted = false;
   private long timestamp = -1;
   private int score = 0;
@@ -50,22 +50,29 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //    this.coco.setMovingVectorX(Helper.getDirctionFromCommand(command) * intensity);
     this.coco.update();
     for (int i = 0; i < barriers.size(); i++) {
-      if (barriers.get(i).update() && lastHit != i)
-        score++;
+      barriers.get(i).update();
       if (barriers.get(i).doesHit(coco.getRect())) {
         if (i != lastHit) {
           lives--;
           lastHit = i;
         }
       }
+      else if (hasPassedBarrier(barriers.get(i)) && lastHit != i) {
+        score++;
+      }
     }
     updateLives();
+  }
+
+  private boolean hasPassedBarrier(Barrier barrier) {
+    return barrier.y > getHeight() + 2 * barrier.getHeight();
   }
 
   @Override
   public void draw(Canvas canvas)  {
     super.draw(canvas);
     if (lives == 0) {
+      gameStarted = false;
       saveScore();
       drawGameOverScreen(canvas);
       return;
@@ -87,6 +94,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     int yPos = (canvas.getHeight() / 2);
     Helper.drawStrokedText(canvas, "Game Over", xPos, yPos, 72, this.getContext());
     Helper.drawStrokedText(canvas, "Highscore: " + getSavedScore(), xPos, yPos + 100, 64, this.getContext());
+    Helper.drawStrokedText(canvas, "Tap to replay", xPos, yPos + 300, 54, this.getContext());
+  }
+
+  private void resetGame() {
+    gameStarted = true;
+    lives = GameConfig.NUM_OF_LIVES;
+    score = 0;
+    lastHit = -1;
+    timestamp = -1;
+    for (int i = 0; i < livesBitmap.size(); i++) {
+      livesBitmap.set(i, aliveHeart);
+    }
   }
 
   private void drawScore(Canvas canvas) {
@@ -102,7 +121,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     createBarriers();
     createScoreBoard();
     createLives();
-
   }
 
   private void createBackground() {
@@ -151,7 +169,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     deadHeart = Bitmap.createScaledBitmap(deadHeart, GameConfig.HEART_SIZE, GameConfig.HEART_SIZE, false);
     livesBitmap.add(aliveHeart);
     livesBitmap.add(aliveHeart);
-    livesBitmap.add(deadHeart);
+    livesBitmap.add(aliveHeart);
   }
 
   private void updateLives() {
@@ -194,7 +212,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-      gameStarted = true;
+      resetGame();
       return true;
     }
     return false;

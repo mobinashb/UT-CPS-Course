@@ -16,11 +16,11 @@ public class Helper {
     Paint paint = new TextPaint();
     paint.setStyle(Paint.Style.FILL);
     paint.setColor(Color.BLACK);
-    paint.setTextSize(fontSize * 2);
+    paint.setTextSize(fontSize * 3 / 2);
 
     Paint stkPaint = new TextPaint();
     stkPaint.setStyle(Paint.Style.STROKE);
-    stkPaint.setTextSize(fontSize * 2);
+    stkPaint.setTextSize(fontSize * 3 / 2);
     stkPaint.setStrokeWidth(4);
     stkPaint.setColor(Color.WHITE);
     stkPaint.setShadowLayer(2, 2, 2, Color.BLACK);

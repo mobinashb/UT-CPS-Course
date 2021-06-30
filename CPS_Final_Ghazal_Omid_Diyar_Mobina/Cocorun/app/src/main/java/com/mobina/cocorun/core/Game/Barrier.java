@@ -11,7 +11,6 @@ public class Barrier extends GameObject {
 
   private GameSurface gameSurface;
   private GameConfig.BARRIER_TYPE type;
-  boolean hit = false;
 
   public Barrier(GameSurface gameSurface, Bitmap image, int x, int y, GameConfig.BARRIER_TYPE type) {
     super(image, x, y);
@@ -20,7 +19,7 @@ public class Barrier extends GameObject {
     this.type = type;
   }
 
-  public boolean update()  {
+  public void update()  {
     long now = System.nanoTime();
 
     if (lastDrawNanoTime == -1) {
@@ -32,15 +31,11 @@ public class Barrier extends GameObject {
 
     y = (int) (y +  distance);
 
-    if (y > gameSurface.getHeight() + height)  {
+    if (y > gameSurface.getHeight() + 2 * height)  {
      y = -height / 2;
      x = getRandomX();
-     hit = false;
-     updateRect();
-     return true;
     }
     updateRect();
-    return false;
   }
 
   private int getRandomX() {
