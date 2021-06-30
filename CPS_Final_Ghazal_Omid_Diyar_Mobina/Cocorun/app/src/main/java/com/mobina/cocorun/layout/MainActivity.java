@@ -29,6 +29,8 @@ public class MainActivity extends FragmentActivity implements Runnable {
 
   private static MainActivity instance;
 
+  private String mode;
+
   public static MainActivity getInstance() {
     return instance;
   }
@@ -72,6 +74,7 @@ public class MainActivity extends FragmentActivity implements Runnable {
     Button wifiButton = findViewById(R.id.button_wifi);
     wifiButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
+        MainActivity.this.mode = "W";
         runWifiFragment();
       }
     });
@@ -79,21 +82,18 @@ public class MainActivity extends FragmentActivity implements Runnable {
     Button bluetoothButton = findViewById(R.id.button_bluetooth);
     bluetoothButton.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
+        MainActivity.this.mode = "B";
         runBluetoothFragment();
       }
     });
   }
-//@Override
-//public synchronized void onResume() {
-//  super.onResume();
-//  ImageView playButton = findViewById(R.id.button_play);
-//  playButton.setOnClickListener(new View.OnClickListener() {
-//    public void onClick(View v) {
-//      setFragment();
-////            setActivity();
-//    }
-//  });
-//}
+
+  public void hitWallNotif(){
+    if(this.mode.equals("W"))
+      WifiFragment.getInstance().sendVibration();
+    else
+      BluetoothFragment.getInstance().sendVibration();
+  }
 
   private void runWifiFragment() {
     findViewById(R.id.main).setVisibility(View.GONE);

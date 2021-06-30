@@ -307,10 +307,20 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             case R.id.main_activity_button_server_start:
                 if(this.isServer){
                     this.chatServer = new ChatServer(Constants.WIFI_SOCKET_PORT);
+                    this.chatServer.setUpdateListener(new OnUpdateListener() {
+                        public void onUpdate(String obj) {
+                            setReceivedText(obj);
+                        }
+                    });
                     this.chatServer.start();
                 }
                 else {
                     this.chatClient = new ChatClient(this.IP, Constants.WIFI_SOCKET_PORT);
+                    this.chatClient.setUpdateListener(new OnUpdateListener() {
+                        public void onUpdate(String obj) {
+                            setReceivedText(obj);
+                        }
+                    });
                     this.chatClient.start();
                 }
                 break;
@@ -366,5 +376,14 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
 
         if(IS_OWNER) this.isServer = true;
         else this.isServer = false;
+    }
+    public void setReceivedText(final String data) {
+        System.out.println("I received vibration command");
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.getInstance().vibrate(data);
+            }
+        });
     }
 }

@@ -138,14 +138,12 @@ public class BluetoothFragment extends Fragment {
                     break;
                 case BluetoothConfig.MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     break;
                 case BluetoothConfig.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    Toast.makeText(getActivity(), readMessage, Toast.LENGTH_SHORT).show();
+                    MainActivity.getInstance().vibrate(readMessage);
                     break;
                 case BluetoothConfig.MESSAGE_DEVICE_NAME:
                     // save the connected device's name

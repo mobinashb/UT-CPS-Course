@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.mobina.cocorun.layout.MainActivity;
 import com.mobina.cocorun.utils.GameConfig;
 import com.mobina.cocorun.utils.Helper;
 import com.mobina.cocorun.R;
@@ -55,6 +56,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
       if (barriers.get(i).doesHit(coco.getRect())) {
         if (i != lastHit) {
           lives--;
+          MainActivity.getInstance().hitWallNotif();
+          score--;
           lastHit = i;
         }
       }

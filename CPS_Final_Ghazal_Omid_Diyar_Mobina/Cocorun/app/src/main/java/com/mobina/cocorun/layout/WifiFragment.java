@@ -71,6 +71,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
 
     MainActivity activity;
 
+    private static WifiFragment instance;
+
+    public static WifiFragment getInstance() {
+        return instance;
+    }
+
     public MainActivity getParentActivity(){
         return activity;
     }
@@ -82,6 +88,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         activity = (MainActivity)getActivity();
     }
 
@@ -363,5 +370,10 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 MainActivity.getInstance().getCommand(data);
             }
         });
+    }
+    public void sendVibration(){
+        System.out.println("I am sending vibration guyesss");
+        if(this.isServer) this.chatServer.sendNewMsg("V");
+        else this.chatClient.sendNewMsg("V");
     }
 }

@@ -57,18 +57,7 @@ public class MainActivity extends FragmentActivity {
 
       setContentView(R.layout.activity_main);
 
-//      button = findViewById(R.id.button_vibrate);
-//      vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-//      button.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//          if (Build.VERSION.SDK_INT >= 26) {
-//            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-//          } else {
-//            vibrator.vibrate(200);
-//          }
-//        }
-//      });
+
       accelerometerTheta = new _3dVector(0, 0, 0);
       magnetometerTheta = new _3dVector(0, 0, 0);
       gyroscopeTheta = new _3dVector(0, 0, 0);
@@ -100,17 +89,15 @@ public class MainActivity extends FragmentActivity {
           }
       });
   }
-//@Override
-//public synchronized void onResume() {
-//    super.onResume();
-//    ImageView playButton = findViewById(R.id.button_play);
-//    playButton.setOnClickListener(new View.OnClickListener() {
-//        public void onClick(View v) {
-//            setFragment();
-////            setActivity();
-//        }
-//    });
-//}
+
+  public void vibrate(String data){
+      vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+      if (Build.VERSION.SDK_INT >= 26) {
+          vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+      } else {
+          vibrator.vibrate(200);
+      }
+  }
 
   @Override
   public void onDestroy() {

@@ -33,6 +33,12 @@ public class BluetoothFragment extends Fragment {
     Set<BluetoothDevice> pairedDevices;
     ArrayAdapter adapterPairedDevices;
 
+    private static BluetoothFragment instance;
+
+    public static BluetoothFragment getInstance() {
+        return instance;
+    }
+
     public BluetoothFragment(){
         super(R.layout.fragment_bluetooth);
         System.out.println("SALAM BluetoothFragment");
@@ -41,7 +47,7 @@ public class BluetoothFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
+        instance = this;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         FragmentActivity activity = getActivity();
         if (mBluetoothAdapter == null) {
@@ -169,6 +175,25 @@ public class BluetoothFragment extends Fragment {
             }
         });
         builderSingle.show();
+    }
+
+    private void sendMessage(String message) {
+
+        if (mService == null)
+            return;
+        if (mService.getState() != BluetoothService.STATE_CONNECTED) {
+            return;
+        }
+        if (message.length() > 0) {
+            byte[] send = message.getBytes();
+            mService.write(send);
+            mOutStringBuffer.setLength(0);
+        }
+    }
+
+    public void sendVibration(){
+        System.out.println("I am sending vibration guyesss");
+        sendMessage("V");
     }
 
 }
