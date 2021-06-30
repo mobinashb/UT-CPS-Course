@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mobina.cocoruncontroller.layout.MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_activiy_textView_wifi_p2p_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/whatever_it_takes"
+        android:shadowColor="@color/textShadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:textColor="@color/textPrimary"
+        android:textSize="30sp"
+        android:text="P2P Status" />
+
+    <TextView
+        android:id="@+id/main_activiy_textView_dicovery_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/whatever_it_takes"
+        android:shadowColor="@color/textShadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:textColor="@color/textPrimary"
+        android:textSize="30sp"
+        android:text="Status" />
+
+    <TextView
+        android:id="@+id/main_activiy_textView_connection_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/whatever_it_takes"
+        android:shadowColor="@color/textShadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:textColor="@color/textPrimary"
+        android:textSize="30sp"
+        android:text="Status" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/main_activity_button_discover_start"
+            android:text="Start Discovery"
+            android:background="@drawable/button"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:fontFamily="@font/whatever_it_takes"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:textColor="@color/textPrimary"
+            android:textSize="30sp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/main_activity_button_discover_stop"
+            android:text="Stop Discovery"
+            android:background="@drawable/button"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:fontFamily="@font/whatever_it_takes"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:textColor="@color/textPrimary"
+            android:textSize="30sp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/main_activity_button_connect"
+        android:text="Connect"
+        android:layout_gravity="center"
+        android:background="@drawable/button"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:fontFamily="@font/whatever_it_takes"
+        android:shadowColor="@color/textShadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:textColor="@color/textPrimary"
+        android:textSize="30sp"
+        android:textAllCaps="false"/>
+
+
+    <TextView
+        android:id="@+id/textView_available_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Available devices"
+        android:fontFamily="@font/whatever_it_takes"
+        android:shadowColor="@color/textShadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:textColor="@color/textPrimary"
+        android:textSize="30sp"
+        android:textAllCaps="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/main_activity_list_view_devices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </ListView>
+
+        <Button
+            android:id="@+id/main_activity_button_configure"
+            android:text="Configure"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/button"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:fontFamily="@font/whatever_it_takes"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"
+            android:textColor="@color/textPrimary"
+            android:textSize="30sp"
+            android:textAllCaps="false"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <Button
+                android:id="@+id/main_activity_button_server_start"
+                android:text="Server start"
+                android:background="@drawable/button"
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:fontFamily="@font/whatever_it_takes"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="2"
+                android:textColor="@color/textPrimary"
+                android:textSize="30sp"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/main_activity_button_server_stop"
+                android:text="Server stop"
+                android:background="@drawable/button"
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:fontFamily="@font/whatever_it_takes"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="2"
+                android:textColor="@color/textPrimary"
+                android:textSize="30sp"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/main_activity_button_client_start"
+                android:text="Client start"
+                android:background="@drawable/button"
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:fontFamily="@font/whatever_it_takes"
+                android:shadowColor="@color/textShadow"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="2"
+                android:textColor="@color/textPrimary"
+                android:textSize="30sp"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,389 @@
+package com.mobina.cocoruncontroller.layout;
+
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.mobina.cocoruncontroller.R;
+import com.mobina.cocoruncontroller.core.Wifi.Connection.ChatClient;
+import com.mobina.cocoruncontroller.core.Wifi.Connection.ChatServer;
+import com.mobina.cocoruncontroller.core.Wifi.Constants;
+import com.mobina.cocoruncontroller.core.Wifi.MyPeerListener;
+import com.mobina.cocoruncontroller.core.Wifi.WifiBroadcastReceiver;
+import com.mobina.cocoruncontroller.utils.GameConfig;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class WifiFragment extends Fragment implements View.OnClickListener, WifiP2pManager.ConnectionInfoListener {
+    public static final String TAG = "===WifiFragment";
+    WifiP2pManager mManager;
+    WifiP2pManager.Channel mChannel;
+    WifiBroadcastReceiver mReceiver;
+    IntentFilter mIntentFilter;
+    WifiP2pDevice device;
+
+    Button buttonDiscoveryStart;
+    Button buttonDiscoveryStop;
+    Button buttonConnect;
+    Button buttonServerStart;
+    Button buttonClientStart;
+    Button buttonServerStop;
+    Button buttonConfigure;
+
+    ListView listViewDevices;
+    TextView textViewDiscoveryStatus;
+    TextView textViewWifiP2PStatus;
+    TextView textViewConnectionStatus;
+    public static String IP = null;
+    public static boolean IS_OWNER = false;
+
+    static boolean  stateDiscovery = false;
+    static boolean stateWifi = false;
+    public static boolean stateConnection = false;
+
+    boolean isServer;
+    ChatServer chatServer;
+    ChatClient chatClient;
+
+    ArrayAdapter mAdapter;
+    WifiP2pDevice[] deviceListItems;
+
+    MainActivity activity;
+
+    public MainActivity getParentActivity(){
+        return activity;
+    }
+
+    public interface OnUpdateListener {
+        public void onUpdate(String data);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (MainActivity)getActivity();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_wifi, container, false);
+
+        buttonDiscoveryStart = view.findViewById(R.id.main_activity_button_discover_start);
+        buttonDiscoveryStop = view.findViewById(R.id.main_activity_button_discover_stop);
+        buttonConnect = view.findViewById(R.id.main_activity_button_connect);
+        buttonServerStart = view.findViewById(R.id.main_activity_button_server_start);
+        buttonServerStop = view.findViewById(R.id.main_activity_button_server_stop);
+        buttonClientStart = view.findViewById(R.id.main_activity_button_client_start);
+        buttonConfigure = view.findViewById(R.id.main_activity_button_configure);
+        listViewDevices = view.findViewById(R.id.main_activity_list_view_devices);
+        textViewConnectionStatus = view.findViewById(R.id.main_activiy_textView_connection_status);
+        textViewDiscoveryStatus = view.findViewById(R.id.main_activiy_textView_dicovery_status);
+        textViewWifiP2PStatus = view.findViewById(R.id.main_activiy_textView_wifi_p2p_status);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpUI();
+        mManager = (WifiP2pManager) activity.getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(activity, activity.getMainLooper(), null);
+        mReceiver = new WifiBroadcastReceiver(mManager, mChannel, WifiFragment.this);
+        setUpIntentFilter();
+        activity.registerReceiver(mReceiver, mIntentFilter);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        activity.unregisterReceiver(mReceiver);
+    }
+
+    private void setUpIntentFilter() {
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+    }
+
+    private void setUpUI() {
+        buttonServerStart.setOnClickListener(this);
+        buttonServerStop.setOnClickListener(this);
+        buttonClientStart.setOnClickListener(this);
+        buttonConnect.setOnClickListener(this);
+        buttonDiscoveryStop.setOnClickListener(this);
+        buttonDiscoveryStart.setOnClickListener(this);
+        buttonConfigure.setOnClickListener(this);
+
+        buttonClientStart.setVisibility(View.INVISIBLE);
+        buttonServerStop.setVisibility(View.INVISIBLE);
+        buttonServerStart.setVisibility(View.INVISIBLE);
+
+        listViewDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                device = deviceListItems[i];
+                Toast.makeText(activity,"Selected device :"+ device.deviceName ,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void discoverPeers()
+    {
+        setDeviceList(new ArrayList<WifiP2pDevice>());
+        mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                stateDiscovery = true;
+                makeToast("peer discovery started");
+                MyPeerListener myPeerListener = new MyPeerListener(WifiFragment.this);
+                mManager.requestPeers(mChannel,myPeerListener);
+            }
+
+            @Override
+            public void onFailure(int i) {
+                stateDiscovery = false;
+                if (i == WifiP2pManager.P2P_UNSUPPORTED) {
+                    makeToast(" peer discovery failed :" + "P2P_UNSUPPORTED");
+                } else if (i == WifiP2pManager.ERROR) {
+                    makeToast(" peer discovery failed :" + "ERROR");
+                } else if (i == WifiP2pManager.BUSY) {
+                    makeToast(" peer discovery failed :" + "BUSY");
+                }
+            }
+        });
+    }
+
+    private void stopPeerDiscover() {
+        mManager.stopPeerDiscovery(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                stateDiscovery = false;
+                makeToast("Peer Discovery stopped" );
+            }
+            @Override
+            public void onFailure(int i) {
+                makeToast("Stopping Peer Discovery failed" );
+            }
+        });
+
+    }
+
+    public void makeToast(String msg) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void connect (final WifiP2pDevice device) {
+
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+
+        mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
+
+            @Override
+            public void onSuccess() {
+                Toast.makeText(WifiFragment.this. activity.getApplication(),"Connection successful with " + device.deviceName,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                if(reason == WifiP2pManager.P2P_UNSUPPORTED) {
+                    makeToast("Failed establishing connection: " + "P2P_UNSUPPORTED");
+                }
+                else if( reason == WifiP2pManager.ERROR) {
+                    makeToast("Failed establishing connection: " + "ERROR");
+
+                }
+                else if( reason == WifiP2pManager.BUSY) {
+                    makeToast("Failed establishing connection: " + "BUSY");
+
+                }
+            }
+        });
+    }
+
+    public void setDeviceList(ArrayList<WifiP2pDevice> deviceDetails) {
+
+        deviceListItems = new WifiP2pDevice[deviceDetails.size()];
+        String[] deviceNames = new String[deviceDetails.size()];
+        for(int i=0 ;i< deviceDetails.size(); i++){
+            deviceNames[i] = deviceDetails.get(i).deviceName;
+            deviceListItems[i] = deviceDetails.get(i);
+        }
+        mAdapter = new ArrayAdapter(activity, android.R.layout.simple_list_item_1, android.R.id.text1,deviceNames);
+        listViewDevices.setAdapter(mAdapter);
+    }
+
+    public void setStatusView(int status) {
+
+        switch (status)
+        {
+            case Constants.DISCOVERY_INITIATED:
+                stateDiscovery = true;
+                textViewDiscoveryStatus.setText("DISCOVERY_INITIATED");
+                break;
+            case Constants.DISCOVERY_STOPPED:
+                stateDiscovery = false;
+                textViewDiscoveryStatus.setText("DISCOVERY_STOPPED");
+                break;
+            case Constants.P2P_WIFI_DISABLED:
+                stateWifi = false;
+                textViewWifiP2PStatus.setText("P2P_WIFI_DISABLED");
+                buttonDiscoveryStart.setEnabled(false);
+                buttonDiscoveryStop.setEnabled(false);
+                break;
+            case Constants.P2P_WIFI_ENABLED:
+                stateWifi = true;
+                textViewWifiP2PStatus.setText("P2P_WIFI_ENABLED");
+                buttonDiscoveryStart.setEnabled(true);
+                buttonDiscoveryStop.setEnabled(true);
+                break;
+            case Constants.NETWORK_CONNECT:
+                stateConnection = true;
+                makeToast("It's a connect");
+
+                textViewConnectionStatus.setText("Connected");
+                break;
+            case Constants.NETWORK_DISCONNECT:
+                stateConnection = false;
+                textViewConnectionStatus.setText("Disconnected");
+                makeToast("State is disconnected");
+                break;
+            default:
+                Log.d(WifiFragment.TAG,"Unknown status");
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id){
+            case R.id.main_activity_button_discover_start:
+                if(!stateDiscovery) {
+                    discoverPeers();
+                }
+                break;
+            case R.id.main_activity_button_discover_stop:
+                if(stateDiscovery){
+                    stopPeerDiscover();
+                }
+                break;
+            case R.id.main_activity_button_connect:
+
+                if(device == null) {
+                    Toast.makeText(activity,"Please discover and select a device",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                connect(device);
+                break;
+            case R.id.main_activity_button_server_start:
+                if(this.isServer){
+                    this.chatServer = new ChatServer(Constants.WIFI_SOCKET_PORT);
+                    this.chatServer.setUpdateListener(new OnUpdateListener() {
+                        public void onUpdate(String obj) {
+                            setReceivedText(obj);
+                        }
+                    });
+                    this.chatServer.start();
+                }
+                else {
+                    this.chatClient = new ChatClient(this.IP, Constants.WIFI_SOCKET_PORT);
+                    this.chatClient.setUpdateListener(new OnUpdateListener() {
+                        public void onUpdate(String obj) {
+                            setReceivedText(obj);
+                        }
+                    });
+                    this.chatClient.start();
+                }
+                break;
+            case R.id.main_activity_button_server_stop:
+                // TODO: STOP SERVER
+                break;
+            case R.id.main_activity_button_client_start:
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                        public void run() {
+                        double steerAngle = Math.asin(MainActivity.getInstance().getGameRotationTheta().y) * 360;
+                        String command = "";
+                        if (steerAngle > -5 && steerAngle < 5)
+                            command = "N";
+                        else if (steerAngle >= 5 && steerAngle < 65)
+                        {
+                            command = String.format("R%d", (int) ((steerAngle - 5)/12)+1);
+                        }
+                        else if (steerAngle <= -5 && steerAngle > -60)
+                            command = String.format("L%d", (int) (( (-steerAngle) - 5)/12)+1);
+                        else
+                            command = "N";
+                        if(WifiFragment.this.isServer) WifiFragment.this.chatServer.sendNewMsg(command);
+                        else WifiFragment.this.chatClient.sendNewMsg(command);
+                    }
+                }, 1000, 2 * GameConfig.REFRESH_INTERVAL);
+                break;
+            case R.id.main_activity_button_configure:
+                mManager.requestConnectionInfo(mChannel,this);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
+        String hostAddress = wifiP2pInfo.groupOwnerAddress.getHostAddress();
+        if (hostAddress == null) hostAddress= "host is null";
+
+        Log.d(this.TAG,"wifiP2pInfo.groupOwnerAddress.getHostAddress() " + wifiP2pInfo.groupOwnerAddress.getHostAddress());
+        IP = wifiP2pInfo.groupOwnerAddress.getHostAddress();
+        IS_OWNER = wifiP2pInfo.isGroupOwner;
+
+        if(IS_OWNER) makeToast("SERVER");
+        else makeToast("CLIENT");
+
+        buttonClientStart.setVisibility(View.VISIBLE);
+
+        buttonServerStop.setVisibility(View.VISIBLE);
+        buttonServerStart.setVisibility(View.VISIBLE);
+
+        if(IS_OWNER) this.isServer = true;
+        else this.isServer = false;
+    }
+    public void setReceivedText(final String data) {
+        System.out.println("I received vibration command");
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.getInstance().vibrate(data);
+            }
+        });
+    }
+}

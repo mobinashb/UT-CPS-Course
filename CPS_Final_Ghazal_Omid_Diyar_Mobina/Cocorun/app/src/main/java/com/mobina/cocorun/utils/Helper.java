@@ -1,5 +1,6 @@
 package com.mobina.cocorun.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,20 +11,24 @@ import android.text.TextPaint;
 
 public class Helper {
 
-  public static void drawStrokedText(Canvas canvas, String text, int xPos, int yPos, int fontSize) {
+  public static void drawStrokedText(Canvas canvas, String text, int xPos, int yPos,
+                                     int fontSize, Context context) {
     Paint paint = new TextPaint();
     paint.setStyle(Paint.Style.FILL);
     paint.setColor(Color.BLACK);
-    paint.setTextSize(fontSize);
-    paint.setTypeface(Typeface.DEFAULT_BOLD);
+    paint.setTextSize(fontSize * 3 / 2);
 
     Paint stkPaint = new TextPaint();
     stkPaint.setStyle(Paint.Style.STROKE);
-    stkPaint.setTextSize(fontSize);
+    stkPaint.setTextSize(fontSize * 3 / 2);
     stkPaint.setStrokeWidth(4);
-    stkPaint.setTypeface(Typeface.DEFAULT_BOLD);
     stkPaint.setColor(Color.WHITE);
     stkPaint.setShadowLayer(2, 2, 2, Color.BLACK);
+
+    Typeface plain = Typeface.createFromAsset(context.getAssets(), "fonts/whatever_it_takes.ttf");
+    Typeface bold = Typeface.create(plain, Typeface.BOLD);
+    paint.setTypeface(bold);
+    stkPaint.setTypeface(bold);
 
     yPos -= (paint.descent() + paint.ascent()) / 2;
     paint.setTextAlign(Paint.Align.CENTER);
